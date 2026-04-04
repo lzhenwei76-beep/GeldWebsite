@@ -1,45 +1,117 @@
-Hier ist eine HTML-Datei, die eine gefälschte Anmeldeseite erstellt und nach dem „Login“ einen simulierten Geldbetrag pro Sekunde anzeigt.
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>💰 Echtzeit-Verdienstsimulator | Fake Login</title>
+    <title>wealthPro · Echtzeit Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* Nur für das "Fake"-Gefühl, kein echter Einfluss auf Sicherheit */
         }
 
         body {
-            background: linear-gradient(145deg, #0b2b26 0%, #0a1f1c 100%);
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
+            background: #0a0c10;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
         }
 
-        /* Hauptcard */
-        .card {
-            background: rgba(20, 35, 33, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 64px 48px 64px 48px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 215, 120, 0.15);
+        /* professioneller dunkler Hintergrund mit leichter Textur */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 550px;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            border: 1px solid rgba(255, 210, 90, 0.3);
+            height: 100%;
+            background-image: radial-gradient(circle at 15% 30%, rgba(45, 110, 210, 0.08) 0%, transparent 50%);
+            pointer-events: none;
         }
 
-        /* Innenbereiche */
+        /* Hauptcard – seriöses Finanz-Design */
+        .premium-card {
+            max-width: 520px;
+            width: 100%;
+            background: #0f1219;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(72, 187, 255, 0.15);
+            transition: all 0.2s ease;
+            backdrop-filter: blur(0px);
+            overflow: hidden;
+        }
+
+        /* Header Bereich */
+        .card-header {
+            padding: 28px 32px 16px 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #2b6eff, #004ecc);
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 6px 12px -6px rgba(0, 78, 204, 0.4);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(120deg, #FFFFFF, #b9d0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .badge-pro {
+            background: rgba(43, 110, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #5f9eff;
+            border: 0.5px solid rgba(43, 110, 255, 0.4);
+            margin-left: 8px;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: white;
+            margin-top: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .subhead {
+            color: #8e95a9;
+            font-size: 14px;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        /* Panels */
         .panel {
-            padding: 2.2rem 2rem 2.5rem;
+            padding: 24px 32px 32px 32px;
         }
 
         .login-panel {
@@ -50,261 +122,337 @@ Hier ist eine HTML-Datei, die eine gefälschte Anmeldeseite erstellt und nach de
             display: none;
         }
 
-        /* Typografie */
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #F9E0A0, #FFC857);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
-            margin-bottom: 0.4rem;
+        /* Formular – echt & clean */
+        .input-field {
+            margin-bottom: 20px;
         }
 
-        .sub {
-            color: #b7d0c9;
-            font-size: 0.85rem;
-            margin-bottom: 2rem;
-            border-left: 3px solid #ffcd6b;
-            padding-left: 12px;
-        }
-
-        .fake-badge {
-            background: rgba(0,0,0,0.5);
-            display: inline-block;
-            font-size: 0.7rem;
-            padding: 4px 12px;
-            border-radius: 40px;
-            color: #ffe1a0;
-            letter-spacing: 0.5px;
-            margin-bottom: 18px;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-        }
-
-        /* Eingabefelder */
-        .input-group {
-            margin-bottom: 1.4rem;
-        }
-
-        label {
-            display: block;
-            color: #e2e8e4;
-            font-weight: 500;
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e6;
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            letter-spacing: 0.2px;
+        }
+
+        .input-label i {
+            font-size: 14px;
+            color: #5f9eff;
+            width: 18px;
         }
 
         input {
             width: 100%;
+            background: #06080f;
+            border: 1.5px solid #222738;
+            border-radius: 18px;
             padding: 14px 18px;
-            background: #1e2f2c;
-            border: 1.5px solid #3e5b56;
-            border-radius: 40px;
-            font-size: 1rem;
-            color: #fef7e0;
-            transition: all 0.2s;
-            outline: none;
+            font-size: 15px;
             font-weight: 500;
+            color: #f0f3fc;
+            transition: all 0.2s;
+            font-family: 'Inter', monospace;
         }
 
         input:focus {
-            border-color: #ffcd6b;
-            box-shadow: 0 0 0 3px rgba(255, 205, 107, 0.3);
-            background: #1f3430;
+            outline: none;
+            border-color: #2b6eff;
+            box-shadow: 0 0 0 3px rgba(43, 110, 255, 0.25);
+            background: #0b0f18;
         }
 
-        /* Button */
-        .btn {
-            background: linear-gradient(95deg, #FFC857, #FFB347);
-            border: none;
+        input::placeholder {
+            color: #3e445a;
+            font-weight: 400;
+        }
+
+        /* Login Button */
+        .login-btn {
+            background: #2b6eff;
             width: 100%;
             padding: 14px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 60px;
-            color: #1e2a25;
+            border: none;
+            border-radius: 28px;
+            font-weight: 700;
+            font-size: 16px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.2s;
-            margin-top: 10px;
-            box-shadow: 0 6px 0 #b4621a;
-            font-family: inherit;
+            transition: all 0.2s;
+            margin-top: 12px;
+            box-shadow: 0 4px 12px rgba(43, 110, 255, 0.3);
+            font-family: 'Inter', sans-serif;
         }
 
-        .btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 3px 0 #b4621a;
+        .login-btn:hover {
+            background: #1b5be6;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(43, 110, 255, 0.4);
         }
 
-        /* Dashboard Header */
+        .login-btn:active {
+            transform: translateY(1px);
+        }
+
+        .legal-note {
+            font-size: 11px;
+            text-align: center;
+            color: #5e647b;
+            margin-top: 28px;
+            border-top: 1px solid #1a1e2a;
+            padding-top: 20px;
+        }
+
+        /* Dashboard Styling – professionelles Trading/Finance Feeling */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
+            margin-bottom: 28px;
             flex-wrap: wrap;
-            margin-bottom: 30px;
-            border-bottom: 2px dashed #ffcd6b60;
-            padding-bottom: 15px;
         }
 
-        .greeting {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #FFF2D0;
-        }
-
-        .logout-btn {
-            background: rgba(255,80,60,0.2);
-            border: 1px solid #ff8a6f;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #ffbc9a;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255,80,60,0.5);
+        .user-greeting h3 {
+            font-size: 20px;
+            font-weight: 700;
             color: white;
         }
 
-        /* Geld-anzeige */
-        .money-stats {
-            background: #0A1816;
-            border-radius: 48px;
-            padding: 1.8rem 1.5rem;
-            margin: 20px 0;
-            text-align: center;
-            box-shadow: inset 0 1px 4px #00000030, 0 8px 20px rgba(0,0,0,0.3);
-            border: 1px solid #ffcd6b30;
+        .user-greeting p {
+            font-size: 13px;
+            color: #8e95a9;
+            margin-top: 4px;
         }
 
-        .per-second-label {
-            font-size: 1rem;
+        .logout-icon {
+            background: rgba(255, 70, 70, 0.12);
+            border: 1px solid #ff5a5a30;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ff8a8a;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-icon:hover {
+            background: rgba(255, 70, 70, 0.25);
+            color: #ffb5b5;
+            border-color: #ff7a7a60;
+        }
+
+        /* Echtgeld-Kacheln */
+        .stat-grid {
+            background: #080b12;
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid #1e2438;
+            margin-bottom: 24px;
+        }
+
+        .rate-label {
+            font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #aac7bf;
-            margin-bottom: 10px;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: #8e95a9;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .earn-rate {
-            font-size: 2.9rem;
+        .rate-value {
+            font-size: 44px;
             font-weight: 800;
-            background: linear-gradient(135deg, #F9E281, #FFB347);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1.2;
-        }
-
-        .earn-rate span {
-            font-size: 1.7rem;
-            background: none;
-            -webkit-background-clip: unset;
-            background-clip: unset;
-            color: #ffcd6b;
-        }
-
-        .total-counter {
-            margin-top: 20px;
-            background: #10221f;
-            border-radius: 32px;
-            padding: 15px;
-        }
-
-        .total-label {
-            font-size: 0.8rem;
-            color: #96b3ab;
-        }
-
-        .total-amount {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #FFE2A4;
-            letter-spacing: 1px;
+            color: #ffffff;
+            line-height: 1.1;
+            letter-spacing: -1px;
             word-break: break-word;
         }
 
-        .fake-note {
-            font-size: 0.7rem;
+        .rate-value small {
+            font-size: 18px;
+            font-weight: 500;
+            color: #a0a8c0;
+        }
+
+        .per-sec-badge {
+            background: rgba(43, 110, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6d9eff;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .total-earnings {
+            background: linear-gradient(135deg, #0f131e, #070a10);
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 10px;
+            border: 1px solid #242b40;
+        }
+
+        .total-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #8e95a9;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .total-amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffe6b3;
+            letter-spacing: -0.5px;
+            word-break: break-word;
+        }
+
+        .update-flash {
+            animation: flashMoney 0.22s ease-out;
+        }
+
+        @keyframes flashMoney {
+            0% {
+                text-shadow: 0 0 0px #ffd966;
+                color: #ffe6b3;
+            }
+            50% {
+                text-shadow: 0 0 6px #ffcd4a;
+                color: #ffecb3;
+            }
+            100% {
+                text-shadow: 0 0 0px #ffd966;
+                color: #ffe6b3;
+            }
+        }
+
+        .divider {
+            height: 1px;
+            background: #1a1f2c;
+            margin: 20px 0 16px;
+        }
+
+        .fine-print {
+            font-size: 11px;
+            color: #4a5068;
             text-align: center;
             margin-top: 20px;
-            color: #6f958b;
-            background: rgba(0,0,0,0.3);
-            padding: 8px 12px;
-            border-radius: 60px;
         }
 
-        hr {
-            border-color: #2f524a;
-            margin: 15px 0;
-        }
-
-        /* Animation für Geldzuwachs */
-        @keyframes coinFlash {
-            0% { text-shadow: 0 0 0 #ffd966; }
-            50% { text-shadow: 0 0 12px #ffcd6b; }
-        }
-        .flash-effect {
-            animation: coinFlash 0.2s ease-out;
+        i {
+            color: #5f9eff;
         }
 
         @media (max-width: 500px) {
-            .panel { padding: 1.5rem; }
-            .earn-rate { font-size: 2rem; }
-            .total-amount { font-size: 1.6rem; }
+            .premium-card {
+                border-radius: 28px;
+            }
+            .panel {
+                padding: 20px 24px;
+            }
+            .rate-value {
+                font-size: 32px;
+            }
+            .total-amount {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="card" id="appRoot">
-    <!-- Login-Bereich -->
-    <div id="loginPanel" class="panel login-panel">
-        <div class="fake-badge">🎭 FAKE ANMELDUNG (Demo)</div>
-        <h1>💰 premium verdienst</h1>
-        <div class="sub">Gib beliebige Daten ein – keine echte Registrierung!</div>
 
-        <div class="input-group">
-            <label>👤 Benutzername / E-Mail</label>
-            <input type="text" id="fakeUsername" placeholder="z.B. Max Mustermann" autocomplete="off">
+<div class="premium-card" id="app">
+    <!-- Login-Bereich (professionell, echt wirkend) -->
+    <div id="loginContainer" class="login-panel">
+        <div class="card-header">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="logo-text">wealthPro<span class="badge-pro">PREMIUM</span></div>
+            </div>
+            <h2>Anmelden zum Konto</h2>
+            <div class="subhead">Greifen Sie auf Ihr Echtzeit-Dashboard zu</div>
         </div>
-        <div class="input-group">
-            <label>🔒 Passwort (Fake)</label>
-            <input type="password" id="fakePassword" placeholder="beliebiges Passwort">
-        </div>
-        <button class="btn" id="loginBtn">🚀 Jetzt anmelden & Geld verdienen</button>
-        <div class="fake-note">
-            ⚡ Hinweis: Dies ist eine reine Spielerei / Demo. Es werden keine Daten gespeichert.
+        <div class="panel">
+            <div class="input-field">
+                <div class="input-label"><i class="far fa-envelope"></i> E-Mail-Adresse oder Benutzername</div>
+                <input type="text" id="loginEmail" placeholder="max.mustermann@wealthpro.de" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <div class="input-label"><i class="fas fa-lock"></i> Passwort</div>
+                <input type="password" id="loginPassword" placeholder="Ihre Anmeldedaten">
+            </div>
+            <button class="login-btn" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> Jetzt anmelden</button>
+            <div class="legal-note">
+                <i class="fas fa-shield-alt"></i> Geschützte Verbindung · Demo-Umgebung
+            </div>
         </div>
     </div>
 
-    <!-- Dashboard nach "Anmeldung" -->
-    <div id="dashboardPanel" class="panel dashboard-panel">
-        <div class="dashboard-header">
-            <div class="greeting" id="greetingUser">💰 Willkommen, Gast</div>
-            <div class="logout-btn" id="logoutBtn">🚪 Abmelden</div>
-        </div>
-
-        <div class="money-stats">
-            <div class="per-second-label">⚡ DEIN VERDIENST PRO SEKUNDE ⚡</div>
-            <div class="earn-rate" id="ratePerSecondDisplay">0,00 €<span>/s</span></div>
-            <div class="fake-note" style="margin-top: 12px; background: none;">✨ simulierter Premium-Tarif ✨</div>
-        </div>
-
-        <div class="total-counter">
-            <div class="total-label">💰 VERDIENT SEIT ANMELDUNG (live)</div>
-            <div class="total-amount" id="totalEarnedDisplay">0,00 €</div>
-            <div class="fake-note" style="margin-top: 12px;">
-                ⏱️ Zählt jede Sekunde hoch – echte Echtzeit-Simulation
+    <!-- Dashboard nach erfolgreicher Anmeldung (echtes Echtzeit-Gefühl) -->
+    <div id="dashboardContainer" class="dashboard-panel">
+        <div class="card-header" style="padding-bottom: 0;">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-chart-simple"></i></div>
+                <div class="logo-text">wealthPro<span class="badge-pro">LIVE</span></div>
             </div>
         </div>
-        <hr>
-        <div class="fake-note">
-            💡 Dies ist eine Fake-Anmeldung! Die angezeigten Zahlen sind nur zur Unterhaltung.
-            Kein echtes Geld, keine Transaktionen.
+        <div class="panel">
+            <div class="dashboard-header">
+                <div class="user-greeting">
+                    <h3 id="dashboardUserName">Willkommen zurück</h3>
+                    <p><i class="fas fa-circle" style="font-size: 8px; color: #2bff6e;"></i> Echtzeit-Session aktiv</p>
+                </div>
+                <div class="logout-icon" id="logoutBtnDashboard">
+                    <i class="fas fa-sign-out-alt"></i> Abmelden
+                </div>
+            </div>
+
+            <!-- Karte: Verdienst pro Sekunde (echter Wert) -->
+            <div class="stat-grid">
+                <div class="rate-label">
+                    <i class="fas fa-bolt"></i> AKTUELLE VERDIENSTRATE
+                </div>
+                <div class="rate-value" id="ratePerSecondValue">
+                    0,00 <small>€/s</small>
+                </div>
+                <div class="per-sec-badge">
+                    <i class="fas fa-charging-station"></i> pro Sekunde vergütet
+                </div>
+            </div>
+
+            <!-- Gesamtverdienst seit Login -->
+            <div class="total-earnings">
+                <div class="total-title">
+                    <i class="fas fa-sack-dollar"></i> GESAMTVERDIENST (live)
+                </div>
+                <div class="total-amount" id="totalEarnedValue">
+                    0,00 €
+                </div>
+                <div class="fine-print" style="margin-top: 12px; text-align: left;">
+                    <i class="fas fa-chart-line"></i> Aktualisiert in Echtzeit · seit Anmeldung
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="fine-print">
+                <i class="fas fa-info-circle"></i> Simulationsmodus – alle angezeigten Werte sind rein demonstrativ.
+            </div>
         </div>
     </div>
 </div>
@@ -312,228 +460,229 @@ Hier ist eine HTML-Datei, die eine gefälschte Anmeldeseite erstellt und nach de
 <script>
     (function() {
         // ---------- STATE ----------
-        // Wird nach "Login" gesetzt: userDisplayName, earningsPerSecond (fixer wert), totalEarned, timerIntervalid
-        let isLoggedIn = false;
-        let currentUser = "Spieler";
-        let earningsPerSecond = 0;      // Euro pro Sekunde (dynamisch zufällig, aber stabil während einer Sitzung)
-        let totalEarned = 0;             // akkumulierter Betrag seit Login dieser Session
-        let intervalId = null;
-        
-        // DOM-Elemente
-        const loginPanel = document.getElementById('loginPanel');
-        const dashboardPanel = document.getElementById('dashboardPanel');
-        const loginBtn = document.getElementById('loginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const greetingUserSpan = document.getElementById('greetingUser');
-        const ratePerSecondDisplay = document.getElementById('ratePerSecondDisplay');
-        const totalEarnedDisplay = document.getElementById('totalEarnedDisplay');
-        const fakeUsernameInput = document.getElementById('fakeUsername');
-        const fakePasswordInput = document.getElementById('fakePassword');
-        
-        // Hilfsfunktionen
-        function formatMoney(value) {
-            // formatiert mit 2 Nachkommastellen und Tausendertrenner
+        let activeSession = false;
+        let currentUserName = "Investor";
+        let earningsRate = 0.00;        // Euro pro Sekunde
+        let totalAccumulated = 0.00;     // Gesamtsumme seit Login
+        let timerInterval = null;
+
+        // DOM-Elemente Login
+        const loginContainer = document.getElementById('loginContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const loginEmailInput = document.getElementById('loginEmail');
+        const loginPasswordInput = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('doLoginBtn');
+
+        // Dashboard Elemente
+        const dashboardUserNameSpan = document.getElementById('dashboardUserName');
+        const ratePerSecondSpan = document.getElementById('ratePerSecondValue');
+        const totalEarnedSpan = document.getElementById('totalEarnedValue');
+        const logoutDashboardBtn = document.getElementById('logoutBtnDashboard');
+
+        // Hilfsfunktionen Formatierung
+        const formatEuro = (value) => {
             return value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-        }
-        
-        // Aktualisiert die Anzeige des Verdienstes pro Sekunde im Dashboard
-        function updateRateDisplay() {
-            if (ratePerSecondDisplay) {
-                ratePerSecondDisplay.innerHTML = earningsPerSecond.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '<span>/s</span>';
+        };
+
+        const formatRateDisplay = (rate) => {
+            return rate.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' <small>€/s</small>';
+        };
+
+        // UI Updates (ohne Timer-Effekt)
+        function updateDashboardUI(triggerFlash = false) {
+            if (!activeSession) return;
+            // Rate anzeigen
+            if (ratePerSecondSpan) {
+                ratePerSecondSpan.innerHTML = formatRateDisplay(earningsRate);
             }
-        }
-        
-        // Aktualisiert den Gesamtbetrag im UI und optional kurzer "Flash"-Effekt
-        function updateTotalDisplay(flash = false) {
-            if (totalEarnedDisplay) {
-                totalEarnedDisplay.innerText = formatMoney(totalEarned);
-                if (flash) {
-                    totalEarnedDisplay.classList.add('flash-effect');
+            // Total anzeigen mit optionalem Flash
+            if (totalEarnedSpan) {
+                totalEarnedSpan.innerText = formatEuro(totalAccumulated);
+                if (triggerFlash) {
+                    totalEarnedSpan.classList.add('update-flash');
                     setTimeout(() => {
-                        if (totalEarnedDisplay) totalEarnedDisplay.classList.remove('flash-effect');
-                    }, 200);
+                        if (totalEarnedSpan) totalEarnedSpan.classList.remove('update-flash');
+                    }, 220);
                 }
             }
         }
-        
-        // Bereinigt alten Timer
-        function stopEarningTimer() {
-            if (intervalId !== null) {
-                clearInterval(intervalId);
-                intervalId = null;
+
+        // Stoppt den laufenden Timer (falls aktiv)
+        function stopEarningsTimer() {
+            if (timerInterval !== null) {
+                clearInterval(timerInterval);
+                timerInterval = null;
             }
         }
-        
-        // Startet den Timer, der pro Sekunde den Verdienst erhöht (auf Basis von earningsPerSecond)
-        function startEarningTimer() {
-            if (intervalId) stopEarningTimer();
-            // Jede Sekunde: totalEarned += earningsPerSecond
-            intervalId = setInterval(() => {
-                if (isLoggedIn && earningsPerSecond > 0) {
-                    totalEarned += earningsPerSecond;
-                    updateTotalDisplay(true);
-                } else if (isLoggedIn && earningsPerSecond === 0) {
-                    // Fallback sollte nicht passieren, aber Sicherheit
-                    totalEarned += 0;
-                    updateTotalDisplay(false);
+
+        // Startet den Echtzeit-Timer (jede Sekunde Geld hinzufügen)
+        function startEarningsTimer() {
+            if (timerInterval) stopEarningsTimer();
+            if (!activeSession) return;
+
+            timerInterval = setInterval(() => {
+                if (activeSession && earningsRate > 0) {
+                    totalAccumulated += earningsRate;
+                    // UI aktualisieren mit sanftem Flash-Effekt
+                    updateDashboardUI(true);
+                } else if (activeSession && earningsRate === 0) {
+                    // Fallback - passiert nicht, aber sicher
+                    updateDashboardUI(false);
                 }
             }, 1000);
         }
-        
-        // Generiert einen "zufälligen" realistisch wirkenden Geldbetrag pro Sekunde (zwischen 0.25€ und 18.75€)
-        // Aber macht es unterhaltsam: verschiedene Stufen mit Komma
-        function generateRandomEarningsRate() {
-            // mögliche Bereiche: 0.35 €/s bis 22.40 €/s – klingt "reich" aber nicht übertrieben
-            // manche nutzer mögen "glatte" zahlen, aber gemischt.
-            const variants = [
-                0.47, 0.89, 1.24, 1.95, 2.50, 3.12, 4.33, 5.67, 6.42, 7.80, 8.99, 10.25, 12.50, 14.75, 16.20, 19.40, 22.10
-            ];
-            // zufällig plus etwas Variation: entweder aus array oder zufallsbereich 0.3 bis 22
-            let rate;
-            if (Math.random() > 0.4) {
-                // aus array einen nehmen
-                const randomIndex = Math.floor(Math.random() * variants.length);
-                rate = variants[randomIndex];
+
+        // Erzeugt einen realistischen, "echt" wirkenden Sekundenverdienst (zwischen 0,47€ und 28,90€)
+        // wirkt wie ein professioneller High-End-Tarif
+        function generateRealisticEarningsRate() {
+            // Fintech-typische Werte: 0.85€/s, 2.45€/s, 5.20€/s, 12.75€/s, 18.30€, 24.99€
+            const pool = [0.87, 1.45, 2.33, 3.78, 5.12, 7.45, 9.90, 12.35, 15.80, 18.25, 22.40, 26.75, 29.99];
+            // Zufällige Auswahl, aber mit etwas Gewichtung für mittlere Werte (beliebt)
+            let selected;
+            if (Math.random() > 0.65) {
+                // höhere Rarität für sehr hohe Werte
+                const highRange = [18.25, 22.40, 26.75, 29.99];
+                selected = highRange[Math.floor(Math.random() * highRange.length)];
             } else {
-                // generiere zwischen 0.55 und 21.99
-                rate = 0.55 + Math.random() * 21.44;
-                rate = Math.round(rate * 100) / 100;
+                selected = pool[Math.floor(Math.random() * pool.length)];
             }
-            // auf maximal 2 Nachkommastellen bringen
-            return Math.round(rate * 100) / 100;
+            // Leichte Mikrovariation für Authentizität (+-0,05)
+            const microNoise = (Math.random() * 0.12) - 0.06;
+            let finalRate = selected + microNoise;
+            finalRate = Math.round(finalRate * 100) / 100;
+            if (finalRate < 0.35) finalRate = 0.89; // Sicherheitswert
+            return finalRate;
         }
-        
-        // Setup nach Login: Benutzername, zufälliger Verdienst pro Sekunde, totalEarned zurücksetzen, UI aktualisieren
-        function performLogin(usernameInputValue) {
-            if (isLoggedIn) return;
-            
-            // Fake-Anmeldung: Auch wenn kein Name eingegeben -> Standardname
-            let displayName = usernameInputValue.trim();
-            if (displayName === "") {
-                displayName = "Investor";
+
+        // Login-Logik: Erzeugt echte Session mit individuellem Verdienst
+        function performLogin() {
+            if (activeSession) return;
+
+            // Benutzername aus dem E-Mail-Feld parsen oder Platzhalter nutzen -> fühlt sich echt an
+            let rawUser = loginEmailInput.value.trim();
+            let displayUser = "";
+
+            if (rawUser === "") {
+                displayUser = "Christian M.";
+            } else {
+                // Wenn email, dann vor dem @ nehmen, ansonsten den Text kürzen
+                if (rawUser.includes('@')) {
+                    displayUser = rawUser.split('@')[0];
+                } else {
+                    displayUser = rawUser.substring(0, 18);
+                }
+                // Fallback für seltsame Zeichen
+                if (displayUser.length === 0) displayUser = "Member";
             }
-            // Beschränke Länge für UI
-            if (displayName.length > 20) displayName = displayName.slice(0, 18) + "..";
-            currentUser = displayName;
-            
-            // neuen zufälligen Satz pro Sekunde generieren (zwischen 0.30€ und 22.50€)
-            earningsPerSecond = generateRandomEarningsRate();
-            // Sicherstellen mindestens 0.10€ für spaß
-            if (earningsPerSecond < 0.1) earningsPerSecond = 0.67;
-            
-            // Zurücksetzen des verdienten Geldes (neue Session)
-            totalEarned = 0.00;
-            
-            // UI im Dashboard aktualisieren
-            greetingUserSpan.innerText = `💎 ${currentUser}, willkommen!`;
-            updateRateDisplay();
-            updateTotalDisplay(false);
-            
-            // Timer starten (Jede Sekunde Geld addieren)
-            startEarningTimer();
-            
-            // Panel umschalten
-            loginPanel.style.display = "none";
-            dashboardPanel.style.display = "block";
-            isLoggedIn = true;
-            
-            // Leere Eingabefelder aus "Sicherheitsgründen" (damit kein "Passwort" im Klartext bleibt)
-            if (fakePasswordInput) fakePasswordInput.value = "";
-            // (Username bleibt stehen, aber egal)
+            // Erste Buchstaben großschreiben
+            displayUser = displayUser.charAt(0).toUpperCase() + displayUser.slice(1).toLowerCase();
+            currentUserName = displayUser;
+
+            // neuen, dynamischen Verdienst pro Sekunde generieren (echt wirkend)
+            earningsRate = generateRealisticEarningsRate();
+
+            // Reset des akkumulierten Geldes (neue Session)
+            totalAccumulated = 0.00;
+
+            // Dashboard personalisieren
+            if (dashboardUserNameSpan) {
+                dashboardUserNameSpan.innerHTML = `${currentUserName} <span style="font-size: 13px; font-weight: normal; color:#6c86a5;">⚡ Aktiv</span>`;
+            }
+
+            // UI auf Startwerte setzen
+            updateDashboardUI(false);
+
+            // Timer starten (echte Sekundeninkremente)
+            startEarningsTimer();
+
+            // Panel-Wechsel: Login ausblenden, Dashboard einblenden
+            loginContainer.style.display = "none";
+            dashboardContainer.style.display = "block";
+            activeSession = true;
+
+            // Eingabefelder sicherheitshalber leeren (aber kein Zwang)
+            loginPasswordInput.value = "";
+            // Kleines optisches Highlight: Konsole dezent
+            console.log("wealthPro | Session gestartet – Echtzeit-Simulation läuft");
         }
-        
-        // Logout: Alle Daten zurücksetzen, Timer stoppen, zurück zum Login
+
+        // Logout: beendet Session, setzt alles zurück
         function performLogout() {
-            if (!isLoggedIn) return;
-            
+            if (!activeSession) return;
+
             // Timer stoppen
-            stopEarningTimer();
-            
-            // State zurücksetzen
-            isLoggedIn = false;
-            currentUser = "";
-            earningsPerSecond = 0;
-            totalEarned = 0;
-            
-            // Eingabefelder nicht komplett löschen (optional, aber schöner)
-            // aber um das Fake-Erlebnis zu verbessern, können wir Username/Passwort leeren (optional)
-            if (fakeUsernameInput) fakeUsernameInput.value = "";
-            if (fakePasswordInput) fakePasswordInput.value = "";
-            
-            // Panels tauschen
-            loginPanel.style.display = "block";
-            dashboardPanel.style.display = "none";
-            
-            // Nach dem Logout die Rate im Dashboard zurücksetzen (visuell unsichtbar, aber sauber)
-            if (ratePerSecondDisplay) ratePerSecondDisplay.innerHTML = "0,00<span>/s</span>";
-            if (totalEarnedDisplay) totalEarnedDisplay.innerText = formatMoney(0);
+            stopEarningsTimer();
+
+            // Zustand zurücksetzen
+            activeSession = false;
+            earningsRate = 0;
+            totalAccumulated = 0;
+            currentUserName = "";
+
+            // UI wechseln
+            loginContainer.style.display = "block";
+            dashboardContainer.style.display = "none";
+
+            // Eingabefelder optional zurücksetzen (für neue Anmeldung)
+            if (loginEmailInput) loginEmailInput.value = "";
+            if (loginPasswordInput) loginPasswordInput.value = "";
         }
-        
-        // Event-Listener für Login-Button: prüft nur, ob mindestens ein zeichen (oder auch nicht) – 100% Fake.
-        // Wir nehmen nur den Username für die Begrüßung.
+
+        // Event-Listener für Login (echter Klick, egal welche Daten – fake aber professionell)
         function onLoginClick() {
-            if (isLoggedIn) return;
-            const username = fakeUsernameInput ? fakeUsernameInput.value : "";
-            // Man kann auch Passwort "prüfen", aber es ist fake, also immer erfolgreich.
-            // Ein kleiner Hinweis: Wenn beide Felder leer sind, trotzdem erlauben (Demo)
-            performLogin(username);
+            if (activeSession) return;
+            // kleine "Validierung", um das echte Gefühl zu geben (keine leeren Felder werden blockiert, aber es fühlt sich an wie ein richtiges System)
+            const emailVal = loginEmailInput.value.trim();
+            const passVal = loginPasswordInput.value;
+            if (emailVal === "" && passVal === "") {
+                // Trotzdem erlauben, aber als Hinweis? Machen wir es einfach: Es wird immer akzeptiert, aber für echte Illusion.
+                // trotzdem machen wir einen kleinen visuellen Hinweis (kein echter Fehler, nur subtil)
+                // Aber wir lassen es zu, weil es fake ist – aber professionell: kurz animieren
+                loginBtn.style.transform = "scale(0.99)";
+                setTimeout(() => { if(loginBtn) loginBtn.style.transform = ""; }, 100);
+            }
+            performLogin();
         }
-        
-        // Abmelden Listener
-        function onLogoutClick() {
-            performLogout();
-        }
-        
-        // Zusätzlich: Enter-Taste in den Eingabefeldern für bessere UX
-        function setupEnterHandler() {
-            const handleEnter = (e) => {
-                if (e.key === 'Enter' && !isLoggedIn) {
+
+        // Enter-Taste in den Inputs für bessere UX
+        function setupEnterEvents() {
+            const handleKey = (e) => {
+                if (e.key === 'Enter' && !activeSession) {
                     e.preventDefault();
                     onLoginClick();
                 }
             };
-            if (fakeUsernameInput) fakeUsernameInput.addEventListener('keypress', handleEnter);
-            if (fakePasswordInput) fakePasswordInput.addEventListener('keypress', handleEnter);
+            if (loginEmailInput) loginEmailInput.addEventListener('keypress', handleKey);
+            if (loginPasswordInput) loginPasswordInput.addEventListener('keypress', handleKey);
         }
-        
-        // Optional: Wenn jemand versucht, während eingeloggt die Seite zu reloaden, soll der Zustand nicht erhalten bleiben (absichtlich)
-        // Aber da wir nur clientseitigen Speicher vermeiden, ist das okay. Beim Neuladen startet die Seite mit Login-Ansicht.
-        // Zusätzlich: Für dynamische Aktualisierung, falls jemand die Entwicklertools missbraucht, bleibt es harmlos.
-        
-        // Initialisierung: Sicherstellen, dass Dashboard ausgeblendet ist und Login sichtbar.
+
+        // Initialisierung: sicherstellen, dass Dashboard versteckt ist
         function init() {
-            loginPanel.style.display = "block";
-            dashboardPanel.style.display = "none";
-            isLoggedIn = false;
-            if (intervalId) {
-                clearInterval(intervalId);
-                intervalId = null;
-            }
-            earningsPerSecond = 0;
-            totalEarned = 0;
-            // Setze Beispieltext in die Felder als Platzhalter (nicht required, nur hübsch)
-            if (fakeUsernameInput) fakeUsernameInput.placeholder = "z.B. Elon Fake oder dein Name";
-            if (fakePasswordInput) fakePasswordInput.placeholder = "****** (egal)";
-            updateRateDisplay();   // wird 0 anzeigen (im unsichtbaren dashboard, aber egal)
-            setupEnterHandler();
+            loginContainer.style.display = "block";
+            dashboardContainer.style.display = "none";
+            activeSession = false;
+            if (timerInterval) clearInterval(timerInterval);
+            earningsRate = 0;
+            totalAccumulated = 0;
+
+            // Platzhalter auf moderne Fintech-Art
+            if (loginEmailInput) loginEmailInput.placeholder = "name@firma.de oder Nutzername";
+            if (loginPasswordInput) loginPasswordInput.placeholder = "············";
+            setupEnterEvents();
         }
-        
-        // Events verbinden
+
+        // Event Listener binden
         loginBtn.addEventListener('click', onLoginClick);
-        logoutBtn.addEventListener('click', onLogoutClick);
-        
+        logoutDashboardBtn.addEventListener('click', performLogout);
+
+        // Seite initialisieren
         init();
-        
-        // Zusätzlicher Cleanup Mechanismus für page unload (optional)
+
+        // Optional: Beim Seitenwechsel / Schließen sauber Timer beenden
         window.addEventListener('beforeunload', () => {
-            if (intervalId) clearInterval(intervalId);
+            if (timerInterval) clearInterval(timerInterval);
         });
-        
-        // Kleiner Easter-Egg: Zeige im Konsolen-Log, dass es Fake ist (transparent)
-        console.log("%c💰 FAKE VERDIENST SIMULATOR 💰", "color: #ffcd6b; font-size: 16px; font-weight: bold;");
-        console.log("%cDiese Webseite ist eine Demo / Spielerei. Es wird kein echtes Geld generiert.", "color: #b7d0c9;");
     })();
 </script>
 </body>
 </html>
-```
