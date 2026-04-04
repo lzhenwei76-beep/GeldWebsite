@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>💰 CentQuest · Fake IBAN Überweisung + 1ct/s Quests</title>
+    <title>💰 CentQuest · 100 Umfragen + Multiplikator Boosts</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -17,566 +17,427 @@
             background: radial-gradient(ellipse at 30% 20%, #0e1722, #03060c);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
         }
 
-        .app-card {
-            max-width: 720px;
-            width: 100%;
-            background: rgba(6, 12, 20, 0.96);
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        /* Hauptbereich */
+        .main-panel {
+            flex: 2;
+            min-width: 300px;
+            background: rgba(6, 12, 20, 0.94);
             backdrop-filter: blur(8px);
-            border-radius: 72px;
+            border-radius: 48px;
             box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 200, 100, 0.25);
             overflow: hidden;
         }
 
-        /* Login Panel */
-        .login-panel { display: block; }
-        .dashboard-panel { display: none; }
+        /* Seitenleiste für Umfragen */
+        .surveys-panel {
+            flex: 1.2;
+            min-width: 320px;
+            background: rgba(6, 12, 20, 0.94);
+            backdrop-filter: blur(8px);
+            border-radius: 48px;
+            box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 200, 100, 0.25);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
 
-        .hero-header {
+        .surveys-header {
             background: linear-gradient(115deg, #10222e, #07101c);
-            padding: 28px 32px 20px 32px;
+            padding: 20px 24px;
             border-bottom: 1px solid rgba(255, 190, 80, 0.35);
         }
 
-        .title-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 12px;
+        .surveys-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            max-height: calc(90vh - 100px);
         }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(125deg, #FFEAB0, #FFB845);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sub-desc {
-            color: #9eb3d0;
-            font-size: 0.85rem;
-        }
-
-        .login-form {
-            padding: 32px 32px 28px 32px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #cbdff5;
-            margin-bottom: 8px;
-        }
-
-        input, select {
-            width: 100%;
-            background: #0a111e;
-            border: 1.5px solid #2a3f52;
-            border-radius: 60px;
-            padding: 14px 20px;
-            font-size: 0.95rem;
-            color: #f0f4fc;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.2s;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #ffbc5e;
-            box-shadow: 0 0 0 3px rgba(255, 188, 94, 0.25);
-        }
-
-        .login-btn {
-            background: linear-gradient(95deg, #ffb347, #ff9a2e);
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 60px;
-            font-weight: 800;
-            font-size: 1rem;
-            color: #1e2a2e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.15s;
-            margin-top: 12px;
-            box-shadow: 0 4px 12px rgba(255, 160, 50, 0.3);
-        }
-
-        .login-btn:active { transform: scale(0.97); }
-        .fake-note { font-size: 0.65rem; text-align: center; color: #6a7f9b; margin-top: 20px; }
-
-        /* Dashboard */
-        .stats-panel {
-            background: #0a111c;
-            margin: 24px 28px;
-            border-radius: 56px;
-            padding: 28px 20px;
-            text-align: center;
-            border: 1px solid #2c405a;
-        }
-
-        .rate-number {
-            font-size: 4.8rem;
-            font-weight: 800;
-            background: linear-gradient(145deg, #FFE6B0, #FFAA44);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1;
-        }
-        .rate-number small { font-size: 1.8rem; color: #ffcd7e; }
-        .total-box { background: #030812; border-radius: 44px; padding: 14px; margin-top: 18px; }
-        .total-amount { font-size: 2.2rem; font-weight: 800; color: #FFE2AA; }
-
-        /* Quests */
-        .quests-area { padding: 8px 28px 32px 28px; }
-        .section-head { display: flex; align-items: center; gap: 12px; font-size: 1.2rem; font-weight: 700; color: #f5e7ce; margin: 20px 0 16px 0; }
-        .quest-tile {
+        .survey-item {
             background: #111d2ad9;
-            border-radius: 48px;
-            padding: 18px 24px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
+            border-radius: 24px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
             border: 1px solid #2e4a62;
             transition: all 0.2s;
-        }
-        .quest-text h4 { font-size: 1rem; font-weight: 700; color: #ffe1b3; margin-bottom: 5px; }
-        .quest-text p { font-size: 0.7rem; color: #aec5e2; }
-        .reward-chip { background: #1d2f3e; padding: 5px 14px; border-radius: 60px; font-size: 0.7rem; font-weight: 600; color: #ffd58c; }
-        .quest-btn {
-            background: linear-gradient(95deg, #2c8b6e, #1b6e56);
-            border: none;
-            padding: 10px 28px;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             cursor: pointer;
-            transition: 0.1s;
         }
-        .quest-btn:active { transform: scale(0.96); }
-        .quest-btn.completed { background: #3f5b70; opacity: 0.75; pointer-events: none; }
+        .survey-item:hover { transform: translateX(4px); border-color: #ffcd6b; }
+        .survey-item.completed { opacity: 0.6; background: #1a2a36; cursor: default; border-color: #4a6a7a; }
+        .survey-question { font-weight: 600; color: #ffe1b3; margin-bottom: 8px; font-size: 0.85rem; }
+        .survey-options { display: flex; gap: 8px; flex-wrap: wrap; }
+        .survey-opt-small { background: #1f3443; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; cursor: pointer; color: #ecf5ff; }
+        .survey-opt-small:hover { background: #3f6885; }
+        .survey-reward { font-size: 0.65rem; color: #ffd58c; margin-top: 6px; }
 
-        .survey-choices-group { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-        .survey-choice-item {
-            background: #1f3443;
-            padding: 6px 18px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: 0.1s;
-            color: #ecf5ff;
+        /* Dashboard */
+        .hero-header {
+            background: linear-gradient(115deg, #10222e, #07101c);
+            padding: 24px 28px;
+            border-bottom: 1px solid rgba(255, 190, 80, 0.35);
         }
-        .survey-choice-item:hover { background: #3f6885; transform: translateY(-2px); }
+        .title-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(125deg, #FFEAB0, #FFB845); -webkit-background-clip: text; background-clip: text; color: transparent; display: flex; align-items: center; gap: 10px; }
+        .stats-panel { background: #0a111c; margin: 20px 24px; border-radius: 48px; padding: 24px 20px; text-align: center; border: 1px solid #2c405a; }
+        .rate-number { font-size: 4rem; font-weight: 800; background: linear-gradient(145deg, #FFE6B0, #FFAA44); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .rate-number small { font-size: 1.5rem; color: #ffcd7e; }
+        .total-box { background: #030812; border-radius: 40px; padding: 14px; margin-top: 16px; }
+        .total-amount { font-size: 2rem; font-weight: 800; color: #FFE2AA; }
 
-        /* IBAN Overlay & Modal */
-        .iban-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
- backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0.2s, opacity 0.2s;
-        }
-        .iban-modal.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        .iban-card {
-            background: #121e2c;
-            border-radius: 56px;
-            max-width: 450px;
-            width: 90%;
-            padding: 28px;
-            border: 1px solid #ffcd6b60;
-            box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+        .multiplier-box {
+            background: linear-gradient(135deg, #1e3a2f, #0f281f);
+            border-radius: 40px;
+            padding: 12px 20px;
+            margin: 16px 24px;
             text-align: center;
+            border: 1px solid #ffcd6b;
         }
-        .iban-card h3 {
-            font-size: 1.6rem;
-            color: #ffe0aa;
-            margin-bottom: 16px;
-        }
-        .iban-input-group {
-            margin: 20px 0;
-        }
-        .iban-input-group input {
-            text-align: center;
-            font-family: monospace;
-            letter-spacing: 1px;
-        }
-        .fake-submit-btn {
+        .multiplier-value { font-size: 2rem; font-weight: 800; color: #FFD966; }
+        .boost-btn {
             background: linear-gradient(95deg, #ffb347, #ff9a2e);
             border: none;
             padding: 12px 24px;
             border-radius: 60px;
-            font-weight: bold;
-            color: #1e2a2e;
+            font-weight: 700;
             cursor: pointer;
+            margin-top: 12px;
             width: 100%;
-            font-size: 1rem;
         }
-        .close-modal {
-            margin-top: 16px;
-            background: #2f4a60;
+        .quest-btn {
+            background: linear-gradient(95deg, #2c8b6e, #1b6e56);
             border: none;
-            padding: 8px;
-            border-radius: 40px;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-weight: 700;
             color: white;
             cursor: pointer;
             width: 100%;
         }
-        .result-message {
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 40px;
-            font-weight: bold;
-        }
-        .error-result { background: #8b2c2c80; color: #ffbcbc; border: 1px solid #ff6b6b; }
-        .success-result { background: #2c6e4280; color: #c8ffc8; border: 1px solid #6bff8f; }
-
-        .global-feedback { background: #07111c; border-radius: 60px; padding: 12px 18px; margin: 16px 0 12px; font-size: 0.75rem; text-align: center; color: #c9e0ff; }
-        .logout-btn-header {
-            background: rgba(255, 80, 80, 0.15);
-            border: 1px solid #ff8a6f60;
-            border-radius: 60px;
-            padding: 6px 18px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #ffbc9a;
-            cursor: pointer;
-        }
-        footer { font-size: 0.6rem; text-align: center; padding: 16px 24px 28px; color: #607d99; border-top: 1px solid #1c3040; margin-top: 12px; }
+        .global-feedback { background: #07111c; border-radius: 40px; padding: 12px 18px; margin: 16px 24px; font-size: 0.75rem; text-align: center; color: #c9e0ff; }
+        .logout-btn { background: rgba(255, 80, 80, 0.15); border: 1px solid #ff8a6f60; border-radius: 60px; padding: 6px 18px; font-size: 0.75rem; color: #ffbc9a; cursor: pointer; }
+        footer { font-size: 0.6rem; text-align: center; padding: 16px 24px; color: #607d99; border-top: 1px solid #1c3040; margin-top: 12px; }
         i { margin-right: 6px; }
-        @keyframes coinFlip {
-            0% { transform: scale(1); text-shadow: 0 0 0 #ffc107; }
-            35% { transform: scale(1.08); text-shadow: 0 0 12px #ffcc44; }
-            100% { transform: scale(1); text-shadow: 0 0 0 #ffc107; }
-        }
-        .coin-animation { animation: coinFlip 0.25s cubic-bezier(0.2, 1.2, 0.9, 1); }
-        @keyframes borderGlow {
-            0% { border-color: #ffcd6b; box-shadow: 0 0 0 0 rgba(255, 205, 80, 0.5); }
-            100% { border-color: #2e4a62; box-shadow: none; }
-        }
-        .reward-border { animation: borderGlow 0.6s ease-out; }
-        @media (max-width: 580px) {
-            .quest-tile { flex-direction: column; align-items: flex-start; }
-            .quest-btn { width: 100%; justify-content: center; }
-            .rate-number { font-size: 3.2rem; }
-        }
+        @keyframes coinFlip { 0% { transform: scale(1); } 50% { transform: scale(1.05); text-shadow: 0 0 8px #ffcc44; } 100% { transform: scale(1); } }
+        .coin-animation { animation: coinFlip 0.2s ease-out; }
+        .login-panel { display: block; }
+        .dashboard-panel { display: none; }
+        input { background: #0a111e; border: 1.5px solid #2a3f52; border-radius: 60px; padding: 12px 18px; color: white; width: 100%; margin-bottom: 16px; }
+        .login-btn { background: linear-gradient(95deg, #ffb347, #ff9a2e); width: 100%; padding: 12px; border-radius: 60px; font-weight: 800; cursor: pointer; }
+        @media (max-width: 900px) { .app-container { flex-direction: column; } .surveys-panel { max-height: 500px; } }
     </style>
 </head>
 <body>
-<div class="app-card" id="appRoot">
+<div id="appRoot">
     <!-- LOGIN PANEL -->
-    <div id="loginPanel" class="login-panel">
-        <div class="hero-header">
-            <div class="title-flex">
-                <h1><i class="fas fa-crown"></i> CentQuest v5</h1>
-                <div class="sub-desc" style="font-size:0.7rem; background:#00000040; padding:4px 12px; border-radius:60px;">⚡ Fake Login</div>
-            </div>
-            <div class="sub-desc"><i class="fas fa-arrow-right"></i> Melde dich an und verdiene <strong>1 Cent pro Sekunde</strong> durch Quests & Umfragen</div>
-        </div>
-        <div class="login-form">
-            <div class="input-group"><div class="input-label"><i class="fas fa-user"></i> Benutzername / E-Mail</div><input type="text" id="fakeUsername" placeholder="z.B. Max Mustermann" autocomplete="off"></div>
-            <div class="input-group"><div class="input-label"><i class="fas fa-lock"></i> Passwort (Fake)</div><input type="password" id="fakePassword" placeholder="beliebiges Passwort"></div>
-            <button class="login-btn" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> Jetzt anmelden</button>
-            <div class="fake-note"><i class="fas fa-shield-alt"></i> Demo-Zugang · Es werden keine Daten gespeichert</div>
+    <div id="loginPanel" class="login-panel" style="max-width: 500px; margin: 0 auto;">
+        <div class="hero-header"><h1><i class="fas fa-crown"></i> CentQuest</h1><div class="sub-desc">Anmelden & Verdienen</div></div>
+        <div style="padding: 32px;">
+            <input type="text" id="loginUsername" placeholder="Benutzername" autocomplete="off">
+            <input type="password" id="loginPassword" placeholder="Passwort">
+            <button class="login-btn" id="doLoginBtn"><i class="fas fa-arrow-right"></i> Anmelden</button>
+            <div class="fake-note" style="font-size:0.7rem; text-align:center; margin-top:20px;">Demo-Zugang · Starte deine Reise</div>
         </div>
     </div>
 
     <!-- DASHBOARD PANEL -->
     <div id="dashboardPanel" class="dashboard-panel">
-        <div class="hero-header">
-            <div class="title-flex">
-                <h1><i class="fas fa-coins"></i> CentQuest</h1>
-                <div class="logout-btn-header" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</div>
-            </div>
-            <div class="sub-desc" id="welcomeUserMsg"><i class="fas fa-user-check"></i> Willkommen zurück, <strong>Gast</strong> · steigere deine Rate!</div>
-        </div>
-
-        <div class="stats-panel">
-            <div class="rate-number" id="rateNumberDisplay">0<small> ct/s</small></div>
-            <div class="total-box"><div class="total-amount" id="totalEarnedAmount">0,00 €</div><div class="sub-desc" style="margin-top: 6px; font-size:0.65rem;"><i class="fas fa-clock"></i> gesamt verdient</div></div>
-        </div>
-
-        <div class="quests-area">
-            <div class="section-head"><i class="fas fa-tasks"></i> 📋 QUESTS (einmalig, je +1 ct/s)</div>
-            <div class="quest-tile" id="quest1Tile"><div class="quest-text"><h4><i class="fas fa-rocket"></i> Starter-Bonus</h4><p>Direkt aktivieren – sofort 1 Cent pro Sekunde freischalten</p></div><button class="quest-btn" id="quest1Btn"><i class="fas fa-play"></i> Starten</button></div>
-            <div class="quest-tile" id="quest2Tile"><div class="quest-text"><h4><i class="fas fa-share-alt"></i> Community Boost</h4><p>Simuliere eine Empfehlung – extra +1 ct/s</p></div><button class="quest-btn" id="quest2Btn"><i class="fas fa-share"></i> Aktivieren</button></div>
-
-            <div class="section-head" style="margin-top: 8px;"><i class="fas fa-poll"></i> 📊 UMFRAGEN (Bonus-Rate)</div>
-            <div class="quest-tile" id="survey1Tile"><div class="quest-text"><h4><i class="fas fa-heart"></i> Was ist dein Favorit?</h4><p>Wähle eine Kategorie – Belohnung: +1 ct/s</p><div class="survey-choices-group" id="survey1Choices"><span class="survey-choice-item" data-survey="1" data-value="Tech">💻 Tech</span><span class="survey-choice-item" data-survey="1" data-value="Finance">📈 Finance</span><span class="survey-choice-item" data-survey="1" data-value="Gaming">🎮 Gaming</span><span class="survey-choice-item" data-survey="1" data-value="Travel">🌍 Travel</span></div></div><div class="reward-chip" id="survey1Chip">🔒 Offen</div></div>
-            <div class="quest-tile" id="survey2Tile"><div class="quest-text"><h4><i class="fas fa-smile"></i> Wie gefällt dir CentQuest?</h4><p>Deine Meinung zählt – 1 ct/s Bonus</p><div class="survey-choices-group" id="survey2Choices"><span class="survey-choice-item" data-survey="2" data-value="Exzellent">🏆 Exzellent</span><span class="survey-choice-item" data-survey="2" data-value="Gut">👍 Gut</span><span class="survey-choice-item" data-survey="2" data-value="Neutral">😐 Neutral</span></div></div><div class="reward-chip" id="survey2Chip">🔒 Offen</div></div>
-
-            <!-- FAKE IBAN ÜBERWEISUNG BUTTON -->
-            <div class="section-head" style="margin-top: 8px;"><i class="fas fa-university"></i> 💸 FAKE IBAN ÜBERWEISUNG</div>
-            <div class="quest-tile" id="ibanQuestTile">
-                <div class="quest-text">
-                    <h4><i class="fas fa-exchange-alt"></i> Sofort-Überweisung (Demo)</h4>
-                    <p>Gib eine beliebige IBAN ein – 90% Fehler / 10% Erfolg. Risiko Simulation!</p>
+        <div class="app-container">
+            <!-- Hauptbereich -->
+            <div class="main-panel">
+                <div class="hero-header">
+                    <div class="title-flex">
+                        <h1><i class="fas fa-chart-line"></i> CentQuest</h1>
+                        <div class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</div>
+                    </div>
+                    <div class="sub-desc" id="welcomeMsg" style="margin-top: 8px;"><i class="fas fa-user"></i> Willkommen, <strong>Spieler</strong></div>
                 </div>
-                <button class="quest-btn" id="openIbanModalBtn"><i class="fas fa-euro-sign"></i> Überweisung starten</button>
+                <div class="stats-panel">
+                    <div class="rate-number" id="rateDisplay">0<small> ct/s</small></div>
+                    <div class="total-box"><div class="total-amount" id="totalDisplay">0,00 €</div></div>
+                </div>
+                <div class="multiplier-box">
+                    <div><i class="fas fa-chart-simple"></i> AKTUELLER MULTIPLIKATOR</div>
+                    <div class="multiplier-value" id="multiplierDisplay">1.00x</div>
+                    <button class="boost-btn" id="boostBtn"><i class="fas fa-rocket"></i> Multiplikator-Boost (kosten 50 gesammelte Cent)</button>
+                </div>
+                <div class="global-feedback" id="globalFeed"><i class="fas fa-info-circle"></i> Beantworte Umfragen – jede gibt +0.01 €/s + Multiplikator!</div>
+                <footer><i class="fas fa-chart-line"></i> Jede Umfrage erhöht deine Basisrate um 1 ct/s · Multiplikator verstärkt alles</footer>
             </div>
 
-            <div class="global-feedback" id="globalFeed"><i class="fas fa-gem"></i> Schließe Quests oder Umfragen ab – jede Aktion erhöht deine Rate um 1 ct/s!</div>
-            <footer><i class="fas fa-chart-line"></i> Live-Simulation · Verdienst läuft automatisch. Keine echten Transaktionen.</footer>
+            <!-- Umfragen-Seitenleiste (100 Stück) -->
+            <div class="surveys-panel">
+                <div class="surveys-header">
+                    <h3 style="color:#FFE2AA;"><i class="fas fa-poll"></i> 100+ Umfragen</h3>
+                    <p style="font-size:0.7rem; color:#9eb3d0;">Jede beantwortete Umfrage = +1 ct/s Basisrate × Multiplikator</p>
+                </div>
+                <div class="surveys-list" id="surveysList"></div>
+            </div>
         </div>
-    </div>
-</div>
-
-<!-- IBAN MODAL (FAKE ÜBERWEISUNG) -->
-<div id="ibanModal" class="iban-modal">
-    <div class="iban-card">
-        <h3><i class="fas fa-university"></i> Fake-Überweisung</h3>
-        <p style="color:#b9d0e8; margin-bottom:12px;">Demo-Transaktion · 90% Error / 10% Success</p>
-        <div class="iban-input-group">
-            <div class="input-label"><i class="fas fa-credit-card"></i> IBAN (beliebig)</div>
-            <input type="text" id="fakeIbanInput" placeholder="DE12 3456 7890 1234 5678 90" autocomplete="off">
-        </div>
-        <div class="iban-input-group">
-            <div class="input-label"><i class="fas fa-euro-sign"></i> Betrag</div>
-            <input type="text" id="fakeAmountInput" placeholder="z.B. 100,00 €" value="25,00 €">
-        </div>
-        <button class="fake-submit-btn" id="executeFakeTransferBtn"><i class="fas fa-paper-plane"></i> Überweisung ausführen</button>
-        <button class="close-modal" id="closeModalBtn">Schließen</button>
-        <div id="transferResult" class="result-message" style="display: none;"></div>
     </div>
 </div>
 
 <script>
     (function() {
-        // ---------- STATE ----------
-        let ratePerSecond = 0.00;
-        let totalMoney = 0.00;
-        let intervalId = null;
+        // ---------- SPIELER STATE ----------
         let isLoggedIn = false;
-        let currentUserName = "";
-
-        const questFlags = { quest1: false, quest2: false, survey1: false, survey2: false };
-
-        // DOM - Login
+        let userName = "Spieler";
+        
+        // Basisrate (Cent pro Sekunde in Euro) – jede Umfrage erhöht um 0.01
+        let baseRateEuro = 0.00;      // 0.01 = 1 ct/s
+        let multiplier = 1.00;
+        let totalEarned = 0.00;
+        let timerInterval = null;
+        
+        // 100 Umfragen (dynamisch generiert)
+        let surveys = [];
+        let surveyCompleted = [];   // boolean array
+        
+        // DOM Elemente
         const loginPanel = document.getElementById('loginPanel');
         const dashboardPanel = document.getElementById('dashboardPanel');
-        const fakeUsername = document.getElementById('fakeUsername');
-        const fakePassword = document.getElementById('fakePassword');
         const loginBtn = document.getElementById('doLoginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
-        const welcomeUserSpan = document.getElementById('welcomeUserMsg');
-
-        // DOM - Dashboard UI
-        const rateNumberSpan = document.getElementById('rateNumberDisplay');
-        const totalMoneySpan = document.getElementById('totalEarnedAmount');
+        const loginUsername = document.getElementById('loginUsername');
+        const loginPassword = document.getElementById('loginPassword');
+        const welcomeMsgSpan = document.getElementById('welcomeMsg');
+        const rateDisplaySpan = document.getElementById('rateDisplay');
+        const totalDisplaySpan = document.getElementById('totalDisplay');
+        const multiplierDisplaySpan = document.getElementById('multiplierDisplay');
         const globalFeedDiv = document.getElementById('globalFeed');
-
-        // Quest Buttons & Cards
-        const quest1Btn = document.getElementById('quest1Btn');
-        const quest2Btn = document.getElementById('quest2Btn');
-        const quest1Tile = document.getElementById('quest1Tile');
-        const quest2Tile = document.getElementById('quest2Tile');
-
-        const survey1Choices = document.querySelectorAll('[data-survey="1"]');
-        const survey2Choices = document.querySelectorAll('[data-survey="2"]');
-        const survey1Chip = document.getElementById('survey1Chip');
-        const survey2Chip = document.getElementById('survey2Chip');
-        const survey1TileDiv = document.getElementById('survey1Tile');
-        const survey2TileDiv = document.getElementById('survey2Tile');
-
-        // IBAN Modal
-        const ibanModal = document.getElementById('ibanModal');
-        const openIbanBtn = document.getElementById('openIbanModalBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const executeTransferBtn = document.getElementById('executeFakeTransferBtn');
-        const fakeIbanInput = document.getElementById('fakeIbanInput');
-        const fakeAmountInput = document.getElementById('fakeAmountInput');
-        const transferResultDiv = document.getElementById('transferResult');
-
-        // Helper
-        function formatEuro(value) { return value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+        const boostBtn = document.getElementById('boostBtn');
+        const surveysListDiv = document.getElementById('surveysList');
+        
+        // Hilfsfunktionen
+        function formatEuro(value) {
+            return value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+        }
+        
+        function getEffectiveRate() {
+            return baseRateEuro * multiplier;
+        }
         
         function updateUI(triggerFlash = false) {
-            const cents = Math.floor(ratePerSecond * 100);
-            rateNumberSpan.innerHTML = `${cents}<small> ct/s</small>`;
-            totalMoneySpan.innerText = formatEuro(totalMoney);
+            const effectiveCents = Math.floor(getEffectiveRate() * 100);
+            rateDisplaySpan.innerHTML = `${effectiveCents}<small> ct/s</small>`;
+            totalDisplaySpan.innerText = formatEuro(totalEarned);
+            multiplierDisplaySpan.innerText = multiplier.toFixed(2) + 'x';
             if (triggerFlash) {
-                totalMoneySpan.classList.add('coin-animation');
-                setTimeout(() => totalMoneySpan.classList.remove('coin-animation'), 260);
-                const rateElem = document.getElementById('rateNumberDisplay');
-                if (rateElem) { rateElem.classList.add('coin-animation'); setTimeout(() => rateElem.classList.remove('coin-animation'), 240); }
+                totalDisplaySpan.classList.add('coin-animation');
+                setTimeout(() => totalDisplaySpan.classList.remove('coin-animation'), 200);
             }
-        }
-
-        function restartTimer() {
-            if (intervalId !== null) clearInterval(intervalId);
-            if (ratePerSecond <= 0) return;
-            intervalId = setInterval(() => { if (ratePerSecond > 0 && isLoggedIn) { totalMoney += ratePerSecond; updateUI(true); } }, 1000);
-        }
-
-        function addReward(sourceName, rewardValue = 0.01) {
-            if (!isLoggedIn) return;
-            ratePerSecond += rewardValue;
-            ratePerSecond = Math.round(ratePerSecond * 100) / 100;
-            updateUI(false);
-            restartTimer();
-            const currentCents = Math.floor(ratePerSecond * 100);
-            globalFeedDiv.innerHTML = `<i class="fas fa-star-of-life"></i> ✨ +1 ct/s durch: ${sourceName} ! Neue Rate: ${currentCents} ct/s ✨`;
-            globalFeedDiv.style.background = "#1d3a2b";
-            setTimeout(() => { if (globalFeedDiv && isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 1800);
-        }
-
-        function completeQuest(questId, questName, btnElement, tileElement) {
-            if (!isLoggedIn || questFlags[questId]) return;
-            questFlags[questId] = true;
-            if (btnElement) { btnElement.classList.add('completed'); btnElement.innerHTML = '<i class="fas fa-check-circle"></i> Abgeschlossen'; btnElement.disabled = true; }
-            if (tileElement) { tileElement.style.border = "1px solid #73c08a"; tileElement.classList.add('reward-border'); setTimeout(() => tileElement.classList.remove('reward-border'), 600); }
-            addReward(questName, 0.01);
-        }
-
-        function completeSurvey(surveyId, surveyName, chipElement, choicesContainer, tileElement) {
-            if (!isLoggedIn) return;
-            const flagKey = `survey${surveyId}`;
-            if (questFlags[flagKey]) return;
-            questFlags[flagKey] = true;
-            if (chipElement) { chipElement.innerHTML = "✅ Bonus erhalten (+1 ct/s)"; chipElement.style.background = "#2c8b6e"; }
-            if (choicesContainer) { document.querySelectorAll(choicesContainer + ' .survey-choice-item, .survey-choices-group .survey-choice-item').forEach?.(opt => { opt.style.pointerEvents = "none"; opt.style.opacity = "0.5"; }); 
-                const opts = choicesContainer.querySelectorAll('.survey-choice-item');
-                opts.forEach(opt => { opt.style.pointerEvents = "none"; opt.style.opacity = "0.5"; });
-            }
-            if (tileElement) { tileElement.style.border = "1px solid #73c08a"; tileElement.classList.add('reward-border'); setTimeout(() => tileElement.classList.remove('reward-border'), 600); }
-            addReward(surveyName, 0.01);
-        }
-
-        // IBAN Fake Logic: 90% Error, 10% Success
-        function executeFakeTransfer() {
-            if (!isLoggedIn) return;
-            const iban = fakeIbanInput.value.trim();
-            const amount = fakeAmountInput.value.trim() || "25,00 €";
-            if (iban === "") {
-                transferResultDiv.style.display = "block";
-                transferResultDiv.innerHTML = "❌ Bitte gib eine IBAN ein (Fake).";
-                transferResultDiv.className = "result-message error-result";
-                return;
-            }
-            const random = Math.random() * 100;
-            transferResultDiv.style.display = "block";
-            if (random < 10) { // 10% Erfolg
-                transferResultDiv.innerHTML = `✅ ÜBERWEISUNG ERFOLGREICH! (Demo) ${amount} an ${iban.substring(0,8)}... wurden verarbeitet. (Glückwunsch, 10% Chance!)`;
-                transferResultDiv.className = "result-message success-result";
-                // Optional: kleine Belohnung? Aber laut Anforderung nur die Meldung
-                globalFeedDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉 Fake-Überweisung erfolgreich! (seltene 10%)`;
-                setTimeout(() => { if(globalFeedDiv && isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 2000);
-            } else { // 90% Fehler
-                const errorMessages = [
-                    "IBAN ungültig (Prüfziffer falsch).", "Transaktion abgelehnt: Kontolimit überschritten (Demo).", "Empfängerbank nicht erreichbar (Error Code X9F).",
-                    "Ablehnung: Verdächtige Transaktion (Anti-Fraud).", "Technischer Fehler: Timeout. Bitte später erneut versuchen.", "Unzureichende Deckung (Demo-Konto)."
-                ];
-                const randomError = errorMessages[Math.floor(Math.random() * errorMessages.length)];
-                transferResultDiv.innerHTML = `❌ ÜBERWEISUNG FEHLGESCHLAGEN: ${randomError}`;
-                transferResultDiv.className = "result-message error-result";
-            }
-        }
-
-        function openModal() { if (isLoggedIn) { ibanModal.classList.add('active'); transferResultDiv.style.display = "none"; fakeIbanInput.value = ""; fakeAmountInput.value = "25,00 €"; } }
-        function closeModal() { ibanModal.classList.remove('active'); }
-
-        // Login/Logout
-        function performLogin() {
-            if (isLoggedIn) return;
-            let username = fakeUsername.value.trim();
-            if (username === "") username = "Abenteurer";
-            currentUserName = username;
-            welcomeUserSpan.innerHTML = `<i class="fas fa-user-check"></i> Willkommen zurück, <strong>${escapeHtml(currentUserName)}</strong> · steigere deine Rate!`;
-            ratePerSecond = 0; totalMoney = 0;
-            Object.keys(questFlags).forEach(k => questFlags[k] = false);
-            resetDashboardButtons();
-            updateUI(false); restartTimer();
-            loginPanel.style.display = "none";
-            dashboardPanel.style.display = "block";
-            isLoggedIn = true;
-            fakePassword.value = "";
-            globalFeedDiv.innerHTML = "<i class='fas fa-gem'></i> 🎉 Du bist angemeldet! Erledige Quests oder Umfragen, um 1 ct/s freizuschalten.";
-            globalFeedDiv.style.background = "#1d3a2b";
-            setTimeout(() => { if (globalFeedDiv && isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 2000);
         }
         
-        function resetDashboardButtons() {
-            if (quest1Btn) { quest1Btn.classList.remove('completed'); quest1Btn.innerHTML = '<i class="fas fa-play"></i> Starten'; quest1Btn.disabled = false; }
-            if (quest2Btn) { quest2Btn.classList.remove('completed'); quest2Btn.innerHTML = '<i class="fas fa-share"></i> Aktivieren'; quest2Btn.disabled = false; }
-            if (survey1Chip) { survey1Chip.innerHTML = "🔒 Offen"; survey1Chip.style.background = "#1d2f3e"; }
-            if (survey2Chip) { survey2Chip.innerHTML = "🔒 Offen"; survey2Chip.style.background = "#1d2f3e"; }
-            document.querySelectorAll('.survey-choice-item').forEach(opt => { opt.style.pointerEvents = "auto"; opt.style.opacity = "1"; opt.style.background = "#1f3443"; });
-            [quest1Tile, quest2Tile, survey1TileDiv, survey2TileDiv].forEach(tile => { if(tile) tile.style.border = "1px solid #2e4a62"; });
+        function restartTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            if (getEffectiveRate() <= 0 || !isLoggedIn) return;
+            timerInterval = setInterval(() => {
+                if (isLoggedIn && getEffectiveRate() > 0) {
+                    totalEarned += getEffectiveRate();
+                    updateUI(true);
+                }
+            }, 1000);
+        }
+        
+        // Umfrage beantworten
+        function answerSurvey(index, selectedOption) {
+            if (!isLoggedIn) return;
+            if (surveyCompleted[index]) {
+                globalFeedDiv.innerHTML = `<i class="fas fa-info-circle"></i> Diese Umfrage wurde bereits beantwortet!`;
+                setTimeout(() => { if(isLoggedIn) globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> Beantworte Umfragen – jede gibt +1 ct/s Basisrate!`; }, 1500);
+                return;
+            }
+            // Umfrage als erledigt markieren
+            surveyCompleted[index] = true;
+            // Basisrate erhöhen um 0.01 €/s (1 ct/s)
+            baseRateEuro += 0.01;
+            baseRateEuro = Math.round(baseRateEuro * 100) / 100;
+            
+            // UI der Umfrage aktualisieren
+            const surveyDiv = document.getElementById(`survey_${index}`);
+            if (surveyDiv) {
+                surveyDiv.classList.add('completed');
+                const optionsDiv = surveyDiv.querySelector('.survey-options');
+                if (optionsDiv) optionsDiv.style.opacity = "0.5";
+                const rewardSpan = surveyDiv.querySelector('.survey-reward');
+                if (rewardSpan) rewardSpan.innerHTML = `<i class="fas fa-check-circle"></i> Abgeschlossen +1 ct/s × ${multiplier.toFixed(2)}`;
+            }
+            
+            // Effektive Rate updaten
+            updateUI(false);
+            restartTimer();
+            
+            const newRate = Math.floor(getEffectiveRate() * 100);
+            globalFeedDiv.innerHTML = `<i class="fas fa-star"></i> Umfrage "${surveys[index].question.substring(0, 40)}..." beantwortet! +1 ct/s Basisrate → Aktuelle Rate: ${newRate} ct/s (×${multiplier.toFixed(2)})`;
+            globalFeedDiv.style.background = "#1d3a2b";
+            setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 2000);
+            
+            // Speichern in localStorage (optional)
+            saveProgress();
+        }
+        
+        // Multiplikator Boost (kostet 50 gesammelte Cent = 0.50 Euro)
+        function applyBoost() {
+            if (!isLoggedIn) return;
+            const cost = 0.50; // 50 Cent
+            if (totalEarned < cost) {
+                globalFeedDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Nicht genug verdient! Benötige 0,50 € für Multiplikator-Boost.`;
+                globalFeedDiv.style.background = "#3a2a1a";
+                setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 2000);
+                return;
+            }
+            totalEarned -= cost;
+            multiplier += 0.25;
+            multiplier = Math.round(multiplier * 100) / 100;
+            updateUI(false);
+            restartTimer();
+            globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> 🔥 MULTIPLIKATOR-BOOST! Neuer Multiplikator: ${multiplier.toFixed(2)}x (kosten: 0,50 €)`;
+            globalFeedDiv.style.background = "#2a4a3a";
+            setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 2000);
+            saveProgress();
+        }
+        
+        // 100 Umfragen generieren
+        function generateSurveys() {
+            const topics = [
+                "Technologie", "Finanzen", "Gaming", "Reisen", "Mode", "Sport", "Musik", "Filme", "Essen", "Gesundheit",
+                "Bildung", "Umwelt", "Auto", "Politik", "Wissenschaft", "Kunst", "Haustiere", "Bücher", "Fitness", "Social Media",
+                "Streaming", "Mobile Apps", "KI", "Blockchain", "Nachhaltigkeit", "Startups", "E-Commerce", "Marketing", "Personal Finance", "Kryptowährungen",
+                "Virtual Reality", "E-Sports", "Kochen", "Yoga", "Meditation", "Psychologie", "Astronomie", "Geschichte", "Architektur", "Design",
+                "Fotografie", "Handwerk", "Garten", "DIY", "Programmieren", "Cybersecurity", "Cloud Computing", "Datenanalyse", "Robotik", "3D-Druck"
+            ];
+            const questions = [];
+            for (let i = 0; i < 100; i++) {
+                const topic = topics[i % topics.length];
+                const num = i + 1;
+                let question = "";
+                if (i % 3 === 0) question = `Umfrage ${num}: Wie oft nutzt du ${topic}-Angebote?`;
+                else if (i % 3 === 1) question = `Umfrage ${num}: Welche ${topic}-Trends findest du am spannendsten?`;
+                else question = `Umfrage ${num}: Deine Meinung zu ${topic} im Alltag?`;
+                
+                const options = ["Sehr positiv", "Positiv", "Neutral", "Negativ"];
+                questions.push({ question, options, topic });
+            }
+            return questions;
+        }
+        
+        // Umfragen in DOM rendern
+        function renderSurveys() {
+            if (!surveysListDiv) return;
+            surveysListDiv.innerHTML = "";
+            for (let i = 0; i < surveys.length; i++) {
+                const s = surveys[i];
+                const completed = surveyCompleted[i];
+                const surveyDiv = document.createElement('div');
+                surveyDiv.className = 'survey-item' + (completed ? ' completed' : '');
+                surveyDiv.id = `survey_${i}`;
+                surveyDiv.innerHTML = `
+                    <div class="survey-question"><i class="fas fa-question-circle"></i> ${s.question}</div>
+                    <div class="survey-options" id="options_${i}">
+                        ${s.options.map(opt => `<span class="survey-opt-small" data-opt="${opt}">${opt}</span>`).join('')}
+                    </div>
+                    <div class="survey-reward">${completed ? '✓ Abgeschlossen (+1 ct/s)' : '🎁 Belohnung: +1 ct/s Basisrate'}</div>
+                `;
+                surveysListDiv.appendChild(surveyDiv);
+                
+                if (!completed) {
+                    const optSpans = surveyDiv.querySelectorAll('.survey-opt-small');
+                    optSpans.forEach(span => {
+                        span.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const selected = span.getAttribute('data-opt');
+                            answerSurvey(i, selected);
+                        });
+                    });
+                }
+            }
+        }
+        
+        // Fortschritt speichern (localStorage)
+        function saveProgress() {
+            if (!isLoggedIn) return;
+            const saveData = {
+                baseRateEuro, multiplier, totalEarned, surveyCompleted,
+                userName
+            };
+            localStorage.setItem('centquest_progress', JSON.stringify(saveData));
+        }
+        
+        function loadProgress() {
+            const saved = localStorage.getItem('centquest_progress');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    baseRateEuro = data.baseRateEuro || 0;
+                    multiplier = data.multiplier || 1;
+                    totalEarned = data.totalEarned || 0;
+                    if (data.surveyCompleted && data.surveyCompleted.length === surveys.length) {
+                        surveyCompleted = data.surveyCompleted;
+                    }
+                    if (data.userName) userName = data.userName;
+                } catch(e) {}
+            }
+            updateUI(false);
+            restartTimer();
+            renderSurveys();
+        }
+        
+        // Login / Logout
+        function performLogin() {
+            let username = loginUsername.value.trim();
+            if (username === "") username = "Explorer";
+            userName = username;
+            welcomeMsgSpan.innerHTML = `<i class="fas fa-user"></i> Willkommen, <strong>${escapeHtml(userName)}</strong> · Beantworte Umfragen!`;
+            isLoggedIn = true;
+            loginPanel.style.display = "none";
+            dashboardPanel.style.display = "block";
+            loadProgress();  // lädt bestehenden Fortschritt oder initialisiert
+            // Timer bereits in loadProgress via restartTimer
+            globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> Starte mit ${Math.floor(baseRateEuro*100)} ct/s Basisrate × ${multiplier.toFixed(2)} = ${Math.floor(getEffectiveRate()*100)} ct/s`;
         }
         
         function performLogout() {
-            if (!isLoggedIn) return;
-            if (intervalId) clearInterval(intervalId);
-            isLoggedIn = false; ratePerSecond = 0; totalMoney = 0;
+            if (timerInterval) clearInterval(timerInterval);
+            isLoggedIn = false;
             loginPanel.style.display = "block";
             dashboardPanel.style.display = "none";
-            fakeUsername.value = ""; fakePassword.value = "";
+            loginUsername.value = "";
+            loginPassword.value = "";
+            // Speichern nicht nötig, bleibt erhalten
         }
         
-        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
         
-        // Event Listeners
+        // Initialisierung
+        surveys = generateSurveys();
+        surveyCompleted = new Array(surveys.length).fill(false);
+        
+        // Event Listener
         loginBtn.addEventListener('click', performLogin);
         logoutBtn.addEventListener('click', performLogout);
-        fakeUsername.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !isLoggedIn) performLogin(); });
-        fakePassword.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !isLoggedIn) performLogin(); });
+        boostBtn.addEventListener('click', applyBoost);
         
-        quest1Btn.addEventListener('click', () => completeQuest('quest1', 'Starter-Bonus', quest1Btn, quest1Tile));
-        quest2Btn.addEventListener('click', () => completeQuest('quest2', 'Community Boost', quest2Btn, quest2Tile));
+        loginUsername.addEventListener('keypress', (e) => { if(e.key === 'Enter') performLogin(); });
+        loginPassword.addEventListener('keypress', (e) => { if(e.key === 'Enter') performLogin(); });
         
-        survey1Choices.forEach(choice => choice.addEventListener('click', () => { if (!isLoggedIn || questFlags.survey1) return; completeSurvey(1, `Umfrage (${choice.getAttribute('data-value')})`, survey1Chip, document.getElementById('survey1Choices'), survey1TileDiv); }));
-        survey2Choices.forEach(choice => choice.addEventListener('click', () => { if (!isLoggedIn || questFlags.survey2) return; completeSurvey(2, `Feedback (${choice.getAttribute('data-value')})`, survey2Chip, document.getElementById('survey2Choices'), survey2TileDiv); }));
-        
-        openIbanBtn.addEventListener('click', openModal);
-        closeModalBtn.addEventListener('click', closeModal);
-        executeTransferBtn.addEventListener('click', executeFakeTransfer);
-        window.addEventListener('click', (e) => { if (e.target === ibanModal) closeModal(); });
-        
+        // Start: Login sichtbar
         loginPanel.style.display = "block";
         dashboardPanel.style.display = "none";
-        isLoggedIn = false;
-        console.log("CentQuest v5 mit Fake-IBAN (90% Error / 10% Success) geladen");
+        
+        // Vorschau der Umfragen rendern (für später)
+        console.log("100 Umfragen + Multiplikator System geladen");
     })();
 </script>
 </body>
