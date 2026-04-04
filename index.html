@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>💰 CentQuest · 100 Umfragen + Multiplikator Boosts</title>
+    <title>💰 CentQuest v6 · 100 Umfragen + Multiplikator · Design-Auswahl</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -14,176 +15,301 @@
         }
 
         body {
-            background: radial-gradient(ellipse at 30% 20%, #0e1722, #03060c);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             padding: 20px;
+            transition: background 0.3s, color 0.2s;
         }
 
-        .app-container {
-            max-width: 1400px;
+        /* ========== THEMES (Layout-Auswahl) ========== */
+        body.theme-dark {
+            background: radial-gradient(ellipse at 30% 20%, #0e1722, #03060c);
+            color: #e0e8f0;
+        }
+        body.theme-dark .card, body.theme-dark .login-card, body.theme-dark .surveys-panel, body.theme-dark .main-panel {
+            background: rgba(6, 12, 20, 0.96);
+            backdrop-filter: blur(8px);
+            border-color: rgba(255, 200, 100, 0.25);
+        }
+        body.theme-dark input { background: #0a111e; border-color: #2a3f52; color: #f0f4fc; }
+        body.theme-dark .survey-item { background: #111d2ad9; border-color: #2e4a62; }
+
+        body.theme-light {
+            background: linear-gradient(135deg, #f5f7fc, #eef2f8);
+            color: #1a2634;
+        }
+        body.theme-light .card, body.theme-light .login-card, body.theme-light .surveys-panel, body.theme-light .main-panel {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(4px);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+        }
+        body.theme-light input { background: #ffffff; border-color: #ccd7e6; color: #1a2634; }
+        body.theme-light .survey-item { background: #f0f4fa; border-color: #dce5ef; }
+        body.theme-light .survey-question { color: #1e3a5f; }
+        body.theme-light .stats-panel { background: #ffffffcc; border-color: #dce5ef; }
+
+        body.theme-glass {
+            background: linear-gradient(145deg, #0b2b3b, #0a1a24);
+        }
+        body.theme-glass .card, body.theme-glass .login-card, body.theme-glass .surveys-panel, body.theme-glass .main-panel {
+            background: rgba(10, 25, 35, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        body.theme-glass input { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: white; }
+
+        /* Globale Container */
+        .app-layout {
+            max-width: 1600px;
             margin: 0 auto;
+        }
+        .flex-dashboard {
             display: flex;
             flex-wrap: wrap;
             gap: 24px;
         }
-
-        /* Hauptbereich */
         .main-panel {
             flex: 2;
             min-width: 300px;
-            background: rgba(6, 12, 20, 0.94);
-            backdrop-filter: blur(8px);
             border-radius: 48px;
-            box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 200, 100, 0.25);
             overflow: hidden;
+            transition: all 0.2s;
         }
-
-        /* Seitenleiste für Umfragen */
         .surveys-panel {
             flex: 1.2;
-            min-width: 320px;
-            background: rgba(6, 12, 20, 0.94);
-            backdrop-filter: blur(8px);
+            min-width: 340px;
             border-radius: 48px;
-            box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 200, 100, 0.25);
-            overflow: hidden;
             display: flex;
             flex-direction: column;
-            max-height: 90vh;
+            max-height: 85vh;
+            overflow: hidden;
         }
-
+        .login-card {
+            max-width: 500px;
+            margin: 60px auto;
+            border-radius: 56px;
+            overflow: hidden;
+        }
+        /* Header */
+        .hero-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid rgba(255, 190, 80, 0.3);
+        }
+        .title-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(125deg, #FFEAB0, #FFB845);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sub-desc { font-size: 0.8rem; opacity: 0.8; margin-top: 8px; }
+        .stats-panel {
+            margin: 20px 24px;
+            border-radius: 40px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .rate-number {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #FFE6B0, #FFAA44);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+        .rate-number small { font-size: 1.5rem; }
+        .total-box {
+            background: rgba(0,0,0,0.2);
+            border-radius: 36px;
+            padding: 14px;
+            margin-top: 16px;
+        }
+        .total-amount { font-size: 2rem; font-weight: 800; color: #FFE2AA; }
+        .multiplier-card {
+            margin: 16px 24px;
+            padding: 16px 20px;
+            border-radius: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #1e3a2f, #0f281f);
+            border: 1px solid #ffcd6b;
+        }
+        .multiplier-value { font-size: 2.2rem; font-weight: 800; color: #FFD966; }
+        .boost-btn, .quest-btn {
+            background: linear-gradient(95deg, #ffb347, #ff9a2e);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+            transition: transform 0.1s;
+        }
+        .boost-btn:active, .quest-btn:active { transform: scale(0.97); }
+        .global-feedback {
+            margin: 16px 24px;
+            padding: 12px 18px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+        .logout-btn {
+            background: rgba(255, 80, 80, 0.2);
+            border: 1px solid #ff8a6f60;
+            border-radius: 60px;
+            padding: 6px 18px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        /* Umfragen Liste */
         .surveys-header {
-            background: linear-gradient(115deg, #10222e, #07101c);
             padding: 20px 24px;
-            border-bottom: 1px solid rgba(255, 190, 80, 0.35);
+            border-bottom: 1px solid rgba(255, 190, 80, 0.3);
         }
-
         .surveys-list {
             flex: 1;
             overflow-y: auto;
             padding: 16px;
-            max-height: calc(90vh - 100px);
         }
-
         .survey-item {
-            background: #111d2ad9;
             border-radius: 24px;
             padding: 14px 18px;
             margin-bottom: 12px;
-            border: 1px solid #2e4a62;
             transition: all 0.2s;
             cursor: pointer;
         }
         .survey-item:hover { transform: translateX(4px); border-color: #ffcd6b; }
-        .survey-item.completed { opacity: 0.6; background: #1a2a36; cursor: default; border-color: #4a6a7a; }
-        .survey-question { font-weight: 600; color: #ffe1b3; margin-bottom: 8px; font-size: 0.85rem; }
-        .survey-options { display: flex; gap: 8px; flex-wrap: wrap; }
-        .survey-opt-small { background: #1f3443; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; cursor: pointer; color: #ecf5ff; }
-        .survey-opt-small:hover { background: #3f6885; }
-        .survey-reward { font-size: 0.65rem; color: #ffd58c; margin-top: 6px; }
-
-        /* Dashboard */
-        .hero-header {
-            background: linear-gradient(115deg, #10222e, #07101c);
-            padding: 24px 28px;
-            border-bottom: 1px solid rgba(255, 190, 80, 0.35);
-        }
-        .title-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(125deg, #FFEAB0, #FFB845); -webkit-background-clip: text; background-clip: text; color: transparent; display: flex; align-items: center; gap: 10px; }
-        .stats-panel { background: #0a111c; margin: 20px 24px; border-radius: 48px; padding: 24px 20px; text-align: center; border: 1px solid #2c405a; }
-        .rate-number { font-size: 4rem; font-weight: 800; background: linear-gradient(145deg, #FFE6B0, #FFAA44); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .rate-number small { font-size: 1.5rem; color: #ffcd7e; }
-        .total-box { background: #030812; border-radius: 40px; padding: 14px; margin-top: 16px; }
-        .total-amount { font-size: 2rem; font-weight: 800; color: #FFE2AA; }
-
-        .multiplier-box {
-            background: linear-gradient(135deg, #1e3a2f, #0f281f);
+        .survey-item.completed { opacity: 0.65; cursor: default; }
+        .survey-question { font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; }
+        .survey-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+        .survey-opt-small {
+            padding: 4px 12px;
             border-radius: 40px;
-            padding: 12px 20px;
-            margin: 16px 24px;
-            text-align: center;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.1s;
+            background: #1f3443;
+            color: #ecf5ff;
+        }
+        body.theme-light .survey-opt-small { background: #e2e8f0; color: #1e3a5f; }
+        .survey-opt-small:hover { background: #3f6885; transform: translateY(-1px); }
+        .survey-reward { font-size: 0.65rem; margin-top: 8px; color: #ffd58c; }
+        .layout-selector {
+            display: flex;
+            gap: 10px;
+            background: rgba(0,0,0,0.3);
+            padding: 6px 12px;
+            border-radius: 60px;
+        }
+        .layout-btn {
+            background: transparent;
             border: 1px solid #ffcd6b;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            color: inherit;
         }
-        .multiplier-value { font-size: 2rem; font-weight: 800; color: #FFD966; }
-        .boost-btn {
+        .layout-btn.active { background: #ffcd6b; color: #1e2a2e; }
+        footer { font-size: 0.6rem; text-align: center; padding: 20px; opacity: 0.6; }
+        input, button { font-family: inherit; }
+        .login-form input { width: 100%; margin-bottom: 16px; padding: 14px 20px; border-radius: 60px; }
+        .login-btn {
             background: linear-gradient(95deg, #ffb347, #ff9a2e);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 60px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 12px;
             width: 100%;
-        }
-        .quest-btn {
-            background: linear-gradient(95deg, #2c8b6e, #1b6e56);
-            border: none;
-            padding: 12px 20px;
+            padding: 14px;
             border-radius: 60px;
-            font-weight: 700;
-            color: white;
+            font-weight: 800;
             cursor: pointer;
-            width: 100%;
+            border: none;
         }
-        .global-feedback { background: #07111c; border-radius: 40px; padding: 12px 18px; margin: 16px 24px; font-size: 0.75rem; text-align: center; color: #c9e0ff; }
-        .logout-btn { background: rgba(255, 80, 80, 0.15); border: 1px solid #ff8a6f60; border-radius: 60px; padding: 6px 18px; font-size: 0.75rem; color: #ffbc9a; cursor: pointer; }
-        footer { font-size: 0.6rem; text-align: center; padding: 16px 24px; color: #607d99; border-top: 1px solid #1c3040; margin-top: 12px; }
         i { margin-right: 6px; }
-        @keyframes coinFlip { 0% { transform: scale(1); } 50% { transform: scale(1.05); text-shadow: 0 0 8px #ffcc44; } 100% { transform: scale(1); } }
-        .coin-animation { animation: coinFlip 0.2s ease-out; }
-        .login-panel { display: block; }
-        .dashboard-panel { display: none; }
-        input { background: #0a111e; border: 1.5px solid #2a3f52; border-radius: 60px; padding: 12px 18px; color: white; width: 100%; margin-bottom: 16px; }
-        .login-btn { background: linear-gradient(95deg, #ffb347, #ff9a2e); width: 100%; padding: 12px; border-radius: 60px; font-weight: 800; cursor: pointer; }
-        @media (max-width: 900px) { .app-container { flex-direction: column; } .surveys-panel { max-height: 500px; } }
+        @keyframes coinFlash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); text-shadow: 0 0 8px #ffcc44; }
+            100% { transform: scale(1); }
+        }
+        .coin-animation { animation: coinFlash 0.2s ease-out; }
+        .hidden { display: none; }
     </style>
 </head>
-<body>
+<body class="theme-dark">
 <div id="appRoot">
     <!-- LOGIN PANEL -->
-    <div id="loginPanel" class="login-panel" style="max-width: 500px; margin: 0 auto;">
-        <div class="hero-header"><h1><i class="fas fa-crown"></i> CentQuest</h1><div class="sub-desc">Anmelden & Verdienen</div></div>
-        <div style="padding: 32px;">
-            <input type="text" id="loginUsername" placeholder="Benutzername" autocomplete="off">
-            <input type="password" id="loginPassword" placeholder="Passwort">
-            <button class="login-btn" id="doLoginBtn"><i class="fas fa-arrow-right"></i> Anmelden</button>
-            <div class="fake-note" style="font-size:0.7rem; text-align:center; margin-top:20px;">Demo-Zugang · Starte deine Reise</div>
+    <div id="loginPanel">
+        <div class="login-card card">
+            <div class="hero-header" style="text-align:center">
+                <h1><i class="fas fa-crown"></i> CentQuest v6</h1>
+                <div class="sub-desc">100+ Umfragen · Multiplikator · Live-Verdienst</div>
+            </div>
+            <div class="login-form">
+                <input type="text" id="loginUsernameInput" placeholder="Benutzername" autocomplete="off">
+                <input type="password" id="loginPasswordInput" placeholder="Passwort (beliebig)">
+                <button class="login-btn" id="startLoginBtn"><i class="fas fa-arrow-right"></i> Anmelden & Starten</button>
+                <div style="font-size:0.7rem; text-align:center; margin-top:20px;">Demo-Zugang · Keine echten Daten</div>
+            </div>
         </div>
     </div>
 
     <!-- DASHBOARD PANEL -->
-    <div id="dashboardPanel" class="dashboard-panel">
-        <div class="app-container">
-            <!-- Hauptbereich -->
-            <div class="main-panel">
-                <div class="hero-header">
-                    <div class="title-flex">
-                        <h1><i class="fas fa-chart-line"></i> CentQuest</h1>
-                        <div class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</div>
+    <div id="dashboardPanel" class="hidden">
+        <div class="app-layout">
+            <div class="flex-dashboard">
+                <!-- Hauptbereich links -->
+                <div class="main-panel card">
+                    <div class="hero-header">
+                        <div class="title-flex">
+                            <h1><i class="fas fa-chart-line"></i> CentQuest</h1>
+                            <div style="display: flex; gap: 12px; align-items:center;">
+                                <div class="layout-selector" id="layoutSelector">
+                                    <span class="layout-btn" data-theme="dark">🌙 Dunkel</span>
+                                    <span class="layout-btn" data-theme="light">☀️ Hell</span>
+                                    <span class="layout-btn" data-theme="glass">🔮 Glas</span>
+                                </div>
+                                <div class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</div>
+                            </div>
+                        </div>
+                        <div class="sub-desc" id="welcomeUserMsg"><i class="fas fa-user"></i> Willkommen, <strong>Spieler</strong></div>
                     </div>
-                    <div class="sub-desc" id="welcomeMsg" style="margin-top: 8px;"><i class="fas fa-user"></i> Willkommen, <strong>Spieler</strong></div>
+                    <div class="stats-panel">
+                        <div class="rate-number" id="rateDisplay">0<small> ct/s</small></div>
+                        <div class="total-box">
+                            <div class="total-amount" id="totalDisplay">0,00 €</div>
+                        </div>
+                    </div>
+                    <div class="multiplier-card">
+                        <div><i class="fas fa-chart-simple"></i> MULTIPLIKATOR</div>
+                        <div class="multiplier-value" id="multiplierDisplay">1.00x</div>
+                        <button class="boost-btn" id="boostBtn"><i class="fas fa-rocket"></i> Multiplikator +0.25x (kostet 0,50€)</button>
+                    </div>
+                    <div class="global-feedback" id="globalFeedMsg">
+                        <i class="fas fa-info-circle"></i> Beantworte Umfragen – jede gibt +1 ct/s Basisrate × Multiplikator!
+                    </div>
+                    <footer><i class="fas fa-chart-line"></i> Jede beantwortete Umfrage = permanente Erhöhung · Multiplikator verstärkt alles</footer>
                 </div>
-                <div class="stats-panel">
-                    <div class="rate-number" id="rateDisplay">0<small> ct/s</small></div>
-                    <div class="total-box"><div class="total-amount" id="totalDisplay">0,00 €</div></div>
-                </div>
-                <div class="multiplier-box">
-                    <div><i class="fas fa-chart-simple"></i> AKTUELLER MULTIPLIKATOR</div>
-                    <div class="multiplier-value" id="multiplierDisplay">1.00x</div>
-                    <button class="boost-btn" id="boostBtn"><i class="fas fa-rocket"></i> Multiplikator-Boost (kosten 50 gesammelte Cent)</button>
-                </div>
-                <div class="global-feedback" id="globalFeed"><i class="fas fa-info-circle"></i> Beantworte Umfragen – jede gibt +0.01 €/s + Multiplikator!</div>
-                <footer><i class="fas fa-chart-line"></i> Jede Umfrage erhöht deine Basisrate um 1 ct/s · Multiplikator verstärkt alles</footer>
-            </div>
 
-            <!-- Umfragen-Seitenleiste (100 Stück) -->
-            <div class="surveys-panel">
-                <div class="surveys-header">
-                    <h3 style="color:#FFE2AA;"><i class="fas fa-poll"></i> 100+ Umfragen</h3>
-                    <p style="font-size:0.7rem; color:#9eb3d0;">Jede beantwortete Umfrage = +1 ct/s Basisrate × Multiplikator</p>
+                <!-- Umfragen-Seitenleiste (100 Stück) -->
+                <div class="surveys-panel card">
+                    <div class="surveys-header">
+                        <h3 style="color:#FFE2AA;"><i class="fas fa-poll"></i> 📋 100+ Umfragen</h3>
+                        <p style="font-size:0.7rem;">Jede beantwortete Umfrage = +1 ct/s Basisrate × Multiplikator</p>
+                    </div>
+                    <div class="surveys-list" id="surveysListContainer"></div>
                 </div>
-                <div class="surveys-list" id="surveysList"></div>
             </div>
         </div>
     </div>
@@ -193,44 +319,46 @@
     (function() {
         // ---------- SPIELER STATE ----------
         let isLoggedIn = false;
-        let userName = "Spieler";
-        
-        // Basisrate (Cent pro Sekunde in Euro) – jede Umfrage erhöht um 0.01
-        let baseRateEuro = 0.00;      // 0.01 = 1 ct/s
+        let userName = "Explorer";
+        let baseRateCents = 0;        // in Cent pro Sekunde (integer)
         let multiplier = 1.00;
-        let totalEarned = 0.00;
+        let totalEarned = 0.00;        // in Euro
         let timerInterval = null;
         
-        // 100 Umfragen (dynamisch generiert)
+        // 100 Umfragen
         let surveys = [];
-        let surveyCompleted = [];   // boolean array
+        let surveyCompleted = [];       // boolean[]
         
         // DOM Elemente
         const loginPanel = document.getElementById('loginPanel');
         const dashboardPanel = document.getElementById('dashboardPanel');
-        const loginBtn = document.getElementById('doLoginBtn');
+        const loginUsername = document.getElementById('loginUsernameInput');
+        const loginPassword = document.getElementById('loginPasswordInput');
+        const loginBtn = document.getElementById('startLoginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
-        const loginUsername = document.getElementById('loginUsername');
-        const loginPassword = document.getElementById('loginPassword');
-        const welcomeMsgSpan = document.getElementById('welcomeMsg');
+        const welcomeMsgSpan = document.getElementById('welcomeUserMsg');
         const rateDisplaySpan = document.getElementById('rateDisplay');
         const totalDisplaySpan = document.getElementById('totalDisplay');
         const multiplierDisplaySpan = document.getElementById('multiplierDisplay');
-        const globalFeedDiv = document.getElementById('globalFeed');
+        const globalFeedDiv = document.getElementById('globalFeedMsg');
         const boostBtn = document.getElementById('boostBtn');
-        const surveysListDiv = document.getElementById('surveysList');
+        const surveysContainer = document.getElementById('surveysListContainer');
         
         // Hilfsfunktionen
+        function getEffectiveRateCent() {
+            return Math.floor(baseRateCents * multiplier);
+        }
+        
+        function getEffectiveRateEuro() {
+            return (baseRateCents * multiplier) / 100;
+        }
+        
         function formatEuro(value) {
             return value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
         }
         
-        function getEffectiveRate() {
-            return baseRateEuro * multiplier;
-        }
-        
         function updateUI(triggerFlash = false) {
-            const effectiveCents = Math.floor(getEffectiveRate() * 100);
+            const effectiveCents = getEffectiveRateCent();
             rateDisplaySpan.innerHTML = `${effectiveCents}<small> ct/s</small>`;
             totalDisplaySpan.innerText = formatEuro(totalEarned);
             multiplierDisplaySpan.innerText = multiplier.toFixed(2) + 'x';
@@ -242,11 +370,12 @@
         
         function restartTimer() {
             if (timerInterval) clearInterval(timerInterval);
-            if (getEffectiveRate() <= 0 || !isLoggedIn) return;
+            if (getEffectiveRateEuro() <= 0 || !isLoggedIn) return;
             timerInterval = setInterval(() => {
-                if (isLoggedIn && getEffectiveRate() > 0) {
-                    totalEarned += getEffectiveRate();
+                if (isLoggedIn && getEffectiveRateEuro() > 0) {
+                    totalEarned += getEffectiveRateEuro();
                     updateUI(true);
+                    saveProgress();
                 }
             }, 1000);
         }
@@ -259,14 +388,11 @@
                 setTimeout(() => { if(isLoggedIn) globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> Beantworte Umfragen – jede gibt +1 ct/s Basisrate!`; }, 1500);
                 return;
             }
-            // Umfrage als erledigt markieren
             surveyCompleted[index] = true;
-            // Basisrate erhöhen um 0.01 €/s (1 ct/s)
-            baseRateEuro += 0.01;
-            baseRateEuro = Math.round(baseRateEuro * 100) / 100;
-            
+            // Basisrate um 1 Cent pro Sekunde erhöhen
+            baseRateCents += 1;
             // UI der Umfrage aktualisieren
-            const surveyDiv = document.getElementById(`survey_${index}`);
+            const surveyDiv = document.getElementById(`survey_item_${index}`);
             if (surveyDiv) {
                 surveyDiv.classList.add('completed');
                 const optionsDiv = surveyDiv.querySelector('.survey-options');
@@ -274,28 +400,23 @@
                 const rewardSpan = surveyDiv.querySelector('.survey-reward');
                 if (rewardSpan) rewardSpan.innerHTML = `<i class="fas fa-check-circle"></i> Abgeschlossen +1 ct/s × ${multiplier.toFixed(2)}`;
             }
-            
-            // Effektive Rate updaten
             updateUI(false);
             restartTimer();
-            
-            const newRate = Math.floor(getEffectiveRate() * 100);
-            globalFeedDiv.innerHTML = `<i class="fas fa-star"></i> Umfrage "${surveys[index].question.substring(0, 40)}..." beantwortet! +1 ct/s Basisrate → Aktuelle Rate: ${newRate} ct/s (×${multiplier.toFixed(2)})`;
-            globalFeedDiv.style.background = "#1d3a2b";
-            setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 2000);
-            
-            // Speichern in localStorage (optional)
+            const newRate = getEffectiveRateCent();
+            globalFeedDiv.innerHTML = `<i class="fas fa-star"></i> Umfrage "${surveys[index].question.substring(0, 45)}..." beantwortet! +1 ct/s Basisrate → Aktuelle Rate: ${newRate} ct/s (×${multiplier.toFixed(2)})`;
+            globalFeedDiv.style.background = "rgba(45, 110, 80, 0.5)";
+            setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = ""; }, 2000);
             saveProgress();
         }
         
-        // Multiplikator Boost (kostet 50 gesammelte Cent = 0.50 Euro)
+        // Multiplikator Boost
         function applyBoost() {
             if (!isLoggedIn) return;
-            const cost = 0.50; // 50 Cent
+            const cost = 0.50;
             if (totalEarned < cost) {
                 globalFeedDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Nicht genug verdient! Benötige 0,50 € für Multiplikator-Boost.`;
-                globalFeedDiv.style.background = "#3a2a1a";
-                setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 2000);
+                globalFeedDiv.style.background = "rgba(180, 80, 50, 0.5)";
+                setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = ""; }, 2000);
                 return;
             }
             totalEarned -= cost;
@@ -304,8 +425,8 @@
             updateUI(false);
             restartTimer();
             globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> 🔥 MULTIPLIKATOR-BOOST! Neuer Multiplikator: ${multiplier.toFixed(2)}x (kosten: 0,50 €)`;
-            globalFeedDiv.style.background = "#2a4a3a";
-            setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = "#07111c"; }, 2000);
+            globalFeedDiv.style.background = "rgba(80, 140, 100, 0.6)";
+            setTimeout(() => { if(isLoggedIn) globalFeedDiv.style.background = ""; }, 2000);
             saveProgress();
         }
         
@@ -314,46 +435,49 @@
             const topics = [
                 "Technologie", "Finanzen", "Gaming", "Reisen", "Mode", "Sport", "Musik", "Filme", "Essen", "Gesundheit",
                 "Bildung", "Umwelt", "Auto", "Politik", "Wissenschaft", "Kunst", "Haustiere", "Bücher", "Fitness", "Social Media",
-                "Streaming", "Mobile Apps", "KI", "Blockchain", "Nachhaltigkeit", "Startups", "E-Commerce", "Marketing", "Personal Finance", "Kryptowährungen",
+                "Streaming", "Mobile Apps", "Künstliche Intelligenz", "Blockchain", "Nachhaltigkeit", "Startups", "E-Commerce", "Marketing", "Persönliche Finanzen", "Kryptowährungen",
                 "Virtual Reality", "E-Sports", "Kochen", "Yoga", "Meditation", "Psychologie", "Astronomie", "Geschichte", "Architektur", "Design",
-                "Fotografie", "Handwerk", "Garten", "DIY", "Programmieren", "Cybersecurity", "Cloud Computing", "Datenanalyse", "Robotik", "3D-Druck"
+                "Fotografie", "Handwerk", "Gartenarbeit", "DIY", "Programmierung", "Cybersicherheit", "Cloud Computing", "Datenanalyse", "Robotik", "3D-Druck",
+                "Erneuerbare Energien", "Elektroautos", "Raumfahrt", "Biotechnologie", "Nanotechnologie", "Quantencomputer", "Kreativwirtschaft", "Podcasts", "Online-Lernen", "Smart Home",
+                "Wearables", "Digitale Kunst", "Nachrichten", "Kryptographie", "DeFi", "NFTs", "Metaverse", "Web3", "Automatisierung", "Logistik",
+                "Personal Branding", "Coaching", "Remote Work", "Coworking", "Minimalismus", "Achtsamkeit", "Tierwohl", "Zero Waste", "Plastikfrei", "Bio-Lebensmittel"
             ];
             const questions = [];
             for (let i = 0; i < 100; i++) {
                 const topic = topics[i % topics.length];
                 const num = i + 1;
                 let question = "";
-                if (i % 3 === 0) question = `Umfrage ${num}: Wie oft nutzt du ${topic}-Angebote?`;
-                else if (i % 3 === 1) question = `Umfrage ${num}: Welche ${topic}-Trends findest du am spannendsten?`;
-                else question = `Umfrage ${num}: Deine Meinung zu ${topic} im Alltag?`;
-                
-                const options = ["Sehr positiv", "Positiv", "Neutral", "Negativ"];
+                const r = i % 4;
+                if (r === 0) question = `Umfrage ${num}: Wie bewertest du ${topic} im Alltag?`;
+                else if (r === 1) question = `Umfrage ${num}: Welcher ${topic}-Trend begeistert dich am meisten?`;
+                else if (r === 2) question = `Umfrage ${num}: Wie wichtig ist dir ${topic} für deine Zukunft?`;
+                else question = `Umfrage ${num}: Deine persönliche Erfahrung mit ${topic}?`;
+                const options = ["Sehr gut", "Gut", "Neutral", "Weniger gut"];
                 questions.push({ question, options, topic });
             }
             return questions;
         }
         
-        // Umfragen in DOM rendern
         function renderSurveys() {
-            if (!surveysListDiv) return;
-            surveysListDiv.innerHTML = "";
+            if (!surveysContainer) return;
+            surveysContainer.innerHTML = "";
             for (let i = 0; i < surveys.length; i++) {
                 const s = surveys[i];
                 const completed = surveyCompleted[i];
-                const surveyDiv = document.createElement('div');
-                surveyDiv.className = 'survey-item' + (completed ? ' completed' : '');
-                surveyDiv.id = `survey_${i}`;
-                surveyDiv.innerHTML = `
+                const div = document.createElement('div');
+                div.className = 'survey-item' + (completed ? ' completed' : '');
+                div.id = `survey_item_${i}`;
+                div.innerHTML = `
                     <div class="survey-question"><i class="fas fa-question-circle"></i> ${s.question}</div>
-                    <div class="survey-options" id="options_${i}">
+                    <div class="survey-options" id="survey_opts_${i}">
                         ${s.options.map(opt => `<span class="survey-opt-small" data-opt="${opt}">${opt}</span>`).join('')}
                     </div>
-                    <div class="survey-reward">${completed ? '✓ Abgeschlossen (+1 ct/s)' : '🎁 Belohnung: +1 ct/s Basisrate'}</div>
+                    <div class="survey-reward">${completed ? '✓ Abgeschlossen (+1 ct/s)' : '🎁 +1 ct/s Basisrate × Multiplikator'}</div>
                 `;
-                surveysListDiv.appendChild(surveyDiv);
+                surveysContainer.appendChild(div);
                 
                 if (!completed) {
-                    const optSpans = surveyDiv.querySelectorAll('.survey-opt-small');
+                    const optSpans = div.querySelectorAll('.survey-opt-small');
                     optSpans.forEach(span => {
                         span.addEventListener('click', (e) => {
                             e.stopPropagation();
@@ -365,28 +489,27 @@
             }
         }
         
-        // Fortschritt speichern (localStorage)
+        // Fortschritt speichern/laden
         function saveProgress() {
             if (!isLoggedIn) return;
-            const saveData = {
-                baseRateEuro, multiplier, totalEarned, surveyCompleted,
-                userName
+            const data = {
+                baseRateCents, multiplier, totalEarned, surveyCompleted, userName
             };
-            localStorage.setItem('centquest_progress', JSON.stringify(saveData));
+            localStorage.setItem('centquest_v6', JSON.stringify(data));
         }
         
         function loadProgress() {
-            const saved = localStorage.getItem('centquest_progress');
+            const saved = localStorage.getItem('centquest_v6');
             if (saved) {
                 try {
-                    const data = JSON.parse(saved);
-                    baseRateEuro = data.baseRateEuro || 0;
-                    multiplier = data.multiplier || 1;
-                    totalEarned = data.totalEarned || 0;
-                    if (data.surveyCompleted && data.surveyCompleted.length === surveys.length) {
-                        surveyCompleted = data.surveyCompleted;
+                    const d = JSON.parse(saved);
+                    baseRateCents = d.baseRateCents || 0;
+                    multiplier = d.multiplier || 1;
+                    totalEarned = d.totalEarned || 0;
+                    if (d.surveyCompleted && d.surveyCompleted.length === surveys.length) {
+                        surveyCompleted = d.surveyCompleted;
                     }
-                    if (data.userName) userName = data.userName;
+                    if (d.userName) userName = d.userName;
                 } catch(e) {}
             }
             updateUI(false);
@@ -396,29 +519,45 @@
         
         // Login / Logout
         function performLogin() {
-            let username = loginUsername.value.trim();
-            if (username === "") username = "Explorer";
-            userName = username;
-            welcomeMsgSpan.innerHTML = `<i class="fas fa-user"></i> Willkommen, <strong>${escapeHtml(userName)}</strong> · Beantworte Umfragen!`;
+            let name = loginUsername.value.trim();
+            if (name === "") name = "Abenteurer";
+            userName = name;
+            welcomeMsgSpan.innerHTML = `<i class="fas fa-user"></i> Willkommen, <strong>${escapeHtml(userName)}</strong> · Beantworte Umfragen für mehr ct/s!`;
             isLoggedIn = true;
-            loginPanel.style.display = "none";
-            dashboardPanel.style.display = "block";
-            loadProgress();  // lädt bestehenden Fortschritt oder initialisiert
-            // Timer bereits in loadProgress via restartTimer
-            globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> Starte mit ${Math.floor(baseRateEuro*100)} ct/s Basisrate × ${multiplier.toFixed(2)} = ${Math.floor(getEffectiveRate()*100)} ct/s`;
+            loginPanel.classList.add('hidden');
+            dashboardPanel.classList.remove('hidden');
+            loadProgress();
+            globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> Starte mit ${baseRateCents} ct/s Basisrate × ${multiplier.toFixed(2)} = ${getEffectiveRateCent()} ct/s`;
         }
         
         function performLogout() {
             if (timerInterval) clearInterval(timerInterval);
             isLoggedIn = false;
-            loginPanel.style.display = "block";
-            dashboardPanel.style.display = "none";
+            loginPanel.classList.remove('hidden');
+            dashboardPanel.classList.add('hidden');
             loginUsername.value = "";
             loginPassword.value = "";
-            // Speichern nicht nötig, bleibt erhalten
         }
         
-        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        // Layout/Themes
+        function setTheme(theme) {
+            document.body.className = '';
+            document.body.classList.add(`theme-${theme}`);
+            localStorage.setItem('centquest_theme', theme);
+            document.querySelectorAll('.layout-btn').forEach(btn => {
+                if (btn.getAttribute('data-theme') === theme) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+        }
         
         // Initialisierung
         surveys = generateSurveys();
@@ -429,15 +568,23 @@
         logoutBtn.addEventListener('click', performLogout);
         boostBtn.addEventListener('click', applyBoost);
         
-        loginUsername.addEventListener('keypress', (e) => { if(e.key === 'Enter') performLogin(); });
-        loginPassword.addEventListener('keypress', (e) => { if(e.key === 'Enter') performLogin(); });
+        loginUsername.addEventListener('keypress', (e) => { if (e.key === 'Enter') performLogin(); });
+        loginPassword.addEventListener('keypress', (e) => { if (e.key === 'Enter') performLogin(); });
+        
+        // Theme Selector
+        const savedTheme = localStorage.getItem('centquest_theme') || 'dark';
+        setTheme(savedTheme);
+        document.querySelectorAll('.layout-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const theme = btn.getAttribute('data-theme');
+                setTheme(theme);
+            });
+        });
         
         // Start: Login sichtbar
-        loginPanel.style.display = "block";
-        dashboardPanel.style.display = "none";
-        
-        // Vorschau der Umfragen rendern (für später)
-        console.log("100 Umfragen + Multiplikator System geladen");
+        loginPanel.classList.remove('hidden');
+        dashboardPanel.classList.add('hidden');
+        console.log("CentQuest v6 geladen – 100 Umfragen, Multiplikator, Layout-Auswahl");
     })();
 </script>
 </body>
