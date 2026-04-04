@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>💰 CentQuest · 1 Cent pro Sekunde durch Aufgaben & Umfragen</title>
+    <title>💰 CentQuest v2 · 1ct/s durch Aufgaben & Umfragen</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -14,7 +14,7 @@
         }
 
         body {
-            background: linear-gradient(145deg, #10161f 0%, #0a0e14 100%);
+            background: linear-gradient(135deg, #0c111a 0%, #070b10 100%);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
@@ -23,180 +23,176 @@
             padding: 20px;
         }
 
-        /* Hauptcontainer */
-        .quest-container {
-            max-width: 580px;
+        /* Main Card */
+        .quest-card {
+            max-width: 620px;
             width: 100%;
-            background: rgba(18, 24, 34, 0.9);
-            backdrop-filter: blur(2px);
-            border-radius: 48px;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 215, 80, 0.2);
+            background: rgba(12, 18, 28, 0.95);
+            backdrop-filter: blur(4px);
+            border-radius: 56px;
+            box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 200, 80, 0.25);
             overflow: hidden;
             transition: all 0.2s;
         }
 
         /* Header */
-        .header-glow {
-            background: linear-gradient(135deg, #1e2a3a, #0f1722);
-            padding: 24px 28px 16px 28px;
-            border-bottom: 1px solid rgba(255, 200, 70, 0.25);
+        .glow-header {
+            background: linear-gradient(115deg, #121e2c, #0a111c);
+            padding: 28px 28px 20px 28px;
+            border-bottom: 1px solid rgba(255, 190, 70, 0.3);
         }
 
-        .title-badge {
+        .title-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
         h1 {
-            font-size: 1.7rem;
+            font-size: 1.9rem;
             font-weight: 800;
-            background: linear-gradient(120deg, #FFE6A3, #FFC857);
+            background: linear-gradient(125deg, #FFE6B3, #FFB347);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.3px;
             display: inline-flex;
             align-items: center;
             gap: 10px;
         }
 
-        .status-chip {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 6px 14px;
-            border-radius: 60px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #ffe0a3;
-            border: 1px solid #ffcd6b40;
+        .rate-chip {
+            background: #00000066;
+            backdrop-filter: blur(8px);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffdd99;
+            border: 1px solid #ffcd6b60;
         }
 
-        .sub {
-            color: #9aaebe;
+        .subtext {
+            color: #9aaec9;
             font-size: 0.85rem;
             margin-top: 8px;
         }
 
-        /* Dashboard Card (Verdienst) */
-        .earn-dashboard {
-            background: #0b1018;
-            margin: 20px 24px;
-            border-radius: 36px;
-            padding: 20px 20px;
+        /* Dashboard Panel (Earnings) */
+        .earnings-panel {
+            background: #0b111a;
+            margin: 22px 24px;
+            border-radius: 44px;
+            padding: 24px 20px;
             text-align: center;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 8px 20px rgba(0,0,0,0.3);
-            border: 1px solid #2f3b4e;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.5), 0 12px 24px -8px rgba(0,0,0,0.4);
+            border: 1px solid #293a4a;
         }
 
-        .per-sec-label {
-            font-size: 0.8rem;
+        .rate-label {
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-weight: 600;
-            color: #adc4e0;
-            margin-bottom: 12px;
+            color: #9fb7d4;
         }
 
-        .rate-box {
-            font-size: 3.2rem;
+        .rate-value {
+            font-size: 4rem;
             font-weight: 800;
             background: linear-gradient(135deg, #FFE6A3, #FFB347);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            line-height: 1;
+            line-height: 1.1;
+            margin: 8px 0;
         }
 
-        .rate-box small {
-            font-size: 1.2rem;
+        .rate-value small {
+            font-size: 1.5rem;
             background: none;
             -webkit-background-clip: unset;
             color: #ffcd6b;
         }
 
-        .total-earned {
-            margin-top: 18px;
-            background: #00000033;
-            border-radius: 40px;
-            padding: 12px;
+        .total-box {
+            background: #03070e;
+            border-radius: 36px;
+            padding: 14px;
+            margin-top: 16px;
         }
 
         .total-label {
             font-size: 0.7rem;
-            color: #9ab3cf;
+            color: #8ea3c0;
         }
 
         .total-amount {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: #FFE2A4;
+            color: #ffe2aa;
             letter-spacing: 1px;
         }
 
-        /* Coin Animation */
-        .coin-flash {
-            animation: coinPop 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+        /* Coin & Flash Animationen */
+        @keyframes coinShine {
+            0% { text-shadow: 0 0 0 #ffd966; transform: scale(1);}
+            50% { text-shadow: 0 0 14px #ffbf40; transform: scale(1.03); color: #fff0c0;}
+            100% { text-shadow: 0 0 0 #ffd966; transform: scale(1);}
         }
 
-        @keyframes coinPop {
-            0% { transform: scale(1); text-shadow: 0 0 0 #ffd966; }
-            50% { transform: scale(1.08); text-shadow: 0 0 12px #ffc107; color: #ffea9e; }
-            100% { transform: scale(1); text-shadow: 0 0 0 #ffd966; }
+        .flash-money {
+            animation: coinShine 0.25s ease-out;
         }
 
-        /* Aufgaben & Umfragen Bereich */
-        .quests-section {
-            padding: 8px 24px 28px 24px;
+        /* Aufgaben und Umfragen */
+        .quests-area {
+            padding: 8px 24px 32px 24px;
         }
 
         .section-title {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin: 16px 0 14px 0;
             font-weight: 700;
-            color: #e9f0ff;
             font-size: 1.2rem;
+            color: #f2e8cf;
+            margin: 18px 0 14px 0;
         }
 
-        .task-card, .survey-card {
-            background: #111a24;
-            border-radius: 28px;
-            padding: 16px 20px;
+        .task-item, .survey-item {
+            background: #111a24e6;
+            border-radius: 32px;
+            padding: 18px 22px;
             margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            border: 1px solid #2d3e4e;
-            transition: all 0.2s;
-            backdrop-filter: blur(4px);
+            border: 1px solid #2c4050;
+            transition: all 0.2s ease;
         }
 
-        .task-info {
-            flex: 2;
-        }
-
-        .task-title {
-            font-weight: 700;
-            color: #ffdfa5;
-            margin-bottom: 5px;
+        .task-info h4 {
             font-size: 1rem;
+            font-weight: 700;
+            color: #ffddb0;
+            margin-bottom: 6px;
         }
 
-        .task-desc {
+        .task-info p {
             font-size: 0.7rem;
-            color: #8ea3bd;
+            color: #9bb3cc;
         }
 
         .complete-btn {
-            background: linear-gradient(95deg, #2e7d64, #1f5e4a);
+            background: linear-gradient(95deg, #2b7a62, #1e5e4a);
             border: none;
-            padding: 10px 22px;
-            border-radius: 40px;
+            padding: 10px 24px;
+            border-radius: 60px;
             font-weight: 700;
             font-size: 0.8rem;
             color: white;
@@ -204,8 +200,8 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: transform 0.1s, background 0.2s;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
         }
 
         .complete-btn:active {
@@ -213,175 +209,182 @@
         }
 
         .complete-btn.completed {
-            background: #3a4e5e;
+            background: #2f4558;
+            opacity: 0.7;
             cursor: default;
-            opacity: 0.6;
-            transform: none;
+            pointer-events: none;
             filter: grayscale(0.1);
         }
 
-        .reward-badge {
-            background: #ffcd6b20;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #ffcf7a;
-        }
-
-        .survey-option {
+        .survey-choices {
             display: flex;
             gap: 12px;
             margin-top: 12px;
             flex-wrap: wrap;
         }
 
-        .survey-choice {
-            background: #1e2c36;
-            padding: 8px 14px;
-            border-radius: 60px;
+        .choice {
+            background: #1e2f3c;
+            padding: 8px 16px;
+            border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 500;
             cursor: pointer;
-            transition: 0.1s;
-            color: #cfdfef;
+            transition: all 0.15s;
+            color: #e9f2fa;
         }
 
-        .survey-choice:hover {
-            background: #2f4b5c;
+        .choice:hover {
+            background: #3a5b70;
+            transform: translateY(-2px);
         }
 
-        .disabled-survey {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .status-message {
+        .badge-status {
+            background: #00000055;
+            padding: 5px 12px;
+            border-radius: 60px;
             font-size: 0.7rem;
-            margin-top: 12px;
-            color: #8bc34a;
+            font-weight: 600;
+            color: #ffd966;
+        }
+
+        .global-message {
+            background: #0b1620;
+            border-radius: 60px;
             text-align: center;
+            padding: 10px;
+            margin: 16px 0 8px;
+            font-size: 0.7rem;
+            color: #b9d0e8;
+            transition: all 0.2s;
         }
 
-        hr {
-            border-color: #253544;
-            margin: 6px 0;
-        }
-
-        @keyframes pulseGreen {
-            0% { box-shadow: 0 0 0 0 rgba(100, 255, 150, 0.4);}
-            70% { box-shadow: 0 0 0 8px rgba(100, 255, 150, 0);}
-            100% { box-shadow: 0 0 0 0 rgba(100, 255, 150, 0);}
-        }
-        .fresh-reward {
-            animation: pulseGreen 0.5s ease-out;
-        }
         footer {
             font-size: 0.6rem;
             text-align: center;
-            padding: 16px 24px 24px;
-            color: #5f748b;
+            padding: 16px 24px 28px;
+            color: #5d748f;
+            border-top: 1px solid #1d2e3c;
+            margin-top: 8px;
         }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 200, 80, 0.3);}
+            70% { box-shadow: 0 0 0 8px rgba(255, 200, 80, 0);}
+        }
+
+        .reward-pulse {
+            animation: glowPulse 0.5s ease-out;
+        }
+
         i {
             margin-right: 5px;
         }
-        @media (max-width: 500px) {
-            .task-card { flex-direction: column; align-items: flex-start; }
+
+        @media (max-width: 540px) {
+            .task-item, .survey-item { flex-direction: column; align-items: flex-start; }
             .complete-btn { width: 100%; justify-content: center; }
-            .rate-box { font-size: 2.4rem; }
+            .rate-value { font-size: 3rem; }
         }
     </style>
 </head>
 <body>
-<div class="quest-container" id="app">
-    <div class="header-glow">
-        <div class="title-badge">
-            <h1><i class="fas fa-coins"></i> CentQuest</h1>
-            <div class="status-chip" id="earningStatusChip"><i class="fas fa-hourglass-half"></i> ⚡ 0 ct/s</div>
+<div class="quest-card" id="centQuestApp">
+    <!-- Kopfbereich -->
+    <div class="glow-header">
+        <div class="title-row">
+            <h1><i class="fas fa-coins"></i> CentQuest v2</h1>
+            <div class="rate-chip" id="earningRateChip"><i class="fas fa-bolt"></i> 0 ct/s</div>
         </div>
-        <div class="sub">Erledige Umfragen & Aufgaben – Jede erledigte Aufgabe schaltet <strong>+1 Cent pro Sekunde</strong> frei!</div>
+        <div class="subtext">
+            <i class="fas fa-check-circle"></i> Jede Umfrage & Aufgabe schaltet <strong>+1 Cent pro Sekunde</strong> dauerhaft frei.
+        </div>
     </div>
 
-    <!-- Verdienst Anzeige -->
-    <div class="earn-dashboard">
-        <div class="per-sec-label"><i class="fas fa-charging-station"></i> DEINE AKTUELLE RATE</div>
-        <div class="rate-box" id="rateDisplay">0<span style="font-size:1.5rem;"> ct/s</span></div>
-        <div class="total-earned">
-            <div class="total-label"><i class="fas fa-sack-dollar"></i> GESAMT VERDIENT (live)</div>
-            <div class="total-amount" id="totalEarnedDisplay">0,00 €</div>
+    <!-- Echtzeit Verdienst Panel -->
+    <div class="earnings-panel">
+        <div class="rate-label"><i class="fas fa-charging-station"></i> DEINE VERDIENSTRATE</div>
+        <div class="rate-value" id="rateValueDisplay">0<small> ct/s</small></div>
+        <div class="total-box">
+            <div class="total-label"><i class="fas fa-sack-dollar"></i> BISHER VERDIENT (live)</div>
+            <div class="total-amount" id="totalEarnedSpan">0,00 €</div>
         </div>
     </div>
 
     <!-- Aufgaben & Umfragen Bereich -->
-    <div class="quests-section">
-        <div class="section-title"><i class="fas fa-tasks"></i> Aufgaben erledigen</div>
-        <!-- Task 1 -->
-        <div class="task-card" data-task="task1">
-            <div class="task-info">
-                <div class="task-title"><i class="fas fa-check-circle"></i> Willkommens-Tutorial</div>
-                <div class="task-desc">Klicke auf „Erledigen“ – 1 Cent / Sekunde dauerhaft freischalten.</div>
-            </div>
-            <button class="complete-btn" data-task-id="task1"><i class="fas fa-play"></i> Erledigen</button>
-        </div>
-        <!-- Task 2 -->
-        <div class="task-card" data-task="task2">
-            <div class="task-info">
-                <div class="task-title"><i class="fas fa-share-alt"></i> Social Sharing (Demo)</div>
-                <div class="task-desc">Fake-Sharing – klicken für extra +1 ct/s.</div>
-            </div>
-            <button class="complete-btn" data-task-id="task2"><i class="fas fa-share"></i> Erledigen</button>
-        </div>
+    <div class="quests-area">
+        <!-- Aufgaben Abschnitt -->
+        <div class="section-title"><i class="fas fa-tasks"></i> 📋 Aufgaben erledigen</div>
         
-        <div class="section-title" style="margin-top: 10px;"><i class="fas fa-poll"></i> Umfragen beantworten</div>
-        <!-- Umfrage 1: Lieblingsgetränk -->
-        <div class="task-card survey-card" id="survey1Card">
+        <!-- Task 1 -->
+        <div class="task-item" id="task1Item">
             <div class="task-info">
-                <div class="task-title"><i class="fas fa-mug-hot"></i> Mini-Umfrage: Dein Lieblingsgetränk?</div>
-                <div class="task-desc">Wähle eine Antwort – Belohnung: +1 Cent / Sekunde (nur einmalig)</div>
-                <div class="survey-option" id="survey1Options">
-                    <span class="survey-choice" data-survey="1" data-value="Kaffee">☕ Kaffee</span>
-                    <span class="survey-choice" data-survey="1" data-value="Tee">🍵 Tee</span>
-                    <span class="survey-choice" data-survey="1" data-value="Mate">🧉 Mate</span>
-                    <span class="survey-choice" data-survey="1" data-value="Wasser">💧 Wasser</span>
-                </div>
+                <h4><i class="fas fa-hand-peace"></i> Starter-Bonus</h4>
+                <p>Klicke auf „Starten“ – Sofort 1 ct/s freischalten</p>
             </div>
-            <div class="reward-badge" id="survey1Badge">🔒 Nicht beantwortet</div>
+            <button class="complete-btn" id="task1Btn"><i class="fas fa-play"></i> Starten</button>
         </div>
 
-        <!-- Umfrage 2: Wie findest du die App? -->
-        <div class="task-card survey-card" id="survey2Card">
+        <!-- Task 2 -->
+        <div class="task-item" id="task2Item">
             <div class="task-info">
-                <div class="task-title"><i class="fas fa-star"></i> Feedback-Umfrage: Wie gefällt dir CentQuest?</div>
-                <div class="task-desc">Bewertung abgeben -> +1 ct/s Belohnung</div>
-                <div class="survey-option" id="survey2Options">
-                    <span class="survey-choice" data-survey="2" data-value="Sehr gut">🌟 Sehr gut</span>
-                    <span class="survey-choice" data-survey="2" data-value="Gut">👍 Gut</span>
-                    <span class="survey-choice" data-survey="2" data-value="Okay">😐 Okay</span>
-                </div>
+                <h4><i class="fas fa-share-alt"></i> Empfehlung (Demo)</h4>
+                <p>Social-Media Aktion simulieren – +1 ct/s</p>
             </div>
-            <div class="reward-badge" id="survey2Badge">🔒 Nicht beantwortet</div>
+            <button class="complete-btn" id="task2Btn"><i class="fas fa-share"></i> Teilen</button>
         </div>
 
-        <div class="status-message" id="globalMessage"><i class="fas fa-gem"></i> Jede erledigte Aufgabe = 1 Cent pro Sekunde mehr!</div>
+        <!-- Umfragen Abschnitt -->
+        <div class="section-title" style="margin-top: 8px;"><i class="fas fa-poll"></i> 📊 Umfragen beantworten</div>
+
+        <!-- Umfrage 1: Interessen -->
+        <div class="survey-item" id="survey1Item">
+            <div class="task-info">
+                <h4><i class="fas fa-heart"></i> Umfrage: Dein Lieblingsthema?</h4>
+                <p>Wähle eine Option – 1 ct/s Belohnung (einmalig)</p>
+                <div class="survey-choices" id="survey1Choices">
+                    <span class="choice" data-survey="1" data-value="Technik">💻 Technik</span>
+                    <span class="choice" data-survey="1" data-value="Finanzen">📈 Finanzen</span>
+                    <span class="choice" data-survey="1" data-value="Gaming">🎮 Gaming</span>
+                    <span class="choice" data-survey="1" data-value="Reisen">✈️ Reisen</span>
+                </div>
+            </div>
+            <div class="badge-status" id="survey1Badge">🔒 Offen</div>
+        </div>
+
+        <!-- Umfrage 2: Zufriedenheit -->
+        <div class="survey-item" id="survey2Item">
+            <div class="task-info">
+                <h4><i class="fas fa-smile"></i> Wie gefällt dir CentQuest?</h4>
+                <p>Dein Feedback bringt +1 ct/s</p>
+                <div class="survey-choices" id="survey2Choices">
+                    <span class="choice" data-survey="2" data-value="Fantastisch">🌟 Fantastisch</span>
+                    <span class="choice" data-survey="2" data-value="Gut">👍 Gut</span>
+                    <span class="choice" data-survey="2" data-value="Verbesserbar">⚡ Verbesserbar</span>
+                </div>
+            </div>
+            <div class="badge-status" id="survey2Badge">🔒 Offen</div>
+        </div>
+
+        <!-- Globale Nachrichten + Animation -->
+        <div class="global-message" id="globalMsg">
+            <i class="fas fa-gift"></i> Erledige eine Aufgabe oder Umfrage – jeder Schritt bringt +1 ct/s!
+        </div>
         <footer>
-            <i class="fas fa-clock"></i> Echtzeit-Simulation · Verdienst läuft im Hintergrund, sobald die erste Aufgabe/Umfrage erledigt ist.
+            <i class="fas fa-chart-line"></i> Echtzeitsimulation · Verdienst läuft automatisch, sobald die erste Belohnung freigeschaltet ist.
         </footer>
     </div>
 </div>
 
 <script>
     (function() {
-        // --- SPIEL LOGIK ---
-        // Tasks & Surveys: Jede abgeschlossene Aktion gibt einen permanenten Multiplikator von 0.01€/s (1 ct/s)
-        // Maximal 5 Cent pro Sekunde? Unbegrenzt, hier 4 Aktionen (2 Tasks + 2 Umfragen) = maximal 4 ct/s.
-        // Pro erledigter Sache -> earningsPerSecond += 0.01
-        let totalCentsPerSecond = 0;       // in Euro (z.B. 0.01 = 1ct)
-        let totalAccumulated = 0;           // Euro gesamt seit Start
-        let timerInterval = null;
-        let isEarningActive = false;
-
-        // Status der Freischaltungen
-        const completedFlags = {
+        // --- STATE ---
+        let totalCentsPerSecond = 0;      // in Euro (0.01 = 1ct pro sekunde)
+        let totalAccumulated = 0;          // gesamter Verdienst in Euro
+        let activeTimer = null;
+        
+        // Abschluss-Flags
+        const completed = {
             task1: false,
             task2: false,
             survey1: false,
@@ -389,189 +392,186 @@
         };
 
         // DOM Elemente
-        const rateDisplaySpan = document.getElementById('rateDisplay');
-        const totalEarnedSpan = document.getElementById('totalEarnedDisplay');
-        const earningStatusChip = document.getElementById('earningStatusChip');
-        const globalMessageDiv = document.getElementById('globalMessage');
-
+        const rateValueSpan = document.getElementById('rateValueDisplay');
+        const totalEarnedSpan = document.getElementById('totalEarnedSpan');
+        const earningRateChip = document.getElementById('earningRateChip');
+        const globalMsgDiv = document.getElementById('globalMsg');
+        
         // Buttons & Cards
-        const task1Btn = document.querySelector('[data-task-id="task1"]');
-        const task2Btn = document.querySelector('[data-task-id="task2"]');
-        const survey1Options = document.querySelectorAll('[data-survey="1"]');
-        const survey2Options = document.querySelectorAll('[data-survey="2"]');
+        const task1Btn = document.getElementById('task1Btn');
+        const task2Btn = document.getElementById('task2Btn');
+        const task1Item = document.getElementById('task1Item');
+        const task2Item = document.getElementById('task2Item');
+        
+        // Umfragen Elemente
+        const survey1Choices = document.querySelectorAll('[data-survey="1"]');
+        const survey2Choices = document.querySelectorAll('[data-survey="2"]');
         const survey1Badge = document.getElementById('survey1Badge');
         const survey2Badge = document.getElementById('survey2Badge');
-        const survey1Card = document.getElementById('survey1Card');
-        const survey2Card = document.getElementById('survey2Card');
+        const survey1ItemDiv = document.getElementById('survey1Item');
+        const survey2ItemDiv = document.getElementById('survey2Item');
 
-        // Hilfsfunktionen Formatierung
+        // Helper Formatierung
         function formatEuro(value) {
             return value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
         }
 
-        // Aktualisiert die UI für Rate & Gesamt
+        // UI Update für Rate & Gesamtsumme, plus optionaler Blitz-Effekt
         function updateUI(triggerFlash = false) {
-            // Anzeige der Rate in Cent pro Sekunde
-            const cents = Math.floor(totalCentsPerSecond * 100);
-            rateDisplaySpan.innerHTML = `${cents}<span style="font-size:1.5rem;"> ct/s</span>`;
-            earningStatusChip.innerHTML = `<i class="fas fa-bolt"></i> ⚡ ${cents} ct/s`;
-
+            const centsPerSec = Math.floor(totalCentsPerSecond * 100);
+            rateValueSpan.innerHTML = `${centsPerSec}<small> ct/s</small>`;
+            earningRateChip.innerHTML = `<i class="fas fa-bolt"></i> ${centsPerSec} ct/s`;
             totalEarnedSpan.innerText = formatEuro(totalAccumulated);
+            
             if (triggerFlash) {
-                totalEarnedSpan.classList.add('coin-flash');
-                setTimeout(() => {
-                    totalEarnedSpan.classList.remove('coin-flash');
-                }, 250);
+                totalEarnedSpan.classList.add('flash-money');
+                setTimeout(() => totalEarnedSpan.classList.remove('flash-money'), 280);
+                // zusätzlicher kleiner Effekt auf der Rate
+                const rateBox = document.querySelector('.rate-value');
+                if (rateBox) {
+                    rateBox.classList.add('reward-pulse');
+                    setTimeout(() => rateBox.classList.remove('reward-pulse'), 300);
+                }
             }
         }
 
-        // Timer starten/stoppen je nachdem ob totalCentsPerSecond > 0
-        function restartEarningTimer() {
-            if (timerInterval !== null) {
-                clearInterval(timerInterval);
-                timerInterval = null;
+        // Timer steuern: immer neu starten, wenn sich totalCentsPerSecond ändert
+        function restartEarningsTimer() {
+            if (activeTimer !== null) {
+                clearInterval(activeTimer);
+                activeTimer = null;
             }
-            // Wenn keine aktive Rate, dann läuft kein Timer
-            if (totalCentsPerSecond <= 0) {
-                isEarningActive = false;
-                updateUI(false);
-                return;
-            }
-            isEarningActive = true;
-            timerInterval = setInterval(() => {
+            if (totalCentsPerSecond <= 0) return;
+            
+            activeTimer = setInterval(() => {
                 if (totalCentsPerSecond > 0) {
-                    totalAccumulated += totalCentsPerSecond;   // totalCentsPerSecond ist in Euro (z.b. 0.03)
+                    totalAccumulated += totalCentsPerSecond;
                     updateUI(true);
                 }
             }, 1000);
         }
 
-        // Allgemeine Funktion: Belohnung hinzufügen (1 Cent = 0.01 Euro pro Sekunde)
-        function addReward(sourceName, rewardAmount = 0.01) {
-            if (rewardAmount !== 0.01) rewardAmount = 0.01; // sicherheitshalber immer 1 cent
-            totalCentsPerSecond += rewardAmount;
-            // Runden auf 2 Nachkommastellen wegen floating point
+        // Belohnung hinzufügen (+0.01 Euro = 1 Cent pro Sekunde)
+        function addReward(sourceName, rewardValue = 0.01) {
+            if (rewardValue !== 0.01) rewardValue = 0.01; // sicherheitshalber
+            totalCentsPerSecond += rewardValue;
             totalCentsPerSecond = Math.round(totalCentsPerSecond * 100) / 100;
             
-            // UI updaten und Timer neustarten (falls bereits aktiv oder neu)
             updateUI(false);
-            restartEarningTimer();
-
-            // Globale Nachricht mit Animation
-            globalMessageDiv.innerHTML = `<i class="fas fa-trophy"></i> ✅ +1 ct/s durch: ${sourceName} ! Gesamt: ${Math.floor(totalCentsPerSecond*100)} ct/s`;
-            globalMessageDiv.style.color = "#d4ff9f";
+            restartEarningsTimer();
+            
+            // Animierte Nachricht
+            const currentCents = Math.floor(totalCentsPerSecond * 100);
+            globalMsgDiv.innerHTML = `<i class="fas fa-star-of-life"></i> ✅ +1 ct/s durch: ${sourceName} ! Aktuelle Rate: ${currentCents} ct/s`;
+            globalMsgDiv.style.background = "#1f3328";
+            globalMsgDiv.style.color = "#e2ffc7";
             setTimeout(() => {
-                if(globalMessageDiv) globalMessageDiv.style.color = "#8bc34a";
+                if (globalMsgDiv) globalMsgDiv.style.background = "#0b1620";
+                globalMsgDiv.style.color = "#b9d0e8";
             }, 1500);
             
-            // Kleine Animation auf der Karte (visuelles Feedback)
-            const chip = earningStatusChip;
-            chip.classList.add('fresh-reward');
-            setTimeout(() => chip.classList.remove('fresh-reward'), 500);
+            // Zusätzlicher kleiner visueller Hinweis auf Chip
+            const chip = earningRateChip;
+            chip.classList.add('reward-pulse');
+            setTimeout(() => chip.classList.remove('reward-pulse'), 400);
         }
-
-        // Task abschließen
-        function completeTask(taskId, taskName, btnElement, cardElement) {
-            if (completedFlags[taskId]) return;
-            completedFlags[taskId] = true;
-            // Button deaktivieren & stylen
+        
+        // Aufgabe erledigen (generisch)
+        function completeTask(taskId, taskName, btnElement, parentElement) {
+            if (completed[taskId]) return;
+            completed[taskId] = true;
             if (btnElement) {
                 btnElement.classList.add('completed');
-                btnElement.innerHTML = '<i class="fas fa-check"></i> Abgeschlossen';
+                btnElement.innerHTML = '<i class="fas fa-check-circle"></i> Erledigt';
                 btnElement.disabled = true;
-                btnElement.style.pointerEvents = "none";
             }
-            if (cardElement) {
-                cardElement.style.opacity = "0.9";
-                cardElement.style.borderColor = "#7bcb6e";
+            if (parentElement) {
+                parentElement.style.borderColor = "#5fad7a";
+                parentElement.style.background = "#14222e";
             }
             addReward(taskName, 0.01);
         }
-
-        // Umfrage abschließen (nur einmal)
-        function completeSurvey(surveyId, surveyName, badgeElement, optionsContainer) {
-            const flagKey = `survey${surveyId}`;
-            if (completedFlags[flagKey]) return;
-            completedFlags[flagKey] = true;
+        
+        // Umfrage abschließen (unwiderruflich)
+        function completeSurvey(surveyId, surveyName, badgeElement, choicesContainer, cardElement) {
+            const flag = `survey${surveyId}`;
+            if (completed[flag]) return;
+            completed[flag] = true;
             if (badgeElement) {
-                badgeElement.innerHTML = "✅ Beantwortet +1 ct/s";
+                badgeElement.innerHTML = "✅ Belohnung erhalten";
                 badgeElement.style.background = "#2e7d64";
                 badgeElement.style.color = "white";
             }
-            // alle Auswahlmöglichkeiten deaktivieren
-            if (optionsContainer) {
-                const choices = optionsContainer.querySelectorAll('.survey-choice');
-                choices.forEach(choice => {
+            // Alle Choices deaktivieren
+            if (choicesContainer) {
+                const allChoices = choicesContainer.querySelectorAll('.choice');
+                allChoices.forEach(choice => {
                     choice.style.pointerEvents = "none";
                     choice.style.opacity = "0.5";
+                    choice.style.background = "#2f4558";
                 });
             }
+            if (cardElement) {
+                cardElement.style.border = "1px solid #6fbf8a";
+                cardElement.style.background = "#15262e";
+            }
             addReward(surveyName, 0.01);
-            // visuelles Highlight auf der Karte
-            const card = document.getElementById(`survey${surveyId}Card`);
-            if(card) card.style.border = "1px solid #7bcb6e";
         }
 
-        // Event Listener für Tasks
+        // ----- Event Listener Tasks -----
         if (task1Btn) {
-            const parentCard = task1Btn.closest('.task-card');
-            task1Btn.addEventListener('click', () => completeTask('task1', 'Willkommens-Tutorial', task1Btn, parentCard));
+            task1Btn.addEventListener('click', () => completeTask('task1', 'Starter-Bonus', task1Btn, task1Item));
         }
         if (task2Btn) {
-            const parentCard = task2Btn.closest('.task-card');
-            task2Btn.addEventListener('click', () => completeTask('task2', 'Social Sharing (Demo)', task2Btn, parentCard));
+            task2Btn.addEventListener('click', () => completeTask('task2', 'Empfehlungs-Demo', task2Btn, task2Item));
         }
-
-        // Umfrage 1 (Lieblingsgetränk)
-        if (survey1Options.length) {
-            survey1Options.forEach(opt => {
-                opt.addEventListener('click', (e) => {
-                    if (completedFlags.survey1) return;
-                    const selectedValue = opt.getAttribute('data-value') || "Antwort";
-                    completeSurvey(1, `Umfrage: Lieblingsgetränk (${selectedValue})`, survey1Badge, document.getElementById('survey1Options'));
+        
+        // ----- Umfrage 1 -----
+        if (survey1Choices.length) {
+            survey1Choices.forEach(choice => {
+                choice.addEventListener('click', (e) => {
+                    if (completed.survey1) return;
+                    const selectedValue = choice.getAttribute('data-value') || "Antwort";
+                    completeSurvey(1, `Umfrage: Lieblingsthema (${selectedValue})`, survey1Badge, document.getElementById('survey1Choices'), survey1ItemDiv);
                 });
             });
         }
-
-        // Umfrage 2 (Feedback)
-        if (survey2Options.length) {
-            survey2Options.forEach(opt => {
-                opt.addEventListener('click', (e) => {
-                    if (completedFlags.survey2) return;
-                    const selectedValue = opt.getAttribute('data-value') || "Bewertung";
-                    completeSurvey(2, `Feedback-Umfrage (${selectedValue})`, survey2Badge, document.getElementById('survey2Options'));
+        
+        // ----- Umfrage 2 -----
+        if (survey2Choices.length) {
+            survey2Choices.forEach(choice => {
+                choice.addEventListener('click', (e) => {
+                    if (completed.survey2) return;
+                    const selectedValue = choice.getAttribute('data-value') || "Feedback";
+                    completeSurvey(2, `Zufriedenheits-Umfrage (${selectedValue})`, survey2Badge, document.getElementById('survey2Choices'), survey2ItemDiv);
                 });
             });
         }
-
-        // Fallback: beim Start keine Belohnung, erst durch Interaktion.
+        
+        // Initial: Kein Verdienst, Timer wartet.
         totalCentsPerSecond = 0;
         totalAccumulated = 0;
         updateUI(false);
+        restartEarningsTimer(); // nichts passiert da rate = 0
         
-        // Zusätzlich: Sicherstellen, dass Timer nur läuft, wenn cents>0, aber initial 0.
-        restartEarningTimer(); // startet keinen Timer weil totalCentsPerSecond = 0
-
-        // Hintergrundanimation für jede Sekunde (zentraler Counter wird im Timer behandelt)
-        // Extra visuelles Bonus: Bei jeder Sekunde ein kleiner Hinweis im Titel? optional.
-        let lastUpdateSecond = 0;
-        setInterval(() => {
-            if (totalCentsPerSecond > 0 && isEarningActive) {
-                // ein dezentes animieren der Rate-Anzeige alle 3 Sekunden (nicht störend)
-                const rateElem = document.getElementById('rateDisplay');
-                if (rateElem && Math.random() > 0.7) {
-                    rateElem.style.transform = "scale(1.02)";
-                    setTimeout(() => { if(rateElem) rateElem.style.transform = ""; }, 150);
-                }
-            }
-        }, 1200);
+        // Extra: Leichte Hintergrundanimation für die Karten bei hover
+        const allItems = document.querySelectorAll('.task-item, .survey-item');
+        allItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateX(4px)';
+                item.style.transition = '0.15s';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateX(0px)';
+            });
+        });
         
-        // Kleine Nachricht beim Start
+        // Nachricht wenn noch nichts erledigt
         setTimeout(() => {
-            if(!completedFlags.task1 && !completedFlags.task2 && !completedFlags.survey1 && !completedFlags.survey2) {
-                globalMessageDiv.innerHTML = "<i class='fas fa-hand-peace'></i> Erledige deine erste Aufgabe oder Umfrage – 1 Cent pro Sekunde wartet!";
+            if (totalCentsPerSecond === 0) {
+                globalMsgDiv.innerHTML = "<i class='fas fa-hand-peace'></i> Keine aktive Rate. Schließe eine Aufgabe oder Umfrage ab, um 1 Cent pro Sekunde zu erhalten!";
             }
-        }, 500);
+        }, 800);
     })();
 </script>
 </body>
