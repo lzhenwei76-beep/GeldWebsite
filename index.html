@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>wealthPro · Echtzeit Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <title>💰 CentQuest · 1 Cent pro Sekunde durch Aufgaben & Umfragen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -14,674 +14,564 @@
         }
 
         body {
-            background: #0a0c10;
+            background: linear-gradient(145deg, #10161f 0%, #0a0e14 100%);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
-            position: relative;
+            padding: 20px;
         }
 
-        /* professioneller dunkler Hintergrund mit leichter Textur */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Hauptcontainer */
+        .quest-container {
+            max-width: 580px;
             width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle at 15% 30%, rgba(45, 110, 210, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        /* Hauptcard – seriöses Finanz-Design */
-        .premium-card {
-            max-width: 520px;
-            width: 100%;
-            background: #0f1219;
-            border-radius: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(72, 187, 255, 0.15);
-            transition: all 0.2s ease;
-            backdrop-filter: blur(0px);
+            background: rgba(18, 24, 34, 0.9);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 215, 80, 0.2);
             overflow: hidden;
+            transition: all 0.2s;
         }
 
-        /* Header Bereich */
-        .card-header {
-            padding: 28px 32px 16px 32px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        /* Header */
+        .header-glow {
+            background: linear-gradient(135deg, #1e2a3a, #0f1722);
+            padding: 24px 28px 16px 28px;
+            border-bottom: 1px solid rgba(255, 200, 70, 0.25);
         }
 
-        .logo-area {
+        .title-badge {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 24px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
         }
 
-        .logo-icon {
-            background: linear-gradient(135deg, #2b6eff, #004ecc);
-            width: 40px;
-            height: 40px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 6px 12px -6px rgba(0, 78, 204, 0.4);
-        }
-
-        .logo-text {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-            background: linear-gradient(120deg, #FFFFFF, #b9d0ff);
+        h1 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #FFE6A3, #FFC857);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-        }
-
-        .badge-pro {
-            background: rgba(43, 110, 255, 0.2);
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #5f9eff;
-            border: 0.5px solid rgba(43, 110, 255, 0.4);
-            margin-left: 8px;
-        }
-
-        h2 {
-            font-size: 26px;
-            font-weight: 700;
-            color: white;
-            margin-top: 8px;
             letter-spacing: -0.3px;
-        }
-
-        .subhead {
-            color: #8e95a9;
-            font-size: 14px;
-            margin-top: 8px;
-            font-weight: 400;
-        }
-
-        /* Panels */
-        .panel {
-            padding: 24px 32px 32px 32px;
-        }
-
-        .login-panel {
-            display: block;
-        }
-
-        .dashboard-panel {
-            display: none;
-        }
-
-        /* Formular – echt & clean */
-        .input-field {
-            margin-bottom: 20px;
-        }
-
-        .input-label {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #cbd5e6;
-            margin-bottom: 8px;
-            letter-spacing: 0.2px;
-        }
-
-        .input-label i {
-            font-size: 14px;
-            color: #5f9eff;
-            width: 18px;
-        }
-
-        input {
-            width: 100%;
-            background: #06080f;
-            border: 1.5px solid #222738;
-            border-radius: 18px;
-            padding: 14px 18px;
-            font-size: 15px;
-            font-weight: 500;
-            color: #f0f3fc;
-            transition: all 0.2s;
-            font-family: 'Inter', monospace;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #2b6eff;
-            box-shadow: 0 0 0 3px rgba(43, 110, 255, 0.25);
-            background: #0b0f18;
-        }
-
-        input::placeholder {
-            color: #3e445a;
-            font-weight: 400;
-        }
-
-        /* Login Button */
-        .login-btn {
-            background: #2b6eff;
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 28px;
-            font-weight: 700;
-            font-size: 16px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 12px;
-            box-shadow: 0 4px 12px rgba(43, 110, 255, 0.3);
-            font-family: 'Inter', sans-serif;
         }
 
-        .login-btn:hover {
-            background: #1b5be6;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(43, 110, 255, 0.4);
-        }
-
-        .login-btn:active {
-            transform: translateY(1px);
-        }
-
-        .legal-note {
-            font-size: 11px;
-            text-align: center;
-            color: #5e647b;
-            margin-top: 28px;
-            border-top: 1px solid #1a1e2a;
-            padding-top: 20px;
-        }
-
-        /* Dashboard Styling – professionelles Trading/Finance Feeling */
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-        }
-
-        .user-greeting h3 {
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .user-greeting p {
-            font-size: 13px;
-            color: #8e95a9;
-            margin-top: 4px;
-        }
-
-        .logout-icon {
-            background: rgba(255, 70, 70, 0.12);
-            border: 1px solid #ff5a5a30;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 13px;
+        .status-chip {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 6px 14px;
+            border-radius: 60px;
+            font-size: 0.75rem;
             font-weight: 600;
-            color: #ff8a8a;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #ffe0a3;
+            border: 1px solid #ffcd6b40;
         }
 
-        .logout-icon:hover {
-            background: rgba(255, 70, 70, 0.25);
-            color: #ffb5b5;
-            border-color: #ff7a7a60;
+        .sub {
+            color: #9aaebe;
+            font-size: 0.85rem;
+            margin-top: 8px;
         }
 
-        /* Echtgeld-Kacheln */
-        .stat-grid {
-            background: #080b12;
-            border-radius: 28px;
-            padding: 24px;
-            border: 1px solid #1e2438;
-            margin-bottom: 24px;
+        /* Dashboard Card (Verdienst) */
+        .earn-dashboard {
+            background: #0b1018;
+            margin: 20px 24px;
+            border-radius: 36px;
+            padding: 20px 20px;
+            text-align: center;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 8px 20px rgba(0,0,0,0.3);
+            border: 1px solid #2f3b4e;
         }
 
-        .rate-label {
-            font-size: 13px;
+        .per-sec-label {
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 600;
-            color: #8e95a9;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .rate-value {
-            font-size: 44px;
-            font-weight: 800;
-            color: #ffffff;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            word-break: break-word;
-        }
-
-        .rate-value small {
-            font-size: 18px;
-            font-weight: 500;
-            color: #a0a8c0;
-        }
-
-        .per-sec-badge {
-            background: rgba(43, 110, 255, 0.15);
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 500;
-            color: #6d9eff;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .total-earnings {
-            background: linear-gradient(135deg, #0f131e, #070a10);
-            border-radius: 24px;
-            padding: 20px;
-            margin-top: 10px;
-            border: 1px solid #242b40;
-        }
-
-        .total-title {
-            font-size: 13px;
-            font-weight: 500;
-            color: #8e95a9;
+            color: #adc4e0;
             margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        }
+
+        .rate-box {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE6A3, #FFB347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+
+        .rate-box small {
+            font-size: 1.2rem;
+            background: none;
+            -webkit-background-clip: unset;
+            color: #ffcd6b;
+        }
+
+        .total-earned {
+            margin-top: 18px;
+            background: #00000033;
+            border-radius: 40px;
+            padding: 12px;
+        }
+
+        .total-label {
+            font-size: 0.7rem;
+            color: #9ab3cf;
         }
 
         .total-amount {
-            font-size: 36px;
+            font-size: 2rem;
             font-weight: 800;
-            color: #ffe6b3;
-            letter-spacing: -0.5px;
-            word-break: break-word;
+            color: #FFE2A4;
+            letter-spacing: 1px;
         }
 
-        .update-flash {
-            animation: flashMoney 0.22s ease-out;
+        /* Coin Animation */
+        .coin-flash {
+            animation: coinPop 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
         }
 
-        @keyframes flashMoney {
-            0% {
-                text-shadow: 0 0 0px #ffd966;
-                color: #ffe6b3;
-            }
-            50% {
-                text-shadow: 0 0 6px #ffcd4a;
-                color: #ffecb3;
-            }
-            100% {
-                text-shadow: 0 0 0px #ffd966;
-                color: #ffe6b3;
-            }
+        @keyframes coinPop {
+            0% { transform: scale(1); text-shadow: 0 0 0 #ffd966; }
+            50% { transform: scale(1.08); text-shadow: 0 0 12px #ffc107; color: #ffea9e; }
+            100% { transform: scale(1); text-shadow: 0 0 0 #ffd966; }
         }
 
-        .divider {
-            height: 1px;
-            background: #1a1f2c;
-            margin: 20px 0 16px;
+        /* Aufgaben & Umfragen Bereich */
+        .quests-section {
+            padding: 8px 24px 28px 24px;
         }
 
-        .fine-print {
-            font-size: 11px;
-            color: #4a5068;
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0 14px 0;
+            font-weight: 700;
+            color: #e9f0ff;
+            font-size: 1.2rem;
+        }
+
+        .task-card, .survey-card {
+            background: #111a24;
+            border-radius: 28px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid #2d3e4e;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+
+        .task-info {
+            flex: 2;
+        }
+
+        .task-title {
+            font-weight: 700;
+            color: #ffdfa5;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .task-desc {
+            font-size: 0.7rem;
+            color: #8ea3bd;
+        }
+
+        .complete-btn {
+            background: linear-gradient(95deg, #2e7d64, #1f5e4a);
+            border: none;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .complete-btn:active {
+            transform: scale(0.96);
+        }
+
+        .complete-btn.completed {
+            background: #3a4e5e;
+            cursor: default;
+            opacity: 0.6;
+            transform: none;
+            filter: grayscale(0.1);
+        }
+
+        .reward-badge {
+            background: #ffcd6b20;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #ffcf7a;
+        }
+
+        .survey-option {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .survey-choice {
+            background: #1e2c36;
+            padding: 8px 14px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s;
+            color: #cfdfef;
+        }
+
+        .survey-choice:hover {
+            background: #2f4b5c;
+        }
+
+        .disabled-survey {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .status-message {
+            font-size: 0.7rem;
+            margin-top: 12px;
+            color: #8bc34a;
             text-align: center;
-            margin-top: 20px;
         }
 
+        hr {
+            border-color: #253544;
+            margin: 6px 0;
+        }
+
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(100, 255, 150, 0.4);}
+            70% { box-shadow: 0 0 0 8px rgba(100, 255, 150, 0);}
+            100% { box-shadow: 0 0 0 0 rgba(100, 255, 150, 0);}
+        }
+        .fresh-reward {
+            animation: pulseGreen 0.5s ease-out;
+        }
+        footer {
+            font-size: 0.6rem;
+            text-align: center;
+            padding: 16px 24px 24px;
+            color: #5f748b;
+        }
         i {
-            color: #5f9eff;
+            margin-right: 5px;
         }
-
         @media (max-width: 500px) {
-            .premium-card {
-                border-radius: 28px;
-            }
-            .panel {
-                padding: 20px 24px;
-            }
-            .rate-value {
-                font-size: 32px;
-            }
-            .total-amount {
-                font-size: 28px;
-            }
+            .task-card { flex-direction: column; align-items: flex-start; }
+            .complete-btn { width: 100%; justify-content: center; }
+            .rate-box { font-size: 2.4rem; }
         }
     </style>
 </head>
 <body>
-
-<div class="premium-card" id="app">
-    <!-- Login-Bereich (professionell, echt wirkend) -->
-    <div id="loginContainer" class="login-panel">
-        <div class="card-header">
-            <div class="logo-area">
-                <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
-                <div class="logo-text">wealthPro<span class="badge-pro">PREMIUM</span></div>
-            </div>
-            <h2>Anmelden zum Konto</h2>
-            <div class="subhead">Greifen Sie auf Ihr Echtzeit-Dashboard zu</div>
+<div class="quest-container" id="app">
+    <div class="header-glow">
+        <div class="title-badge">
+            <h1><i class="fas fa-coins"></i> CentQuest</h1>
+            <div class="status-chip" id="earningStatusChip"><i class="fas fa-hourglass-half"></i> ⚡ 0 ct/s</div>
         </div>
-        <div class="panel">
-            <div class="input-field">
-                <div class="input-label"><i class="far fa-envelope"></i> E-Mail-Adresse oder Benutzername</div>
-                <input type="text" id="loginEmail" placeholder="max.mustermann@wealthpro.de" autocomplete="off">
-            </div>
-            <div class="input-field">
-                <div class="input-label"><i class="fas fa-lock"></i> Passwort</div>
-                <input type="password" id="loginPassword" placeholder="Ihre Anmeldedaten">
-            </div>
-            <button class="login-btn" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> Jetzt anmelden</button>
-            <div class="legal-note">
-                <i class="fas fa-shield-alt"></i> Geschützte Verbindung · Demo-Umgebung
-            </div>
+        <div class="sub">Erledige Umfragen & Aufgaben – Jede erledigte Aufgabe schaltet <strong>+1 Cent pro Sekunde</strong> frei!</div>
+    </div>
+
+    <!-- Verdienst Anzeige -->
+    <div class="earn-dashboard">
+        <div class="per-sec-label"><i class="fas fa-charging-station"></i> DEINE AKTUELLE RATE</div>
+        <div class="rate-box" id="rateDisplay">0<span style="font-size:1.5rem;"> ct/s</span></div>
+        <div class="total-earned">
+            <div class="total-label"><i class="fas fa-sack-dollar"></i> GESAMT VERDIENT (live)</div>
+            <div class="total-amount" id="totalEarnedDisplay">0,00 €</div>
         </div>
     </div>
 
-    <!-- Dashboard nach erfolgreicher Anmeldung (echtes Echtzeit-Gefühl) -->
-    <div id="dashboardContainer" class="dashboard-panel">
-        <div class="card-header" style="padding-bottom: 0;">
-            <div class="logo-area">
-                <div class="logo-icon"><i class="fas fa-chart-simple"></i></div>
-                <div class="logo-text">wealthPro<span class="badge-pro">LIVE</span></div>
+    <!-- Aufgaben & Umfragen Bereich -->
+    <div class="quests-section">
+        <div class="section-title"><i class="fas fa-tasks"></i> Aufgaben erledigen</div>
+        <!-- Task 1 -->
+        <div class="task-card" data-task="task1">
+            <div class="task-info">
+                <div class="task-title"><i class="fas fa-check-circle"></i> Willkommens-Tutorial</div>
+                <div class="task-desc">Klicke auf „Erledigen“ – 1 Cent / Sekunde dauerhaft freischalten.</div>
             </div>
+            <button class="complete-btn" data-task-id="task1"><i class="fas fa-play"></i> Erledigen</button>
         </div>
-        <div class="panel">
-            <div class="dashboard-header">
-                <div class="user-greeting">
-                    <h3 id="dashboardUserName">Willkommen zurück</h3>
-                    <p><i class="fas fa-circle" style="font-size: 8px; color: #2bff6e;"></i> Echtzeit-Session aktiv</p>
-                </div>
-                <div class="logout-icon" id="logoutBtnDashboard">
-                    <i class="fas fa-sign-out-alt"></i> Abmelden
-                </div>
+        <!-- Task 2 -->
+        <div class="task-card" data-task="task2">
+            <div class="task-info">
+                <div class="task-title"><i class="fas fa-share-alt"></i> Social Sharing (Demo)</div>
+                <div class="task-desc">Fake-Sharing – klicken für extra +1 ct/s.</div>
             </div>
-
-            <!-- Karte: Verdienst pro Sekunde (echter Wert) -->
-            <div class="stat-grid">
-                <div class="rate-label">
-                    <i class="fas fa-bolt"></i> AKTUELLE VERDIENSTRATE
-                </div>
-                <div class="rate-value" id="ratePerSecondValue">
-                    0,00 <small>€/s</small>
-                </div>
-                <div class="per-sec-badge">
-                    <i class="fas fa-charging-station"></i> pro Sekunde vergütet
-                </div>
-            </div>
-
-            <!-- Gesamtverdienst seit Login -->
-            <div class="total-earnings">
-                <div class="total-title">
-                    <i class="fas fa-sack-dollar"></i> GESAMTVERDIENST (live)
-                </div>
-                <div class="total-amount" id="totalEarnedValue">
-                    0,00 €
-                </div>
-                <div class="fine-print" style="margin-top: 12px; text-align: left;">
-                    <i class="fas fa-chart-line"></i> Aktualisiert in Echtzeit · seit Anmeldung
-                </div>
-            </div>
-            <div class="divider"></div>
-            <div class="fine-print">
-                <i class="fas fa-info-circle"></i> Simulationsmodus – alle angezeigten Werte sind rein demonstrativ.
-            </div>
+            <button class="complete-btn" data-task-id="task2"><i class="fas fa-share"></i> Erledigen</button>
         </div>
+        
+        <div class="section-title" style="margin-top: 10px;"><i class="fas fa-poll"></i> Umfragen beantworten</div>
+        <!-- Umfrage 1: Lieblingsgetränk -->
+        <div class="task-card survey-card" id="survey1Card">
+            <div class="task-info">
+                <div class="task-title"><i class="fas fa-mug-hot"></i> Mini-Umfrage: Dein Lieblingsgetränk?</div>
+                <div class="task-desc">Wähle eine Antwort – Belohnung: +1 Cent / Sekunde (nur einmalig)</div>
+                <div class="survey-option" id="survey1Options">
+                    <span class="survey-choice" data-survey="1" data-value="Kaffee">☕ Kaffee</span>
+                    <span class="survey-choice" data-survey="1" data-value="Tee">🍵 Tee</span>
+                    <span class="survey-choice" data-survey="1" data-value="Mate">🧉 Mate</span>
+                    <span class="survey-choice" data-survey="1" data-value="Wasser">💧 Wasser</span>
+                </div>
+            </div>
+            <div class="reward-badge" id="survey1Badge">🔒 Nicht beantwortet</div>
+        </div>
+
+        <!-- Umfrage 2: Wie findest du die App? -->
+        <div class="task-card survey-card" id="survey2Card">
+            <div class="task-info">
+                <div class="task-title"><i class="fas fa-star"></i> Feedback-Umfrage: Wie gefällt dir CentQuest?</div>
+                <div class="task-desc">Bewertung abgeben -> +1 ct/s Belohnung</div>
+                <div class="survey-option" id="survey2Options">
+                    <span class="survey-choice" data-survey="2" data-value="Sehr gut">🌟 Sehr gut</span>
+                    <span class="survey-choice" data-survey="2" data-value="Gut">👍 Gut</span>
+                    <span class="survey-choice" data-survey="2" data-value="Okay">😐 Okay</span>
+                </div>
+            </div>
+            <div class="reward-badge" id="survey2Badge">🔒 Nicht beantwortet</div>
+        </div>
+
+        <div class="status-message" id="globalMessage"><i class="fas fa-gem"></i> Jede erledigte Aufgabe = 1 Cent pro Sekunde mehr!</div>
+        <footer>
+            <i class="fas fa-clock"></i> Echtzeit-Simulation · Verdienst läuft im Hintergrund, sobald die erste Aufgabe/Umfrage erledigt ist.
+        </footer>
     </div>
 </div>
 
 <script>
     (function() {
-        // ---------- STATE ----------
-        let activeSession = false;
-        let currentUserName = "Investor";
-        let earningsRate = 0.00;        // Euro pro Sekunde
-        let totalAccumulated = 0.00;     // Gesamtsumme seit Login
+        // --- SPIEL LOGIK ---
+        // Tasks & Surveys: Jede abgeschlossene Aktion gibt einen permanenten Multiplikator von 0.01€/s (1 ct/s)
+        // Maximal 5 Cent pro Sekunde? Unbegrenzt, hier 4 Aktionen (2 Tasks + 2 Umfragen) = maximal 4 ct/s.
+        // Pro erledigter Sache -> earningsPerSecond += 0.01
+        let totalCentsPerSecond = 0;       // in Euro (z.B. 0.01 = 1ct)
+        let totalAccumulated = 0;           // Euro gesamt seit Start
         let timerInterval = null;
+        let isEarningActive = false;
 
-        // DOM-Elemente Login
-        const loginContainer = document.getElementById('loginContainer');
-        const dashboardContainer = document.getElementById('dashboardContainer');
-        const loginEmailInput = document.getElementById('loginEmail');
-        const loginPasswordInput = document.getElementById('loginPassword');
-        const loginBtn = document.getElementById('doLoginBtn');
+        // Status der Freischaltungen
+        const completedFlags = {
+            task1: false,
+            task2: false,
+            survey1: false,
+            survey2: false
+        };
 
-        // Dashboard Elemente
-        const dashboardUserNameSpan = document.getElementById('dashboardUserName');
-        const ratePerSecondSpan = document.getElementById('ratePerSecondValue');
-        const totalEarnedSpan = document.getElementById('totalEarnedValue');
-        const logoutDashboardBtn = document.getElementById('logoutBtnDashboard');
+        // DOM Elemente
+        const rateDisplaySpan = document.getElementById('rateDisplay');
+        const totalEarnedSpan = document.getElementById('totalEarnedDisplay');
+        const earningStatusChip = document.getElementById('earningStatusChip');
+        const globalMessageDiv = document.getElementById('globalMessage');
+
+        // Buttons & Cards
+        const task1Btn = document.querySelector('[data-task-id="task1"]');
+        const task2Btn = document.querySelector('[data-task-id="task2"]');
+        const survey1Options = document.querySelectorAll('[data-survey="1"]');
+        const survey2Options = document.querySelectorAll('[data-survey="2"]');
+        const survey1Badge = document.getElementById('survey1Badge');
+        const survey2Badge = document.getElementById('survey2Badge');
+        const survey1Card = document.getElementById('survey1Card');
+        const survey2Card = document.getElementById('survey2Card');
 
         // Hilfsfunktionen Formatierung
-        const formatEuro = (value) => {
+        function formatEuro(value) {
             return value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-        };
+        }
 
-        const formatRateDisplay = (rate) => {
-            return rate.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' <small>€/s</small>';
-        };
+        // Aktualisiert die UI für Rate & Gesamt
+        function updateUI(triggerFlash = false) {
+            // Anzeige der Rate in Cent pro Sekunde
+            const cents = Math.floor(totalCentsPerSecond * 100);
+            rateDisplaySpan.innerHTML = `${cents}<span style="font-size:1.5rem;"> ct/s</span>`;
+            earningStatusChip.innerHTML = `<i class="fas fa-bolt"></i> ⚡ ${cents} ct/s`;
 
-        // UI Updates (ohne Timer-Effekt)
-        function updateDashboardUI(triggerFlash = false) {
-            if (!activeSession) return;
-            // Rate anzeigen
-            if (ratePerSecondSpan) {
-                ratePerSecondSpan.innerHTML = formatRateDisplay(earningsRate);
-            }
-            // Total anzeigen mit optionalem Flash
-            if (totalEarnedSpan) {
-                totalEarnedSpan.innerText = formatEuro(totalAccumulated);
-                if (triggerFlash) {
-                    totalEarnedSpan.classList.add('update-flash');
-                    setTimeout(() => {
-                        if (totalEarnedSpan) totalEarnedSpan.classList.remove('update-flash');
-                    }, 220);
-                }
+            totalEarnedSpan.innerText = formatEuro(totalAccumulated);
+            if (triggerFlash) {
+                totalEarnedSpan.classList.add('coin-flash');
+                setTimeout(() => {
+                    totalEarnedSpan.classList.remove('coin-flash');
+                }, 250);
             }
         }
 
-        // Stoppt den laufenden Timer (falls aktiv)
-        function stopEarningsTimer() {
+        // Timer starten/stoppen je nachdem ob totalCentsPerSecond > 0
+        function restartEarningTimer() {
             if (timerInterval !== null) {
                 clearInterval(timerInterval);
                 timerInterval = null;
             }
-        }
-
-        // Startet den Echtzeit-Timer (jede Sekunde Geld hinzufügen)
-        function startEarningsTimer() {
-            if (timerInterval) stopEarningsTimer();
-            if (!activeSession) return;
-
+            // Wenn keine aktive Rate, dann läuft kein Timer
+            if (totalCentsPerSecond <= 0) {
+                isEarningActive = false;
+                updateUI(false);
+                return;
+            }
+            isEarningActive = true;
             timerInterval = setInterval(() => {
-                if (activeSession && earningsRate > 0) {
-                    totalAccumulated += earningsRate;
-                    // UI aktualisieren mit sanftem Flash-Effekt
-                    updateDashboardUI(true);
-                } else if (activeSession && earningsRate === 0) {
-                    // Fallback - passiert nicht, aber sicher
-                    updateDashboardUI(false);
+                if (totalCentsPerSecond > 0) {
+                    totalAccumulated += totalCentsPerSecond;   // totalCentsPerSecond ist in Euro (z.b. 0.03)
+                    updateUI(true);
                 }
             }, 1000);
         }
 
-        // Erzeugt einen realistischen, "echt" wirkenden Sekundenverdienst (zwischen 0,47€ und 28,90€)
-        // wirkt wie ein professioneller High-End-Tarif
-        function generateRealisticEarningsRate() {
-            // Fintech-typische Werte: 0.85€/s, 2.45€/s, 5.20€/s, 12.75€/s, 18.30€, 24.99€
-            const pool = [0.87, 1.45, 2.33, 3.78, 5.12, 7.45, 9.90, 12.35, 15.80, 18.25, 22.40, 26.75, 29.99];
-            // Zufällige Auswahl, aber mit etwas Gewichtung für mittlere Werte (beliebt)
-            let selected;
-            if (Math.random() > 0.65) {
-                // höhere Rarität für sehr hohe Werte
-                const highRange = [18.25, 22.40, 26.75, 29.99];
-                selected = highRange[Math.floor(Math.random() * highRange.length)];
-            } else {
-                selected = pool[Math.floor(Math.random() * pool.length)];
-            }
-            // Leichte Mikrovariation für Authentizität (+-0,05)
-            const microNoise = (Math.random() * 0.12) - 0.06;
-            let finalRate = selected + microNoise;
-            finalRate = Math.round(finalRate * 100) / 100;
-            if (finalRate < 0.35) finalRate = 0.89; // Sicherheitswert
-            return finalRate;
+        // Allgemeine Funktion: Belohnung hinzufügen (1 Cent = 0.01 Euro pro Sekunde)
+        function addReward(sourceName, rewardAmount = 0.01) {
+            if (rewardAmount !== 0.01) rewardAmount = 0.01; // sicherheitshalber immer 1 cent
+            totalCentsPerSecond += rewardAmount;
+            // Runden auf 2 Nachkommastellen wegen floating point
+            totalCentsPerSecond = Math.round(totalCentsPerSecond * 100) / 100;
+            
+            // UI updaten und Timer neustarten (falls bereits aktiv oder neu)
+            updateUI(false);
+            restartEarningTimer();
+
+            // Globale Nachricht mit Animation
+            globalMessageDiv.innerHTML = `<i class="fas fa-trophy"></i> ✅ +1 ct/s durch: ${sourceName} ! Gesamt: ${Math.floor(totalCentsPerSecond*100)} ct/s`;
+            globalMessageDiv.style.color = "#d4ff9f";
+            setTimeout(() => {
+                if(globalMessageDiv) globalMessageDiv.style.color = "#8bc34a";
+            }, 1500);
+            
+            // Kleine Animation auf der Karte (visuelles Feedback)
+            const chip = earningStatusChip;
+            chip.classList.add('fresh-reward');
+            setTimeout(() => chip.classList.remove('fresh-reward'), 500);
         }
 
-        // Login-Logik: Erzeugt echte Session mit individuellem Verdienst
-        function performLogin() {
-            if (activeSession) return;
+        // Task abschließen
+        function completeTask(taskId, taskName, btnElement, cardElement) {
+            if (completedFlags[taskId]) return;
+            completedFlags[taskId] = true;
+            // Button deaktivieren & stylen
+            if (btnElement) {
+                btnElement.classList.add('completed');
+                btnElement.innerHTML = '<i class="fas fa-check"></i> Abgeschlossen';
+                btnElement.disabled = true;
+                btnElement.style.pointerEvents = "none";
+            }
+            if (cardElement) {
+                cardElement.style.opacity = "0.9";
+                cardElement.style.borderColor = "#7bcb6e";
+            }
+            addReward(taskName, 0.01);
+        }
 
-            // Benutzername aus dem E-Mail-Feld parsen oder Platzhalter nutzen -> fühlt sich echt an
-            let rawUser = loginEmailInput.value.trim();
-            let displayUser = "";
+        // Umfrage abschließen (nur einmal)
+        function completeSurvey(surveyId, surveyName, badgeElement, optionsContainer) {
+            const flagKey = `survey${surveyId}`;
+            if (completedFlags[flagKey]) return;
+            completedFlags[flagKey] = true;
+            if (badgeElement) {
+                badgeElement.innerHTML = "✅ Beantwortet +1 ct/s";
+                badgeElement.style.background = "#2e7d64";
+                badgeElement.style.color = "white";
+            }
+            // alle Auswahlmöglichkeiten deaktivieren
+            if (optionsContainer) {
+                const choices = optionsContainer.querySelectorAll('.survey-choice');
+                choices.forEach(choice => {
+                    choice.style.pointerEvents = "none";
+                    choice.style.opacity = "0.5";
+                });
+            }
+            addReward(surveyName, 0.01);
+            // visuelles Highlight auf der Karte
+            const card = document.getElementById(`survey${surveyId}Card`);
+            if(card) card.style.border = "1px solid #7bcb6e";
+        }
 
-            if (rawUser === "") {
-                displayUser = "Christian M.";
-            } else {
-                // Wenn email, dann vor dem @ nehmen, ansonsten den Text kürzen
-                if (rawUser.includes('@')) {
-                    displayUser = rawUser.split('@')[0];
-                } else {
-                    displayUser = rawUser.substring(0, 18);
+        // Event Listener für Tasks
+        if (task1Btn) {
+            const parentCard = task1Btn.closest('.task-card');
+            task1Btn.addEventListener('click', () => completeTask('task1', 'Willkommens-Tutorial', task1Btn, parentCard));
+        }
+        if (task2Btn) {
+            const parentCard = task2Btn.closest('.task-card');
+            task2Btn.addEventListener('click', () => completeTask('task2', 'Social Sharing (Demo)', task2Btn, parentCard));
+        }
+
+        // Umfrage 1 (Lieblingsgetränk)
+        if (survey1Options.length) {
+            survey1Options.forEach(opt => {
+                opt.addEventListener('click', (e) => {
+                    if (completedFlags.survey1) return;
+                    const selectedValue = opt.getAttribute('data-value') || "Antwort";
+                    completeSurvey(1, `Umfrage: Lieblingsgetränk (${selectedValue})`, survey1Badge, document.getElementById('survey1Options'));
+                });
+            });
+        }
+
+        // Umfrage 2 (Feedback)
+        if (survey2Options.length) {
+            survey2Options.forEach(opt => {
+                opt.addEventListener('click', (e) => {
+                    if (completedFlags.survey2) return;
+                    const selectedValue = opt.getAttribute('data-value') || "Bewertung";
+                    completeSurvey(2, `Feedback-Umfrage (${selectedValue})`, survey2Badge, document.getElementById('survey2Options'));
+                });
+            });
+        }
+
+        // Fallback: beim Start keine Belohnung, erst durch Interaktion.
+        totalCentsPerSecond = 0;
+        totalAccumulated = 0;
+        updateUI(false);
+        
+        // Zusätzlich: Sicherstellen, dass Timer nur läuft, wenn cents>0, aber initial 0.
+        restartEarningTimer(); // startet keinen Timer weil totalCentsPerSecond = 0
+
+        // Hintergrundanimation für jede Sekunde (zentraler Counter wird im Timer behandelt)
+        // Extra visuelles Bonus: Bei jeder Sekunde ein kleiner Hinweis im Titel? optional.
+        let lastUpdateSecond = 0;
+        setInterval(() => {
+            if (totalCentsPerSecond > 0 && isEarningActive) {
+                // ein dezentes animieren der Rate-Anzeige alle 3 Sekunden (nicht störend)
+                const rateElem = document.getElementById('rateDisplay');
+                if (rateElem && Math.random() > 0.7) {
+                    rateElem.style.transform = "scale(1.02)";
+                    setTimeout(() => { if(rateElem) rateElem.style.transform = ""; }, 150);
                 }
-                // Fallback für seltsame Zeichen
-                if (displayUser.length === 0) displayUser = "Member";
             }
-            // Erste Buchstaben großschreiben
-            displayUser = displayUser.charAt(0).toUpperCase() + displayUser.slice(1).toLowerCase();
-            currentUserName = displayUser;
-
-            // neuen, dynamischen Verdienst pro Sekunde generieren (echt wirkend)
-            earningsRate = generateRealisticEarningsRate();
-
-            // Reset des akkumulierten Geldes (neue Session)
-            totalAccumulated = 0.00;
-
-            // Dashboard personalisieren
-            if (dashboardUserNameSpan) {
-                dashboardUserNameSpan.innerHTML = `${currentUserName} <span style="font-size: 13px; font-weight: normal; color:#6c86a5;">⚡ Aktiv</span>`;
+        }, 1200);
+        
+        // Kleine Nachricht beim Start
+        setTimeout(() => {
+            if(!completedFlags.task1 && !completedFlags.task2 && !completedFlags.survey1 && !completedFlags.survey2) {
+                globalMessageDiv.innerHTML = "<i class='fas fa-hand-peace'></i> Erledige deine erste Aufgabe oder Umfrage – 1 Cent pro Sekunde wartet!";
             }
-
-            // UI auf Startwerte setzen
-            updateDashboardUI(false);
-
-            // Timer starten (echte Sekundeninkremente)
-            startEarningsTimer();
-
-            // Panel-Wechsel: Login ausblenden, Dashboard einblenden
-            loginContainer.style.display = "none";
-            dashboardContainer.style.display = "block";
-            activeSession = true;
-
-            // Eingabefelder sicherheitshalber leeren (aber kein Zwang)
-            loginPasswordInput.value = "";
-            // Kleines optisches Highlight: Konsole dezent
-            console.log("wealthPro | Session gestartet – Echtzeit-Simulation läuft");
-        }
-
-        // Logout: beendet Session, setzt alles zurück
-        function performLogout() {
-            if (!activeSession) return;
-
-            // Timer stoppen
-            stopEarningsTimer();
-
-            // Zustand zurücksetzen
-            activeSession = false;
-            earningsRate = 0;
-            totalAccumulated = 0;
-            currentUserName = "";
-
-            // UI wechseln
-            loginContainer.style.display = "block";
-            dashboardContainer.style.display = "none";
-
-            // Eingabefelder optional zurücksetzen (für neue Anmeldung)
-            if (loginEmailInput) loginEmailInput.value = "";
-            if (loginPasswordInput) loginPasswordInput.value = "";
-        }
-
-        // Event-Listener für Login (echter Klick, egal welche Daten – fake aber professionell)
-        function onLoginClick() {
-            if (activeSession) return;
-            // kleine "Validierung", um das echte Gefühl zu geben (keine leeren Felder werden blockiert, aber es fühlt sich an wie ein richtiges System)
-            const emailVal = loginEmailInput.value.trim();
-            const passVal = loginPasswordInput.value;
-            if (emailVal === "" && passVal === "") {
-                // Trotzdem erlauben, aber als Hinweis? Machen wir es einfach: Es wird immer akzeptiert, aber für echte Illusion.
-                // trotzdem machen wir einen kleinen visuellen Hinweis (kein echter Fehler, nur subtil)
-                // Aber wir lassen es zu, weil es fake ist – aber professionell: kurz animieren
-                loginBtn.style.transform = "scale(0.99)";
-                setTimeout(() => { if(loginBtn) loginBtn.style.transform = ""; }, 100);
-            }
-            performLogin();
-        }
-
-        // Enter-Taste in den Inputs für bessere UX
-        function setupEnterEvents() {
-            const handleKey = (e) => {
-                if (e.key === 'Enter' && !activeSession) {
-                    e.preventDefault();
-                    onLoginClick();
-                }
-            };
-            if (loginEmailInput) loginEmailInput.addEventListener('keypress', handleKey);
-            if (loginPasswordInput) loginPasswordInput.addEventListener('keypress', handleKey);
-        }
-
-        // Initialisierung: sicherstellen, dass Dashboard versteckt ist
-        function init() {
-            loginContainer.style.display = "block";
-            dashboardContainer.style.display = "none";
-            activeSession = false;
-            if (timerInterval) clearInterval(timerInterval);
-            earningsRate = 0;
-            totalAccumulated = 0;
-
-            // Platzhalter auf moderne Fintech-Art
-            if (loginEmailInput) loginEmailInput.placeholder = "name@firma.de oder Nutzername";
-            if (loginPasswordInput) loginPasswordInput.placeholder = "············";
-            setupEnterEvents();
-        }
-
-        // Event Listener binden
-        loginBtn.addEventListener('click', onLoginClick);
-        logoutDashboardBtn.addEventListener('click', performLogout);
-
-        // Seite initialisieren
-        init();
-
-        // Optional: Beim Seitenwechsel / Schließen sauber Timer beenden
-        window.addEventListener('beforeunload', () => {
-            if (timerInterval) clearInterval(timerInterval);
-        });
+        }, 500);
     })();
 </script>
 </body>
