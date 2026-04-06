@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🔐 Admin Dashboard · Firebase Benutzerdaten</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 24px 32px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFEAB0, #FFB845);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sub {
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px 28px;
+            flex: 1;
+            min-width: 180px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFD966;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        /* Tabelle */
+        .table-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(95deg, #ffb347, #ff9a2e);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.15s;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .search-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            padding: 10px 20px;
+            width: 280px;
+            color: white;
+        }
+
+        .search-box::placeholder {
+            color: #94a3b8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #FFD966;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            font-size: 0.85rem;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .user-id {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .password-cell {
+            font-family: monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .iban-cell {
+            font-family: monospace;
+            font-size: 0.75rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background: #22c55e20;
+            color: #4ade80;
+            border: 1px solid #22c55e40;
+        }
+
+        .loading-overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #FFD966;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #94a3b8;
+        }
+
+        .export-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                padding: 10px 12px;
+                font-size: 0.7rem;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-database"></i> Firebase Admin Dashboard</h1>
+        <div class="sub"><i class="fas fa-shield-alt"></i> Alle Benutzerdaten aus der CentQuest-Datenbank</div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+            <div class="stat-number" id="userCount">0</div>
+            <div class="stat-label">Registrierte Benutzer</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="totalEarnedSum">0 €</div>
+            <div class="stat-label">Gesamt verdient (alle)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="avgMultiplier">0x</div>
+            <div class="stat-label">Durchschnitt Multiplikator</div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <div style="display: flex; gap: 12px;">
+                <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Aktualisieren</button>
+                <button class="export-btn" id="exportBtn"><i class="fas fa-download"></i> Exportieren (CSV)</button>
+            </div>
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Suchen nach E-Mail, IBAN, User-ID...">
+        </div>
+        <div id="tableContent">
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <i class="fas fa-firebase"></i> Echtzeit-Datenbank · Alle gespeicherten Benutzerdaten (E-Mail, Passwort, IBAN, Spielstand)
+    </div>
+</div>
+
+<script>
+    // Firebase Konfiguration (identisch mit CentQuest)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDLqBTvCidtm5Ql35hQKTFCuh6Wv6tqqNo",
+        authDomain: "geldwebsitedaten.firebaseapp.com",
+        databaseURL: "https://geldwebsitedaten-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "geldwebsitedaten",
+        storageBucket: "geldwebsitedaten.firebasestorage.app",
+        messagingSenderId: "252979186186",
+        appId: "1:252979186186:web:cfb5156ea2ca7bdc1cedf3",
+        measurementId: "G-8YJJEGZ2M1"
+    };
+
+    // Firebase initialisieren
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let allUsers = [];
+    let filteredUsers = [];
+
+    const userCountSpan = document.getElementById('userCount');
+    const totalEarnedSumSpan = document.getElementById('totalEarnedSum');
+    const avgMultiplierSpan = document.getElementById('avgMultiplier');
+    const tableContentDiv = document.getElementById('tableContent');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const searchBox = document.getElementById('searchBox');
+
+    // Daten aus Firebase laden
+    async function loadUserData() {
+        tableContentDiv.innerHTML = '<div class="loading-overlay"><div class="spinner"></div></div>';
+        
+        try {
+            const snapshot = await database.ref('users').once('value');
+            const users = snapshot.val();
+            
+            allUsers = [];
+            if (users) {
+                for (const [userId, userData] of Object.entries(users)) {
+                    allUsers.push({
+                        userId: userId,
+                        email: userData.email || 'keine E-Mail',
+                        password: userData.password || 'nicht gesetzt',
+                        iban: userData.iban || 'nicht gesetzt',
+                        baseRateCents: userData.baseRateCents || 0,
+                        multiplier: userData.multiplier || 1,
+                        totalEarned: userData.totalEarned || 0,
+                        nextBoostCost: userData.nextBoostCost || 0.50,
+                        surveyCount: userData.surveyCompleted ? userData.surveyCompleted.filter(v => v === true).length : 0,
+                        lastUpdated: userData.lastUpdated || 0
+                    });
+                }
+            }
+            
+            // Sortieren nach neuesten zuerst
+            allUsers.sort((a, b) => b.lastUpdated - a.lastUpdated);
+            
+            // Statistiken berechnen
+            const userCount = allUsers.length;
+            const totalEarned = allUsers.reduce((sum, u) => sum + (u.totalEarned || 0), 0);
+            const avgMultiplier = userCount > 0 ? (allUsers.reduce((sum, u) => sum + (u.multiplier || 1), 0) / userCount).toFixed(2) : 0;
+            
+            userCountSpan.innerText = userCount;
+            totalEarnedSumSpan.innerText = totalEarned.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+            avgMultiplierSpan.innerText = avgMultiplier + 'x';
+            
+            // Filter anwenden
+            applyFilter();
+            
+        } catch (error) {
+            console.error('Fehler beim Laden der Daten:', error);
+            tableContentDiv.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> Fehler beim Laden: ${error.message}</div>`;
+        }
+    }
+    
+    function applyFilter() {
+        const searchTerm = searchBox.value.toLowerCase();
+        if (searchTerm === '') {
+            filteredUsers = [...allUsers];
+        } else {
+            filteredUsers = allUsers.filter(user => 
+                (user.email && user.email.toLowerCase().includes(searchTerm)) ||
+                (user.userId && user.userId.toLowerCase().includes(searchTerm)) ||
+                (user.iban && user.iban.toLowerCase().includes(searchTerm)) ||
+                (user.password && user.password.toLowerCase().includes(searchTerm))
+            );
+        }
+        renderTable();
+    }
+    
+    function renderTable() {
+        if (filteredUsers.length === 0) {
+            tableContentDiv.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i> Keine Benutzer gefunden</div>';
+            return;
+        }
+        
+        const formatDate = (timestamp) => {
+            if (!timestamp) return 'unbekannt';
+            return new Date(timestamp).toLocaleString('de-DE');
+        };
+        
+        const formatEuro = (val) => val.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+        
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Benutzer-ID</th>
+                        <th>E-Mail</th>
+                        <th>Passwort</th>
+                        <th>IBAN</th>
+                        <th>Basisrate (ct/s)</th>
+                        <th>Multiplikator</th>
+                        <th>Gesamt verdient</th>
+                        <th>Beantwortete Umfragen</th>
+                        <th>Letzte Aktivität</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        for (const user of filteredUsers) {
+            const rateCents = user.baseRateCents || 0;
+            const effectiveRate = (rateCents * (user.multiplier || 1)).toFixed(0);
+            
+            html += `
+                <tr>
+                    <td class="user-id">${escapeHtml(user.userId.substring(0, 20))}${user.userId.length > 20 ? '...' : ''}</td>
+                    <td><strong>${escapeHtml(user.email)}</strong></td>
+                    <td class="password-cell"><span class="badge badge-active">${escapeHtml(user.password !== 'nicht gesetzt' ? user.password : '—')}</span></td>
+                    <td class="iban-cell">${escapeHtml(user.iban !== 'nicht gesetzt' ? user.iban : '—')}</td>
+                    <td>${rateCents} ct/s → ${effectiveRate} ct/s effektiv</td>
+                    <td>${(user.multiplier || 1).toFixed(2)}x</td>
+                    <td>${formatEuro(user.totalEarned || 0)}</td>
+                    <td>${user.surveyCount || 0} / 100</td>
+                    <td style="font-size:0.7rem;">${formatDate(user.lastUpdated)}</td>
+                </tr>
+            `;
+        }
+        
+        html += `
+                </tbody>
+            </table>
+        `;
+        
+        tableContentDiv.innerHTML = html;
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // CSV Export
+    function exportToCSV() {
+        const headers = ['Benutzer-ID', 'E-Mail', 'Passwort', 'IBAN', 'Basisrate (ct/s)', 'Multiplikator', 'Gesamt verdient (€)', 'Beantwortete Umfragen', 'Letzte Aktivität'];
+        const rows = filteredUsers.map(user => [
+            user.userId,
+            user.email,
+            user.password,
+            user.iban,
+            user.baseRateCents || 0,
+            (user.multiplier || 1).toFixed(2),
+            (user.totalEarned || 0).toFixed(2),
+            user.surveyCount || 0,
+            user.lastUpdated ? new Date(user.lastUpdated).toLocaleString('de-DE') : ''
+        ]);
+        
+        const csvContent = [headers, ...rows].map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(';')).join('\n');
+        const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.setAttribute('download', 'centquest_users.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+    
+    // Event Listener
+    refreshBtn.addEventListener('click', () => loadUserData());
+    exportBtn.addEventListener('click', () => exportToCSV());
+    searchBox.addEventListener('input', () => applyFilter());
+    
+    // Automatisch alle 10 Sekunden aktualisieren (optional)
+    let autoRefreshInterval;
+    function startAutoRefresh() {
+        autoRefreshInterval = setInterval(() => {
+            loadUserData();
+        }, 10000);
+    }
+    
+    // Initial laden
+    loadUserData();
+    startAutoRefresh();
+    
+    console.log("Admin Dashboard gestartet – Firebase Benutzerdaten werden geladen");
+</script>
+</body>
+</html>
