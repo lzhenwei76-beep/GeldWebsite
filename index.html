@@ -2,215 +2,79 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>✨ CentQuest v10 · Firebase · Echtzeit-Datenbank</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Admin · Alle Benutzerdaten (Passwort sichtbar)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
             padding: 24px;
-            transition: background 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
-
-        /* ========== HELLES LAYOUT ========== */
-        body.theme-light {
-            background: linear-gradient(145deg, #f6f9fc 0%, #eef2f8 100%);
-            color: #1a2c3e;
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 24px 32px;
+            margin-bottom: 32px;
         }
-        body.theme-light .card, body.theme-light .login-card, body.theme-light .surveys-panel, body.theme-light .main-panel {
-            background: rgba(255, 255, 255, 0.98);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
-        }
-        body.theme-light input { background: #ffffff; border-color: #dce3ec; color: #1a2c3e; }
-        body.theme-light .survey-item { background: #ffffff; border-color: #e8edf3; }
-        body.theme-light .stats-panel { background: linear-gradient(135deg, #ffffff, #f8fafd); }
-        body.theme-light .multiplier-card { background: linear-gradient(135deg, #fff8e7, #fff3df); border-color: #f5c542; }
-        body.theme-light .rate-number, body.theme-light .total-amount { background: linear-gradient(145deg, #e68a2e, #c97e0a); -webkit-background-clip: text; background-clip: text; color: transparent; }
-
-        /* ========== LIQUID GLASS LAYOUT ========== */
-        body.theme-glass {
-            background: linear-gradient(125deg, #b8e1fc 0%, #c5e8ff 25%, #d4f0ff 50%, #c2e4f8 75%, #b0dcf5 100%);
-            background-attachment: fixed;
-            position: relative;
-        }
-        body.theme-glass::before {
-            content: "";
-            position: fixed;
-            top: -30%;
-            left: -30%;
-            width: 160%;
-            height: 160%;
-            background: radial-gradient(circle at 40% 50%, rgba(255,255,245,0.5) 0%, rgba(200,235,255,0.3) 50%, transparent 80%);
-            animation: liquidFlow 22s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-        @keyframes liquidFlow {
-            0% { transform: translate(0%, 0%) rotate(0deg) scale(1); }
-            33% { transform: translate(2%, 3%) rotate(1deg) scale(1.02); }
-            66% { transform: translate(-3%, 1%) rotate(-1deg) scale(0.98); }
-            100% { transform: translate(0%, 0%) rotate(0deg) scale(1); }
-        }
-        body.theme-glass .card, body.theme-glass .login-card, body.theme-glass .surveys-panel, body.theme-glass .main-panel {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.65);
-            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.6);
-            z-index: 2;
-        }
-        body.theme-glass input { background: rgba(255, 255, 255, 0.75); border-color: rgba(255, 255, 255, 0.9); color: #1a4a62; }
-        body.theme-glass .survey-item { background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(8px); }
-        body.theme-glass .multiplier-card { background: rgba(255, 248, 225, 0.7); border-color: #f5a623; }
-
-        /* Globale Styles */
-        .app-layout { max-width: 1600px; margin: 0 auto; position: relative; z-index: 2; }
-        .flex-dashboard { display: flex; flex-wrap: wrap; gap: 28px; }
-        .main-panel { flex: 2; min-width: 300px; border-radius: 56px; overflow: hidden; transition: transform 0.2s; }
-        .surveys-panel { flex: 1.2; min-width: 360px; border-radius: 56px; display: flex; flex-direction: column; max-height: 88vh; overflow: hidden; }
-        .login-card { max-width: 520px; margin: 80px auto; border-radius: 64px; overflow: hidden; }
-        .hero-header { padding: 28px 32px; border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
-        .title-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-        h1 { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #FFEAB0, #FFB845); -webkit-background-clip: text; background-clip: text; color: transparent; display: inline-flex; align-items: center; gap: 10px; }
-        .sub-desc { font-size: 0.85rem; opacity: 0.75; margin-top: 8px; }
-        .stats-panel { margin: 24px 28px; border-radius: 48px; padding: 28px 24px; text-align: center; }
-        .rate-number { font-size: 4.2rem; font-weight: 800; line-height: 1; letter-spacing: -2px; }
-        .rate-number small { font-size: 1.3rem; }
-        .total-box { background: rgba(0,0,0,0.04); border-radius: 40px; padding: 16px; margin-top: 18px; }
-        .total-amount { font-size: 2.2rem; font-weight: 800; }
-        .multiplier-card { margin: 20px 28px; padding: 20px 24px; border-radius: 48px; text-align: center; }
-        .multiplier-value { font-size: 2.4rem; font-weight: 800; }
-        .boost-btn { background: linear-gradient(95deg, #ffb347, #ff9a2e); border: none; padding: 14px 24px; border-radius: 60px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 14px; transition: transform 0.15s; }
-        .boost-btn:hover { transform: translateY(-2px); }
-        .iban-section { margin: 20px 28px; padding: 18px 24px; border-radius: 48px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.06); }
-        body.theme-glass .iban-section { background: rgba(255,255,255,0.3); }
-        .iban-input-wrapper { display: flex; gap: 12px; flex-wrap: wrap; }
-        .iban-input-wrapper input { flex: 2; min-width: 200px; padding: 14px 18px; border-radius: 60px; font-family: monospace; }
-        .iban-submit-btn { background: linear-gradient(95deg, #4a9e6e, #3a7e56); border: none; padding: 14px 28px; border-radius: 60px; font-weight: 600; cursor: pointer; color: white; }
-        .global-feedback { margin: 20px 28px; padding: 14px 20px; border-radius: 48px; font-size: 0.8rem; text-align: center; font-weight: 500; transition: all 0.2s; }
-        .logout-btn { background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 60px; padding: 8px 20px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
-        .surveys-header { padding: 24px 28px; border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
-        .surveys-list { flex: 1; overflow-y: auto; padding: 20px; scrollbar-width: thin; }
-        .survey-item { border-radius: 28px; padding: 16px 20px; margin-bottom: 14px; transition: all 0.25s ease; cursor: pointer; }
-        .survey-item:hover { transform: translateX(6px); }
-        .survey-item.completed { opacity: 0.6; cursor: default; transform: none; }
-        .survey-question { font-weight: 700; margin-bottom: 10px; font-size: 0.9rem; }
-        .survey-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-        .survey-opt-small { padding: 6px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.15s ease; background: rgba(0,0,0,0.05); }
-        .survey-opt-small:hover { transform: translateY(-2px); background: rgba(0,0,0,0.1); }
-        .layout-selector { display: flex; gap: 12px; background: rgba(0,0,0,0.04); padding: 6px 14px; border-radius: 60px; }
-        .layout-btn { background: transparent; border: 1px solid #ffcd6b; padding: 6px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
-        .layout-btn.active { background: #ffcd6b; color: #1e2a2e; }
-        footer { font-size: 0.65rem; text-align: center; padding: 24px; opacity: 0.6; }
-        input, button { font-family: inherit; }
-        .login-form input { width: 100%; margin-bottom: 18px; padding: 16px 24px; border-radius: 60px; font-size: 1rem; border: 1px solid; }
-        .login-btn { background: linear-gradient(95deg, #ffb347, #ff9a2e); width: 100%; padding: 16px; border-radius: 60px; font-weight: 800; font-size: 1rem; cursor: pointer; border: none; }
-        i { margin-right: 8px; }
-        
-        /* Loading Animationen */
+        h1 { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #FFEAB0, #FFB845); -webkit-background-clip: text; background-clip: text; color: transparent; display: flex; align-items: center; gap: 12px; }
+        .sub { color: #94a3b8; margin-top: 8px; }
+        .stats-grid { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 32px; }
+        .stat-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 24px; padding: 20px 28px; flex: 1; min-width: 180px; }
+        .stat-number { font-size: 2.5rem; font-weight: 800; color: #FFD966; }
+        .stat-label { color: #94a3b8; margin-top: 8px; font-size: 0.85rem; }
+        .table-container { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 32px; overflow: hidden; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .refresh-btn, .export-btn { background: linear-gradient(95deg, #ffb347, #ff9a2e); border: none; padding: 10px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .export-btn { background: rgba(255,255,255,0.1); color: white; }
+        .search-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 40px; padding: 10px 20px; width: 280px; color: white; }
+        .search-box::placeholder { color: #94a3b8; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 16px 20px; background: rgba(0,0,0,0.3); color: #FFD966; font-weight: 600; }
+        td { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); color: #e2e8f0; font-size: 0.85rem; }
+        tr:hover { background: rgba(255,255,255,0.05); }
+        .password-cell { font-family: monospace; background: rgba(0,0,0,0.2); border-radius: 8px; display: inline-block; padding: 4px 8px; font-weight: 600; color: #FFD966; }
+        .iban-cell { font-family: monospace; font-size: 0.75rem; }
+        .loading-overlay { display: flex; justify-content: center; padding: 60px; }
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #FFD966; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #ffcd6b; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
-        .btn-loading { pointer-events: none; opacity: 0.7; }
-        @keyframes coinFlash { 0% { transform: scale(1); } 40% { transform: scale(1.08); text-shadow: 0 0 12px #ffcc44; } 100% { transform: scale(1); } }
-        .coin-animation { animation: coinFlash 0.25s cubic-bezier(0.2, 1.2, 0.8, 1); }
-        .hidden { display: none; }
-        .fade-in { animation: fadeInUp 0.4s ease-out; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .empty-state { text-align: center; padding: 60px; color: #94a3b8; }
+        .footer { margin-top: 24px; text-align: center; color: #64748b; font-size: 0.75rem; }
+        @media (max-width: 768px) { th, td { padding: 10px 12px; font-size: 0.7rem; } }
     </style>
 </head>
-<body class="theme-light">
-<div id="appRoot">
-    <!-- LOGIN PANEL -->
-    <div id="loginPanel">
-        <div class="login-card card">
-            <div class="hero-header" style="text-align:center">
-                <h1><i class="fas fa-database"></i> CentQuest v10</h1>
-                <div class="sub-desc">Firebase · Echtzeit · 100 Umfragen · Multiplikator</div>
-            </div>
-            <div class="login-form">
-                <input type="email" id="loginEmailInput" placeholder="E-Mail Adresse" autocomplete="off">
-                <input type="password" id="loginPasswordInput" placeholder="Passwort">
-                <button class="login-btn" id="startLoginBtn"><i class="fas fa-arrow-right"></i> Anmelden / Registrieren</button>
-                <div style="font-size:0.7rem; text-align:center; margin-top:20px;">✨ Firebase gesichert · Deine Daten werden in der Cloud gespeichert</div>
-            </div>
-        </div>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-database"></i> Firebase Admin Dashboard</h1>
+        <div class="sub"><i class="fas fa-lock"></i> Alle Benutzerdaten inkl. Passwort und IBAN</div>
     </div>
-
-    <!-- DASHBOARD PANEL -->
-    <div id="dashboardPanel" class="hidden">
-        <div class="app-layout">
-            <div class="flex-dashboard">
-                <div class="main-panel card">
-                    <div class="hero-header">
-                        <div class="title-flex">
-                            <h1><i class="fas fa-crown"></i> CentQuest</h1>
-                            <div style="display: flex; gap: 14px; align-items:center;">
-                                <div class="layout-selector" id="layoutSelector">
-                                    <span class="layout-btn" data-theme="light">☀️ Hell</span>
-                                    <span class="layout-btn" data-theme="glass">💎 Liquid Glass</span>
-                                </div>
-                                <div class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</div>
-                            </div>
-                        </div>
-                        <div class="sub-desc" id="welcomeUserMsg"><i class="fas fa-user-astronaut"></i> Willkommen, <strong>Spieler</strong></div>
-                    </div>
-                    <div class="stats-panel">
-                        <div class="rate-number" id="rateDisplay">0<small> ct/s</small></div>
-                        <div class="total-box">
-                            <div class="total-amount" id="totalDisplay">0,00 €</div>
-                        </div>
-                    </div>
-                    <div class="multiplier-card">
-                        <div><i class="fas fa-chart-line"></i> MULTIPLIKATOR</div>
-                        <div class="multiplier-value" id="multiplierDisplay">1.00x</div>
-                        <button class="boost-btn" id="boostBtn"><i class="fas fa-rocket"></i> Multiplikator steigern (+5%)</button>
-                        <div class="boost-cost" id="boostCostDisplay">Kosten: 0,50 €</div>
-                    </div>
-                    
-                    <div class="iban-section">
-                        <div class="iban-title"><i class="fas fa-university"></i> IBAN für Auszahlungen</div>
-                        <div class="iban-input-wrapper">
-                            <input type="text" id="ibanInput" placeholder="DE00 0000 0000 0000 0000 00" autocomplete="off">
-                            <button class="iban-submit-btn" id="ibanSubmitBtn"><i class="fas fa-check"></i> Speichern</button>
-                        </div>
-                        <div class="iban-message" id="ibanMessage"></div>
-                    </div>
-                    
-                    <div class="global-feedback" id="globalFeedMsg">
-                        <i class="fas fa-info-circle"></i> Beantworte Umfragen – jede gibt +1 ct/s Basisrate × Multiplikator!
-                    </div>
-                    <footer><i class="fas fa-firebase"></i> Firebase Echtzeit · Alle Daten werden sicher gespeichert</footer>
-                </div>
-
-                <div class="surveys-panel card">
-                    <div class="surveys-header">
-                        <h3><i class="fas fa-clipboard-list"></i> 100+ Premium Umfragen</h3>
-                        <p style="font-size:0.75rem; margin-top:6px;">Jede Antwort = +1 ct/s Basisrate × Multiplikator</p>
-                    </div>
-                    <div class="surveys-list" id="surveysListContainer">
-                        <div class="skeleton" style="height: 80px; margin-bottom: 12px; background: rgba(0,0,0,0.05); border-radius: 28px;"></div>
-                        <div class="skeleton" style="height: 80px; margin-bottom: 12px; background: rgba(0,0,0,0.05); border-radius: 28px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="stats-grid" id="statsGrid">
+        <div class="stat-card"><div class="stat-number" id="userCount">0</div><div class="stat-label">Registrierte Benutzer</div></div>
+        <div class="stat-card"><div class="stat-number" id="totalEarnedSum">0 €</div><div class="stat-label">Gesamt verdient</div></div>
+        <div class="stat-card"><div class="stat-number" id="avgMultiplier">0x</div><div class="stat-label">Durchschnitt Multiplikator</div></div>
     </div>
+    <div class="table-container">
+        <div class="table-header">
+            <div style="display: flex; gap: 12px;">
+                <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Aktualisieren</button>
+                <button class="export-btn" id="exportBtn"><i class="fas fa-download"></i> CSV Export</button>
+            </div>
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Suchen nach E-Mail, IBAN, Passwort...">
+        </div>
+        <div id="tableContent"><div class="loading-overlay"><div class="spinner"></div></div></div>
+    </div>
+    <div class="footer"><i class="fas fa-firebase"></i> Echtzeit-Datenbank · Passwörter sind im Klartext sichtbar (Demo)</div>
 </div>
 
 <script>
-    // Firebase Konfiguration
     const firebaseConfig = {
         apiKey: "AIzaSyDLqBTvCidtm5Ql35hQKTFCuh6Wv6tqqNo",
         authDomain: "geldwebsitedaten.firebaseapp.com",
@@ -221,317 +85,96 @@
         appId: "1:252979186186:web:cfb5156ea2ca7bdc1cedf3",
         measurementId: "G-8YJJEGZ2M1"
     };
-
-    // Firebase initialisieren
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    (function() {
-        let isLoggedIn = false;
-        let currentUserId = null;
-        let currentUserEmail = null;
-        
-        let baseRateCents = 0;
-        let multiplier = 1.00;
-        let totalEarned = 0.00;
-        let nextBoostCost = 0.50;
-        let timerInterval = null;
-        let savedIban = "";
-        
-        let surveys = [];
-        let surveyCompleted = [];
-        
-        // DOM
-        const loginPanel = document.getElementById('loginPanel');
-        const dashboardPanel = document.getElementById('dashboardPanel');
-        const loginEmail = document.getElementById('loginEmailInput');
-        const loginPassword = document.getElementById('loginPasswordInput');
-        const loginBtn = document.getElementById('startLoginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const welcomeMsgSpan = document.getElementById('welcomeUserMsg');
-        const rateDisplaySpan = document.getElementById('rateDisplay');
-        const totalDisplaySpan = document.getElementById('totalDisplay');
-        const multiplierDisplaySpan = document.getElementById('multiplierDisplay');
-        const globalFeedDiv = document.getElementById('globalFeedMsg');
-        const boostBtn = document.getElementById('boostBtn');
-        const boostCostSpan = document.getElementById('boostCostDisplay');
-        const surveysContainer = document.getElementById('surveysListContainer');
-        const ibanInput = document.getElementById('ibanInput');
-        const ibanSubmitBtn = document.getElementById('ibanSubmitBtn');
-        const ibanMessage = document.getElementById('ibanMessage');
-        
-        // Umfragen generieren (100 Stück)
-        function generateSurveys() {
-            const topics = ["Technologie", "Finanzen", "Gaming", "Reisen", "Mode", "Sport", "Musik", "Filme", "Essen", "Gesundheit", "Bildung", "Umwelt", "Auto", "Politik", "Wissenschaft", "Kunst", "Haustiere", "Bücher", "Fitness", "Social Media", "Streaming", "Mobile Apps", "KI", "Blockchain", "Nachhaltigkeit", "Startups", "E-Commerce", "Marketing", "Persönliche Finanzen", "Kryptowährungen", "Virtual Reality", "E-Sports", "Kochen", "Yoga", "Meditation", "Psychologie", "Astronomie", "Geschichte", "Architektur", "Design", "Fotografie", "Handwerk", "Gartenarbeit", "DIY", "Programmierung", "Cybersicherheit", "Cloud", "Datenanalyse", "Robotik", "3D-Druck", "Erneuerbare", "Elektroautos", "Raumfahrt", "Biotech", "Nanotech", "Quantencomputer", "Kreativwirtschaft", "Podcasts", "Online-Lernen", "Smart Home", "Wearables", "Digitale Kunst", "Nachrichten", "Kryptographie", "DeFi", "NFTs", "Metaverse", "Web3", "Automatisierung", "Logistik", "Personal Branding", "Coaching", "Remote Work", "Coworking", "Minimalismus", "Achtsamkeit", "Tierwohl", "Zero Waste", "Plastikfrei", "Bio-Lebensmittel"];
-            const questions = [];
-            for (let i = 0; i < 100; i++) {
-                const topic = topics[i % topics.length];
-                const r = i % 4;
-                let q = r === 0 ? `Wie bewertest du ${topic}?` : (r === 1 ? `Welcher ${topic}-Trend begeistert dich?` : (r === 2 ? `Wie wichtig ist ${topic} für dich?` : `Deine Erfahrung mit ${topic}?`));
-                questions.push({ question: `Umfrage ${i+1}: ${q}`, options: ["Sehr gut", "Gut", "Neutral", "Weniger gut"] });
-            }
-            return questions;
-        }
-        
-        surveys = generateSurveys();
-        surveyCompleted = new Array(surveys.length).fill(false);
-        
-        function getEffectiveRateEuro() { return (baseRateCents * multiplier) / 100; }
-        
-        function formatRate() {
-            const rateEuro = getEffectiveRateEuro();
-            if (rateEuro >= 1.0) return rateEuro.toFixed(2) + '<small> €/s</small>';
-            return Math.floor(rateEuro * 100) + '<small> ct/s</small>';
-        }
-        
-        function formatEuro(value) { return value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
-        
-        function updateUI(triggerFlash = false) {
-            rateDisplaySpan.innerHTML = formatRate();
-            totalDisplaySpan.innerText = formatEuro(totalEarned);
-            multiplierDisplaySpan.innerText = multiplier.toFixed(2) + 'x';
-            boostCostSpan.innerText = `Kosten: ${formatEuro(nextBoostCost)}`;
-            if (triggerFlash) {
-                totalDisplaySpan.classList.add('coin-animation');
-                setTimeout(() => totalDisplaySpan.classList.remove('coin-animation'), 200);
+    let allUsers = [];
+    let filteredUsers = [];
+
+    async function loadUserData() {
+        document.getElementById('tableContent').innerHTML = '<div class="loading-overlay"><div class="spinner"></div></div>';
+        const snapshot = await database.ref('users').once('value');
+        const users = snapshot.val();
+        allUsers = [];
+        if (users) {
+            for (const [userId, userData] of Object.entries(users)) {
+                allUsers.push({
+                    userId: userId,
+                    email: userData.email || 'keine E-Mail',
+                    password: userData.password || 'nicht gesetzt',
+                    iban: userData.iban || 'nicht gesetzt',
+                    baseRateCents: userData.baseRateCents || 0,
+                    multiplier: userData.multiplier || 1,
+                    totalEarned: userData.totalEarned || 0,
+                    surveyCount: userData.surveyCompleted ? userData.surveyCompleted.filter(v => v === true).length : 0,
+                    lastUpdated: userData.lastUpdated || 0
+                });
             }
         }
-        
-        function restartTimer() {
-            if (timerInterval) clearInterval(timerInterval);
-            if (getEffectiveRateEuro() <= 0 || !isLoggedIn) return;
-            timerInterval = setInterval(() => {
-                if (isLoggedIn && getEffectiveRateEuro() > 0) {
-                    totalEarned += getEffectiveRateEuro();
-                    updateUI(true);
-                    saveToFirebase();
-                }
-            }, 1000);
+        allUsers.sort((a, b) => b.lastUpdated - a.lastUpdated);
+        document.getElementById('userCount').innerText = allUsers.length;
+        document.getElementById('totalEarnedSum').innerText = allUsers.reduce((s, u) => s + (u.totalEarned || 0), 0).toLocaleString('de-DE', { minimumFractionDigits: 2 }) + ' €';
+        document.getElementById('avgMultiplier').innerText = (allUsers.length ? (allUsers.reduce((s, u) => s + (u.multiplier || 1), 0) / allUsers.length).toFixed(2) : 0) + 'x';
+        applyFilter();
+    }
+
+    function applyFilter() {
+        const term = document.getElementById('searchBox').value.toLowerCase();
+        filteredUsers = term ? allUsers.filter(u => 
+            (u.email && u.email.toLowerCase().includes(term)) ||
+            (u.userId && u.userId.toLowerCase().includes(term)) ||
+            (u.iban && u.iban.toLowerCase().includes(term)) ||
+            (u.password && u.password.toLowerCase().includes(term))
+        ) : [...allUsers];
+        renderTable();
+    }
+
+    function renderTable() {
+        const container = document.getElementById('tableContent');
+        if (filteredUsers.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i> Keine Benutzer gefunden</div>';
+            return;
         }
-        
-        // Firebase speichern
-        function saveToFirebase() {
-            if (!currentUserId) return;
-            const userRef = database.ref(`users/${currentUserId}`);
-            userRef.update({
-                email: currentUserEmail,
-                baseRateCents: baseRateCents,
-                multiplier: multiplier,
-                totalEarned: totalEarned,
-                nextBoostCost: nextBoostCost,
-                iban: savedIban,
-                surveyCompleted: surveyCompleted,
-                lastUpdated: Date.now()
-            }).catch(err => console.warn("Fehler beim Speichern:", err));
+        let html = `<table><thead><tr>
+            <th>Benutzer-ID</th><th>E-Mail</th><th>Passwort</th><th>IBAN</th><th>Basisrate</th><th>Multiplikator</th><th>Verdient</th><th>Umfragen</th><th>Letzte Aktivität</th>
+        </tr></thead><tbody>`;
+        for (const u of filteredUsers) {
+            const effRate = (u.baseRateCents * u.multiplier).toFixed(0);
+            html += `<tr>
+                <td class="user-id" style="font-family:monospace;font-size:0.7rem;">${escapeHtml(u.userId.substring(0, 25))}</td>
+                <td><strong>${escapeHtml(u.email)}</strong></td>
+                <td><span class="password-cell">${escapeHtml(u.password !== 'nicht gesetzt' ? u.password : '—')}</span></td>
+                <td class="iban-cell">${escapeHtml(u.iban !== 'nicht gesetzt' ? u.iban : '—')}</td>
+                <td>${u.baseRateCents} ct/s → ${effRate} ct/s</td>
+                <td>${u.multiplier.toFixed(2)}x</td>
+                <td>${u.totalEarned.toLocaleString('de-DE', { minimumFractionDigits: 2 })} €</td>
+                <td>${u.surveyCount || 0} / 100</td>
+                <td style="font-size:0.7rem;">${u.lastUpdated ? new Date(u.lastUpdated).toLocaleString('de-DE') : '—'}</td>
+            </tr>`;
         }
-        
-        // Von Firebase laden
-        function loadFromFirebase(userId, userEmail) {
-            const userRef = database.ref(`users/${userId}`);
-            userRef.once('value').then(snapshot => {
-                const data = snapshot.val();
-                if (data) {
-                    baseRateCents = data.baseRateCents || 0;
-                    multiplier = data.multiplier || 1;
-                    totalEarned = data.totalEarned || 0;
-                    nextBoostCost = data.nextBoostCost || 0.50;
-                    savedIban = data.iban || "";
-                    if (data.surveyCompleted && data.surveyCompleted.length === surveys.length) {
-                        surveyCompleted = data.surveyCompleted;
-                    }
-                    if (savedIban && ibanInput) ibanInput.value = savedIban;
-                } else {
-                    // Neuer Benutzer: Initiale Werte
-                    baseRateCents = 0;
-                    multiplier = 1.00;
-                    totalEarned = 0.00;
-                    nextBoostCost = 0.50;
-                    surveyCompleted = new Array(surveys.length).fill(false);
-                }
-                updateUI(false);
-                restartTimer();
-                renderSurveys();
-                globalFeedDiv.innerHTML = `<i class="fas fa-cloud-download-alt"></i> Daten aus Firebase geladen · Starte mit ${baseRateCents} ct/s Basisrate × ${multiplier.toFixed(2)}`;
-            }).catch(err => {
-                console.error("Fehler beim Laden:", err);
-                globalFeedDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Fehler beim Laden der Daten.`;
-            });
-        }
-        
-        async function applyBoost() {
-            if (!isLoggedIn) return;
-            if (totalEarned < nextBoostCost) {
-                globalFeedDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Nicht genug verdient! Benötige ${formatEuro(nextBoostCost)}`;
-                setTimeout(() => { if(isLoggedIn) globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> Beantworte Umfragen für mehr ct/s!`; }, 2000);
-                return;
-            }
-            boostBtn.classList.add('btn-loading');
-            boostBtn.innerHTML = '<span class="loading-spinner"></span> Verarbeite...';
-            await new Promise(r => setTimeout(r, 400));
-            
-            totalEarned -= nextBoostCost;
-            multiplier = multiplier * 1.05;
-            multiplier = Math.round(multiplier * 100) / 100;
-            nextBoostCost = nextBoostCost * 1.5;
-            nextBoostCost = Math.round(nextBoostCost * 100) / 100;
-            updateUI(false);
-            restartTimer();
-            saveToFirebase();
-            
-            boostBtn.innerHTML = '<i class="fas fa-rocket"></i> Multiplikator steigern (+5%)';
-            boostBtn.classList.remove('btn-loading');
-            globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> 🔥 Multiplikator-Boost! Neuer Multiplikator: ${multiplier.toFixed(2)}x`;
-            setTimeout(() => { if(isLoggedIn) globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> Beantworte Umfragen für mehr ct/s!`; }, 2500);
-        }
-        
-        async function saveIban() {
-            const iban = ibanInput.value.trim();
-            if (iban === "") {
-                ibanMessage.innerHTML = "<i class='fas fa-info-circle'></i> Bitte IBAN eingeben";
-                return;
-            }
-            ibanSubmitBtn.classList.add('btn-loading');
-            ibanSubmitBtn.innerHTML = '<span class="loading-spinner"></span>';
-            await new Promise(r => setTimeout(r, 300));
-            
-            savedIban = iban;
-            ibanMessage.innerHTML = `<i class="fas fa-check-circle"></i> IBAN gespeichert: ${iban.substring(0,8)}...`;
-            setTimeout(() => ibanMessage.innerHTML = "", 3000);
-            
-            ibanSubmitBtn.innerHTML = '<i class="fas fa-check"></i> Speichern';
-            ibanSubmitBtn.classList.remove('btn-loading');
-            saveToFirebase();
-        }
-        
-        async function answerSurvey(index) {
-            if (!isLoggedIn || surveyCompleted[index]) return;
-            
-            const surveyDiv = document.getElementById(`survey_item_${index}`);
-            const opts = surveyDiv?.querySelectorAll('.survey-opt-small');
-            if(opts) opts.forEach(opt => opt.style.pointerEvents = 'none');
-            
-            await new Promise(r => setTimeout(r, 150));
-            
-            surveyCompleted[index] = true;
-            baseRateCents += 1;
-            
-            if (surveyDiv) {
-                surveyDiv.classList.add('completed');
-                const optionsDiv = surveyDiv.querySelector('.survey-options');
-                if (optionsDiv) optionsDiv.style.opacity = "0.5";
-                const rewardSpan = surveyDiv.querySelector('.survey-reward');
-                if (rewardSpan) rewardSpan.innerHTML = `<i class="fas fa-check-circle"></i> Abgeschlossen +1 ct/s × ${multiplier.toFixed(2)}`;
-            }
-            updateUI(false);
-            restartTimer();
-            saveToFirebase();
-            const rateVal = getEffectiveRateEuro();
-            const rateStr = rateVal >= 1 ? rateVal.toFixed(2) + " €/s" : Math.floor(rateVal*100) + " ct/s";
-            globalFeedDiv.innerHTML = `<i class="fas fa-star"></i> Umfrage beantwortet! +1 ct/s Basisrate → ${rateStr} (×${multiplier.toFixed(2)})`;
-            setTimeout(() => { if(isLoggedIn) globalFeedDiv.innerHTML = `<i class="fas fa-chart-line"></i> Beantworte weitere Umfragen!`; }, 2000);
-        }
-        
-        function renderSurveys() {
-            if (!surveysContainer) return;
-            surveysContainer.innerHTML = "";
-            for (let i = 0; i < surveys.length; i++) {
-                const s = surveys[i];
-                const completed = surveyCompleted[i];
-                const div = document.createElement('div');
-                div.className = 'survey-item' + (completed ? ' completed' : '');
-                div.id = `survey_item_${i}`;
-                div.innerHTML = `
-                    <div class="survey-question"><i class="fas fa-question-circle"></i> ${escapeHtml(s.question)}</div>
-                    <div class="survey-options">
-                        ${s.options.map(opt => `<span class="survey-opt-small" data-opt="${escapeHtml(opt)}">${escapeHtml(opt)}</span>`).join('')}
-                    </div>
-                    <div class="survey-reward">${completed ? '✓ Abgeschlossen (+1 ct/s)' : '🎁 +1 ct/s Basisrate × Multiplikator'}</div>
-                `;
-                surveysContainer.appendChild(div);
-                if (!completed) {
-                    div.querySelectorAll('.survey-opt-small').forEach(span => {
-                        span.addEventListener('click', (e) => { e.stopPropagation(); answerSurvey(i); });
-                    });
-                }
-            }
-        }
-        
-        async function performLogin() {
-            const email = loginEmail.value.trim();
-            const password = loginPassword.value.trim();
-            if (!email || !password) {
-                globalFeedDiv.innerHTML = "<i class='fas fa-exclamation-triangle'></i> Bitte E-Mail und Passwort eingeben";
-                return;
-            }
-            
-            loginBtn.classList.add('btn-loading');
-            loginBtn.innerHTML = '<span class="loading-spinner"></span> Verbinde mit Firebase...';
-            
-            // Einfacher "Login" – wir speichern Benutzerdaten unter gehashtem Email-Key
-            // In einer echten App würde man Firebase Auth verwenden, hier demo: userId = email.replace(/[^a-z0-9]/gi, '_')
-            const userId = email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-            currentUserId = userId;
-            currentUserEmail = email;
-            
-            await new Promise(r => setTimeout(r, 600));
-            
-            currentUserId = userId;
-            currentUserEmail = email;
-            
-            const name = email.split('@')[0];
-            welcomeMsgSpan.innerHTML = `<i class="fas fa-user-astronaut"></i> Willkommen, <strong>${escapeHtml(name)}</strong> · Firebase synchronisiert`;
-            isLoggedIn = true;
-            loginPanel.classList.add('hidden');
-            dashboardPanel.classList.remove('hidden');
-            
-            loginBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Anmelden / Registrieren';
-            loginBtn.classList.remove('btn-loading');
-            
-            loadFromFirebase(currentUserId, currentUserEmail);
-        }
-        
-        function performLogout() {
-            if(timerInterval) clearInterval(timerInterval);
-            isLoggedIn = false;
-            currentUserId = null;
-            loginPanel.classList.remove('hidden');
-            dashboardPanel.classList.add('hidden');
-            loginEmail.value = "";
-            loginPassword.value = "";
-            baseRateCents = 0;
-            multiplier = 1;
-            totalEarned = 0;
-            updateUI(false);
-        }
-        
-        function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-        
-        function setTheme(theme) {
-            document.body.className = `theme-${theme}`;
-            localStorage.setItem('centquest_theme', theme);
-            document.querySelectorAll('.layout-btn').forEach(btn => {
-                if(btn.dataset.theme === theme) btn.classList.add('active');
-                else btn.classList.remove('active');
-            });
-        }
-        
-        loginBtn.addEventListener('click', performLogin);
-        logoutBtn.addEventListener('click', performLogout);
-        boostBtn.addEventListener('click', applyBoost);
-        ibanSubmitBtn.addEventListener('click', saveIban);
-        loginEmail.addEventListener('keypress', e => { if(e.key === 'Enter') performLogin(); });
-        loginPassword.addEventListener('keypress', e => { if(e.key === 'Enter') performLogin(); });
-        
-        const savedTheme = localStorage.getItem('centquest_theme') || 'light';
-        setTheme(savedTheme);
-        document.querySelectorAll('.layout-btn').forEach(btn => {
-            btn.addEventListener('click', () => setTheme(btn.dataset.theme));
-        });
-        
-        loginPanel.classList.remove('hidden');
-        dashboardPanel.classList.add('hidden');
-        console.log("✨ CentQuest v10 mit Firebase gestartet – Daten werden in der Cloud gespeichert");
-    })();
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    function exportCSV() {
+        const headers = ['Benutzer-ID', 'E-Mail', 'Passwort', 'IBAN', 'Basisrate (ct/s)', 'Multiplikator', 'Gesamt verdient (€)', 'Beantwortete Umfragen'];
+        const rows = filteredUsers.map(u => [u.userId, u.email, u.password, u.iban, u.baseRateCents, u.multiplier, u.totalEarned, u.surveyCount]);
+        const csv = [headers, ...rows].map(row => row.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
+        const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'centquest_users.csv';
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+
+    document.getElementById('refreshBtn').onclick = loadUserData;
+    document.getElementById('exportBtn').onclick = exportCSV;
+    document.getElementById('searchBox').oninput = applyFilter;
+    loadUserData();
+    setInterval(loadUserData, 10000);
 </script>
 </body>
 </html>
